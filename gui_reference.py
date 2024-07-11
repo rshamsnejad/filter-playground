@@ -22,19 +22,25 @@ class MainWindow(QWidget):
         self.button.clicked.connect(self.button_clicked)
 
         self.label = QLabel()
-        self.line_edit = QLineEdit(textChanged=self.label.setText)
+        self.line_edit = QLineEdit(
+            clearButtonEnabled=True,
+            placeholderText="Write here",
+            textChanged=self.label.setText
+        )
 
         layout = QVBoxLayout()
         self.setLayout(layout)
 
+        layout.addStretch()
         layout.addWidget(self.button)
         layout.addWidget(self.label)
         layout.addWidget(self.line_edit)
+        layout.addStretch()
 
         self.show()
 
     def button_clicked(self):
-        self.line_edit.setText("")
+        self.line_edit.clear()
         self.label.setText("Reset !")
 
 
