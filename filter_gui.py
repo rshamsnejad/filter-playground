@@ -54,7 +54,7 @@ class MainWindow(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.__order = 24
+        self.__order = 4
         self.__cutoff = 165
         self.__type = 'highpass'
 
@@ -66,6 +66,7 @@ class MainWindow(QWidget):
 
         self.init_type_rb()
         self.init_order_field()
+        self.init_cutoff_field()
         self.init_graph()
 
         self.show()
@@ -87,6 +88,14 @@ class MainWindow(QWidget):
 
         self.__layout.addWidget(field_order, 0, 1, 1, 1)
 
+    def init_cutoff_field(self):
+        field_cutoff = QLineEdit(str(self.__cutoff), self)
+        field_cutoff.placeholderText = "Cutoff"
+        field_cutoff.maxLength = 5
+        field_cutoff.textChanged.connect(self.handle_cutoff)
+
+        self.__layout.addWidget(field_cutoff, 1, 1, 1, 1)
+
     def init_graph(self):
         self.__canvas = FigureCanvas(Figure())
         self.__layout.addWidget(self.__canvas, 3, 0, 1, -1)
@@ -97,31 +106,31 @@ class MainWindow(QWidget):
         plot_phase_range    = [-200, 200]
 
         self.__fig = self.__canvas.figure
-        axs = self.__fig.subplots(2, 1, sharex=True)
+        self.__axs = self.__fig.subplots(2, 1, sharex=True)
 
         self.update_title()
         self.compute_filter()
 
         # Magnitude
-        self.__mag, = axs[0].semilogx(self.__filter['frequencies'], self.__filter['magnitude'])
-        axs[0].set_xscale('log')
-        axs[0].set_xlim(plot_freq_range)
-        axs[0].set_ylabel('Gain [dB]')
-        axs[0].set_ylim(plot_mag_range)
-        axs[0].margins(0, 0.1)
-        axs[0].grid(which='both', axis='both')
-        axs[0].axvline(self.__cutoff, color='red')
+        self.__mag, = self.__axs[0].semilogx(self.__filter['frequencies'], self.__filter['magnitude'])
+        self.__axs[0].set_xscale('log')
+        self.__axs[0].set_xlim(plot_freq_range)
+        self.__axs[0].set_ylabel('Gain [dB]')
+        self.__axs[0].set_ylim(plot_mag_range)
+        self.__axs[0].margins(0, 0.1)
+        self.__axs[0].grid(which='both', axis='both')
+        self.__axline_mag = self.__axs[0].axvline(self.__cutoff, color='red')
 
         # Phase
-        self.__phase, = axs[1].semilogx(self.__filter['frequencies'], self.__filter['phase'])
-        axs[1].set_xlabel('Frequency [Hz]')
-        axs[1].set_xscale('log')
-        axs[1].set_xlim(plot_freq_range)
-        axs[1].set_ylabel('Phase [°]')
-        axs[1].set_ylim(plot_phase_range)
-        axs[1].margins(0, 0.1)
-        axs[1].grid(which='both', axis='both')
-        axs[1].axvline(self.__cutoff, color='red')
+        self.__phase, = self.__axs[1].semilogx(self.__filter['frequencies'], self.__filter['phase'])
+        self.__axs[1].set_xlabel('Frequency [Hz]')
+        self.__axs[1].set_xscale('log')
+        self.__axs[1].set_xlim(plot_freq_range)
+        self.__axs[1].set_ylabel('Phase [°]')
+        self.__axs[1].set_ylim(plot_phase_range)
+        self.__axs[1].margins(0, 0.1)
+        self.__axs[1].grid(which='both', axis='both')
+        self.__axline_phase = self.__axs[1].axvline(self.__cutoff, color='red')
 
     def compute_filter(self):
         b, a = signal.butter(self.__order, self.__cutoff, self.__type, True)
@@ -143,11 +152,18 @@ class MainWindow(QWidget):
         self.__type = rb.text()
 
         self.update_filter()
-    
+
     def handle_order(self):
         rb = self.sender()
 
         self.__order = int(rb.text() or 1)
+
+        self.update_filter()
+
+    def handle_cutoff(self):
+        rb = self.sender()
+
+        self.__cutoff = int(rb.text() or 1000)
 
         self.update_filter()
 
@@ -161,6 +177,9 @@ class MainWindow(QWidget):
 
         self.__mag.set_data(self.__filter['frequencies'], self.__filter['magnitude'])
         self.__phase.set_data(self.__filter['frequencies'], self.__filter['phase'])
+
+        self.__axline_mag.set_xdata([self.__cutoff])
+        self.__axline_phase.set_xdata([self.__cutoff])
 
         self.__mag.figure.canvas.draw()
         self.__phase.figure.canvas.draw()
