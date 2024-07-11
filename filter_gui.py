@@ -1,10 +1,11 @@
+from hashlib import file_digest
 import sys
 from PyQt6.QtWidgets import (
     QApplication,
     QWidget,
     QGridLayout,
     QRadioButton,
-    QLabel
+    QLineEdit
 )
 from PyQt6.QtGui import (
     QIcon
@@ -53,66 +54,66 @@ class MainWindow(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.__order = 24
+        self.__cutoff = 165
+        self.__type = 'highpass'
+
         self.setWindowTitle("Filter Playground")
         self.setWindowIcon(QIcon('arkamys.jpg'))
 
         self.__layout = QGridLayout()
         self.setLayout(self.__layout)
 
-        self.init_rb()
-        self.init_label()
+        self.init_type_rb()
+        self.init_order_field()
         self.init_graph()
 
         self.show()
 
-    def init_rb(self):
+    def init_type_rb(self):
         rb_highpass = QRadioButton("Highpass", self)
-        rb_highpass.toggled.connect(self.update_filter)
+        rb_highpass.toggled.connect(self.handle_type)
         rb_lowpass = QRadioButton("Lowpass", self)
-        rb_lowpass.toggled.connect(self.update_filter)
+        rb_lowpass.toggled.connect(self.handle_type)
 
-        self.__layout.addWidget(rb_highpass, 0, 0, 1, -1)
-        self.__layout.addWidget(rb_lowpass, 1, 0, 1, -1)
+        self.__layout.addWidget(rb_highpass, 0, 0, 1, 1)
+        self.__layout.addWidget(rb_lowpass, 1, 0, 1, 1)
 
-    def init_label(self):
-        self.label = QLabel()
+    def init_order_field(self):
+        field_order = QLineEdit(str(self.__order), self)
+        field_order.placeholderText = "Order"
+        field_order.maxLength = 3
+        field_order.textChanged.connect(self.handle_order)
 
-        self.__layout.addWidget(self.label, 2, 0, -1, 1)
+        self.__layout.addWidget(field_order, 0, 1, 1, 1)
 
     def init_graph(self):
         self.__canvas = FigureCanvas(Figure())
         self.__layout.addWidget(self.__canvas, 3, 0, 1, -1)
 
-        N = 24
-        f0 = 165
-
-        b, a = signal.butter(N, f0, 'high', True)
-        frequencies, magnitude = signal.freqs(b, a, worN=np.logspace(0, 5, 1000))
-
-        mag_db = 20 * np.log10(abs(magnitude))
-        phase_deg = np.angle(magnitude, deg=True)
-        phase_deg_nan = remove_phase_discontinuities(phase_deg)
 
         plot_freq_range     = [20, 20e3]
         plot_mag_range      = [-40, 10]
         plot_phase_range    = [-200, 200]
 
-        fig = self.__canvas.figure
-        axs = fig.subplots(2, 1, sharex=True)
-        fig.suptitle(f"Butterworth highpass filter, order {N}, $f_0 = {f0}$ Hz")
+        self.__fig = self.__canvas.figure
+        axs = self.__fig.subplots(2, 1, sharex=True)
+
+        self.update_title()
+        self.compute_filter()
 
         # Magnitude
-        axs[0].semilogx(frequencies, mag_db)
+        self.__mag, = axs[0].semilogx(self.__filter['frequencies'], self.__filter['magnitude'])
         axs[0].set_xscale('log')
         axs[0].set_xlim(plot_freq_range)
         axs[0].set_ylabel('Gain [dB]')
         axs[0].set_ylim(plot_mag_range)
         axs[0].margins(0, 0.1)
         axs[0].grid(which='both', axis='both')
-        axs[0].axvline(f0, color='red')
+        axs[0].axvline(self.__cutoff, color='red')
 
         # Phase
-        axs[1].semilogx(frequencies, phase_deg_nan)
+        self.__phase, = axs[1].semilogx(self.__filter['frequencies'], self.__filter['phase'])
         axs[1].set_xlabel('Frequency [Hz]')
         axs[1].set_xscale('log')
         axs[1].set_xlim(plot_freq_range)
@@ -120,14 +121,49 @@ class MainWindow(QWidget):
         axs[1].set_ylim(plot_phase_range)
         axs[1].margins(0, 0.1)
         axs[1].grid(which='both', axis='both')
-        axs[1].axvline(f0, color='red')
+        axs[1].axvline(self.__cutoff, color='red')
 
+    def compute_filter(self):
+        b, a = signal.butter(self.__order, self.__cutoff, self.__type, True)
+        frequencies, magnitude = signal.freqs(b, a, worN=np.logspace(0, 5, 1000))
 
+        mag_db = 20 * np.log10(abs(magnitude))
+        phase_deg = np.angle(magnitude, deg=True)
+        phase_deg_nan = remove_phase_discontinuities(phase_deg)
 
-    def update_filter(self):
+        self.__filter = {
+            "frequencies": frequencies,
+            "magnitude": mag_db,
+            "phase": phase_deg_nan
+        }
+
+    def handle_type(self):
         rb = self.sender()
 
-        self.label.setText(rb.text())
+        self.__type = rb.text()
+
+        self.update_filter()
+    
+    def handle_order(self):
+        rb = self.sender()
+
+        self.__order = int(rb.text() or 1)
+
+        self.update_filter()
+
+    def update_title(self):
+        self.__fig.suptitle(f"Butterworth {self.__type.lower()} filter, order {self.__order}, $f_0 = {self.__cutoff}$ Hz")
+
+    def update_filter(self):
+        self.compute_filter()
+
+        self.update_title()
+
+        self.__mag.set_data(self.__filter['frequencies'], self.__filter['magnitude'])
+        self.__phase.set_data(self.__filter['frequencies'], self.__filter['phase'])
+
+        self.__mag.figure.canvas.draw()
+        self.__phase.figure.canvas.draw()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
