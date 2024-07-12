@@ -110,9 +110,9 @@ class FilterEngine:
 
     def remove_phase_discontinuities(self, phase: list) -> list:
         """
-        In a wrapped phase array, replaces the two points before and after
-        each wrap with NaN. This is useful to prevent matplotlib from plotting
-        vertical lines at the wrap locations
+        In a wrapped phase array, replaces the two points before
+        each wrap with NaN. This is useful to prevent matplotlib
+        from plotting vertical lines at the wrap locations
 
         Args:
             phase (list): phase points list
