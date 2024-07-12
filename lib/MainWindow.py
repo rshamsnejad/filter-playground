@@ -3,7 +3,8 @@ from PyQt6.QtWidgets import (
     QWidget,
     QGridLayout,
     QRadioButton,
-    QLineEdit
+    QLineEdit,
+    QLabel
 )
 from PyQt6.QtGui import (
     QIcon
@@ -39,20 +40,26 @@ class MainWindow(QWidget):
         self.__layout.addWidget(rb_lowpass, 1, 0, 1, 1)
 
     def init_order_field(self):
+        label_order = QLabel("Filter order:")
+
         field_order = QLineEdit(str(self.__filterengine.get_order()), self)
         field_order.placeholderText = "Order"
         field_order.maxLength = 3
         field_order.textChanged.connect(self.handle_order)
 
-        self.__layout.addWidget(field_order, 0, 1, 1, 1)
+        self.__layout.addWidget(label_order, 0, 1, 1, 1)
+        self.__layout.addWidget(field_order, 0, 2, 1, 1)
 
     def init_cutoff_field(self):
+        label_cutoff = QLabel("Cutoff frequency:")
+
         field_cutoff = QLineEdit(str(self.__filterengine.get_cutoff()), self)
         field_cutoff.placeholderText = "Cutoff"
         field_cutoff.maxLength = 5
         field_cutoff.textChanged.connect(self.handle_cutoff)
 
-        self.__layout.addWidget(field_cutoff, 1, 1, 1, 1)
+        self.__layout.addWidget(label_cutoff, 1, 1, 1, 1)
+        self.__layout.addWidget(field_cutoff, 1, 2, 1, 1)
 
 
     def handle_type(self):
