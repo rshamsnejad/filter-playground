@@ -1,5 +1,4 @@
 import sys
-import numpy as np
 from PyQt6.QtWidgets import QApplication
 from lib.MainWindow import MainWindow
 
