@@ -1,3 +1,4 @@
+import logging
 from PyQt6.QtWidgets import (
     QWidget,
     QGridLayout,
@@ -63,12 +64,19 @@ class MainWindow(QWidget):
     def handle_order(self):
         rb = self.sender()
 
-        self.__filterengine.set_order(int(rb.text() or 1))
+        try:
+            self.__filterengine.set_order(int(rb.text() or 1))
+        except ValueError:
+            logging.warning("Order should be a positive integer")
+
         self.__filterengine.update_filter()
 
     def handle_cutoff(self):
         rb = self.sender()
 
-        self.__filterengine.set_cutoff(int(rb.text() or 1000))
+        try:
+            self.__filterengine.set_cutoff(int(rb.text() or 1000))
+        except ValueError:
+            logging.warning("Cutoff frequency is outside of audible range")
         self.__filterengine.update_filter()
 
