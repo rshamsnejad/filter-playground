@@ -3,7 +3,7 @@ from scipy import signal
 
 from PyQt6.QtWidgets import QGridLayout
 
-from matplotlib.backends.backend_qtagg import FigureCanvas
+from matplotlib.backends.backend_qtagg import FigureCanvas, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 from matplotlib.ticker import ScalarFormatter
 
@@ -18,7 +18,8 @@ class FilterEngine:
         self.__fig = self.__canvas.figure
         self.__axs = self.__fig.subplots(2, 1, sharex=True)
 
-        layout.addWidget(self.__canvas, 3, 0, 1, -1)
+        layout.addWidget(NavigationToolbar(self.__canvas), 3, 0, 1, -1)
+        layout.addWidget(self.__canvas, 4, 0, 1, -1)
 
         plot_freq_range     = [20, 20e3]
         plot_mag_range      = [-40, 10]
