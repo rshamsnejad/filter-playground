@@ -16,9 +16,6 @@ class SingleFilterWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.setWindowTitle("Filter Playground")
-        self.setWindowIcon(QIcon('images/arkamys.jpg'))
-
         self.__layout = QGridLayout()
         self.setLayout(self.__layout)
 
