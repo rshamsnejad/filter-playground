@@ -8,9 +8,6 @@ from PyQt6.QtWidgets import (
     QLineEdit,
     QLabel
 )
-from PyQt6.QtGui import (
-    QIcon
-)
 from lib.FilterEngine import FilterEngine
 
 
