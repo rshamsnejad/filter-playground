@@ -1,7 +1,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
     QWidget,
-    QHBoxLayout
+    QGridLayout
 )
 from PyQt6.QtGui import (
     QIcon
@@ -16,12 +16,14 @@ class MainWindow(QWidget):
         self.setWindowTitle("Filter Playground")
         self.setWindowIcon(QIcon('images/arkamys.jpg'))
 
-        self.__layout = QHBoxLayout()
+        self.__layout = QGridLayout()
         self.setLayout(self.__layout)
 
         self.__filters = [SingleFilterWidget(), SingleFilterWidget()]
 
+        column = 0
         for filter in self.__filters:
-            self.__layout.addWidget(filter)
+            self.__layout.addWidget(filter, 0, column, 1, 1)
+            column += 1
 
         self.show()
