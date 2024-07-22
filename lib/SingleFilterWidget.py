@@ -12,7 +12,7 @@ from PyQt6.QtGui import (
 from lib.FilterEngine import FilterEngine
 
 
-class MainWindow(QWidget):
+class SingleFilterWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
