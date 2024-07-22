@@ -18,8 +18,8 @@ class FilterEngine:
         self.__fig = self.__canvas.figure
         self.__axs = self.__fig.subplots(2, 1, sharex=True)
 
-        layout.addWidget(NavigationToolbar(self.__canvas), 3, 0, 1, -1)
-        layout.addWidget(self.__canvas, 4, 0, 1, -1)
+        layout.addWidget(NavigationToolbar(self.__canvas), 2, 0, 1, -1)
+        layout.addWidget(self.__canvas, 3, 0, 1, -1)
 
         plot_freq_range     = [20, 20e3]
         plot_mag_range      = [-40, 10]

@@ -2,6 +2,8 @@ import logging
 from PyQt6.QtWidgets import (
     QWidget,
     QGridLayout,
+    QVBoxLayout,
+    QGroupBox,
     QRadioButton,
     QLineEdit,
     QLabel
@@ -21,20 +23,28 @@ class SingleFilterWidget(QWidget):
 
         self.__filterengine = FilterEngine(self.__layout)
 
-        self.init_type_rb()
+        self.init_type_box()
         self.init_order_field()
         self.init_cutoff_field()
 
         self.show()
 
-    def init_type_rb(self):
-        rb_highpass = QRadioButton("Highpass", self)
-        rb_highpass.toggled.connect(self.handle_type)
-        rb_lowpass = QRadioButton("Lowpass", self)
-        rb_lowpass.toggled.connect(self.handle_type)
+    def init_type_box(self):
+        button_box = QVBoxLayout()
+        types = ["Highpass", "Lowpass"]#, "Bandpass", "Bandstop"]
+        radio_buttons = []
+        for type in types:
+            radio_buttons.append(QRadioButton(type, self))
+            radio_buttons[-1].toggled.connect(self.handle_type)
 
-        self.__layout.addWidget(rb_highpass, 0, 0, 1, 1)
-        self.__layout.addWidget(rb_lowpass, 1, 0, 1, 1)
+            button_box.addWidget(radio_buttons[-1])
+
+        radio_buttons[0].setChecked(True)
+
+        button_group = QGroupBox("Filter type")
+        button_group.setLayout(button_box)
+
+        self.__layout.addWidget(button_group, 0, 0, 1, 1)
 
     def init_order_field(self):
         label_order = QLabel("Filter order:")
