@@ -34,7 +34,7 @@ class FilterEngine:
         self.__axs[0].set_ylim(plot_mag_range)
         self.__axs[0].margins(0, 0.1)
         self.__axs[0].grid(which='both', axis='both')
-        self.__axline_mag = self.__axs[0].axvline(self.__cutoff, color='red')
+        self.__axline_mag = self.__axs[0].axvline(self.__cutoff, linestyle='--', color='red')
 
         # Phase
         self.__phase, = self.__axs[1].semilogx(self.__filter['frequencies'], self.__filter['phase'])
@@ -44,6 +44,7 @@ class FilterEngine:
         self.__axs[1].set_ylim(plot_phase_range)
         self.__axs[1].margins(0, 0.1)
         self.__axs[1].grid(which='both', axis='both')
+        self.__axline_phase = self.__axs[1].axvline(self.__cutoff, linestyle='--', color='red')
 
         self.__axs[1].xaxis.set_major_formatter(ScalarFormatter())
         self.__axs[1].ticklabel_format(axis='x', style='plain')
