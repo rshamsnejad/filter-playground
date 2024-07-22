@@ -73,8 +73,8 @@ class MainWindow(QWidget):
 
         try:
             self.__filterengine.set_order(int(rb.text() or 1))
-        except ValueError:
-            logging.warning("Order should be a positive integer")
+        except ValueError as e:
+            logging.warning(e)
 
         self.__filterengine.update_filter()
 
@@ -83,7 +83,8 @@ class MainWindow(QWidget):
 
         try:
             self.__filterengine.set_cutoff(int(rb.text() or 1000))
-        except ValueError:
-            logging.warning("Cutoff frequency is outside of audible range")
+        except ValueError as e:
+            logging.warning(e)
+
         self.__filterengine.update_filter()
 
