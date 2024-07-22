@@ -60,9 +60,9 @@ class FilterEngine:
         return self.__order
 
     def set_cutoff(self, cutoff: float) -> None:
-        if cutoff < 20 or cutoff > 20000:
+        if cutoff < 1:
             self.__cutoff = 1000
-            raise ValueError("Cutoff must be between 20 Hz and 20 kHz")
+            raise ValueError("Cutoff must be a positive value")
         else:
             self.__cutoff = cutoff
 
