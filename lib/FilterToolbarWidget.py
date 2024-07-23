@@ -11,6 +11,9 @@ class FilterToolbarWidget(QWidget):
 
         self.setLayout(QHBoxLayout())
 
-        self.layout().addWidget(FilterTypeWidget())
-        self.layout().addWidget(FilterParametersWidget(3, 300))
+        self.filter_type = FilterTypeWidget()
+        self.filter_parameters = FilterParametersWidget(4, 1000)
+
+        self.layout().addWidget(self.filter_type)
+        self.layout().addWidget(self.filter_parameters)
 

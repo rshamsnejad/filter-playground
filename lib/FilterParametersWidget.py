@@ -25,9 +25,9 @@ class FilterParametersWidget(QGroupBox):
         self.layout().addWidget(self.field_order, 0, 1, 1, 1)
 
         label_cutoff = QLabel("Cutoff frequency:")
-        field_cutoff = QLineEdit(str(cutoff), self)
-        field_cutoff.placeholderText = "Cutoff"
-        field_cutoff.maxLength = 5
+        self.field_cutoff = QLineEdit(str(cutoff), self)
+        self.field_cutoff.placeholderText = "Cutoff"
+        self.field_cutoff.maxLength = 5
 
         self.layout().addWidget(label_cutoff, 1, 0, 1, 1)
-        self.layout().addWidget(field_cutoff, 1, 1, 1, 1)
+        self.layout().addWidget(self.field_cutoff, 1, 1, 1, 1)
