@@ -84,12 +84,4 @@ class GraphWidget(QWidget):
         self.phase_graph.figure.canvas.draw()
 
     def update_title(self) -> None:
-        self.figure.suptitle(
-            (
-                f"Butterworth {self.engine.get_filtertype().lower()} filter, "
-                f"order {self.engine.get_order()}, "
-                f"$f_0 = {self.engine.get_cutoff()}$ Hz"
-            )
-        )
-
-
+        self.figure.suptitle(self.engine.generate_title())

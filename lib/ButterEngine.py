@@ -19,3 +19,10 @@ class ButterEngine(GraphEngine):
             "magnitude": mag_db,
             "phase": phase_deg_nan
         }
+
+    def generate_title(self) -> str:
+        return (
+            f"Butterworth {self.get_filtertype().lower()} filter, "
+            f"order {self.get_order()}, "
+            f"$f_0 = {self.get_cutoff()}$ Hz"
+        )

@@ -52,6 +52,12 @@ class GraphEngine:
         '''
         raise NotImplementedError
 
+    def generate_title(self) -> str:
+        '''
+        Must be implemented by child classes
+        '''
+        raise NotImplementedError
+
     def get_frequencies(self) -> list[float]:
         return self.filter['frequencies']
 
