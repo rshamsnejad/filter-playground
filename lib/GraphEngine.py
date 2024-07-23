@@ -20,6 +20,8 @@ class GraphEngine(QObject):
             "phase": []
         }
 
+        self.fs = 48000
+
     def set_order(self, order: int) -> None:
         if order <= 0:
             self.order = 1
