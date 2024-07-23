@@ -8,7 +8,7 @@ from matplotlib.figure import Figure
 from matplotlib.ticker import ScalarFormatter
 
 
-class NewFilterEngine:
+class GraphEngine:
     def __init__(self,
         order:      int = 4,
         cutoff:     float = 1000,

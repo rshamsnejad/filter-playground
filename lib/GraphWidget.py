@@ -6,7 +6,7 @@ from matplotlib.backends.backend_qtagg import FigureCanvas, NavigationToolbar2QT
 from matplotlib.figure import Figure
 from matplotlib.ticker import ScalarFormatter
 
-from lib.NewFilterEngine import NewFilterEngine
+from lib.GraphEngine import GraphEngine
 
 class GraphWidget(QWidget):
     '''
@@ -25,9 +25,10 @@ class GraphWidget(QWidget):
         self.layout().addWidget(NavigationToolbar(self.canvas))
         self.layout().addWidget(self.canvas)
 
-        self.filter_engine = NewFilterEngine()
+        self.filter_engine = GraphEngine()
 
         self.init_graph()
+        self.filter_engine.compute_filter()
         self.update_graph()
 
     def init_graph(self,
@@ -62,8 +63,6 @@ class GraphWidget(QWidget):
         self.axs[1].ticklabel_format(axis='x', style='plain')
 
     def update_graph(self) -> None:
-        self.filter_engine.compute_filter()
-
         self.update_title()
 
         self.magnitude_graph.set_data(
