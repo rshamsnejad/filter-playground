@@ -12,13 +12,14 @@ class ButterEngine(GraphEngine):
 
         mag_db = 20 * log10(abs(magnitude))
         phase_deg = angle(magnitude, deg=True)
-        phase_deg_nan = self.remove_phase_discontinuities(phase_deg)
 
         self.filter = {
             "frequencies": frequencies,
             "magnitude": mag_db,
-            "phase": phase_deg_nan
+            "phase": phase_deg
         }
+
+        self.remove_phase_discontinuities()
 
     def generate_title(self) -> str:
         return (

@@ -22,5 +22,8 @@ class SumEngine(GraphEngine):
             self.filter['magnitude'] = np.array(self.filter['magnitude']) + np.array(engine.filter['magnitude'])
             self.filter['phase'] = np.array(self.filter['phase']) + np.array(engine.filter['phase'])
 
+        self.wrap_phase()
+        self.remove_phase_discontinuities()
+
     def generate_title(self) -> str:
         return "Sum of the inputs"

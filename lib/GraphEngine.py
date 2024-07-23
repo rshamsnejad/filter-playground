@@ -71,24 +71,18 @@ class GraphEngine(QObject):
     def get_phase(self) -> list[float]:
         return self.filter['phase']
 
-    def remove_phase_discontinuities(self, phase: list) -> list:
+    def remove_phase_discontinuities(self) -> None:
         """
         In a wrapped phase array, replaces the two points before
         each wrap with NaN. This is useful to prevent matplotlib
         from plotting vertical lines at the wrap locations
-
-        Args:
-            phase (list): phase points list
-
-        Returns:
-            list: input list with NaN before and after each wrap
         """
 
         # Get sign of each point
         # Negative  gives -1
         # Positive  gives 1
         # Zero      gives 0
-        signs = np.sign(phase)
+        signs = np.sign(self.filter['phase'])
 
         # Split the list in adjacent pairs
         pairs = []
@@ -99,7 +93,7 @@ class GraphEngine(QObject):
         pairs_indexes = [index for index, element in enumerate(pairs) if element == (-1, 1) or element == (1, -1)]
 
         # Replace all points before the wraps with NaN
-        phase_nan = phase.copy()
-        phase_nan[pairs_indexes] = np.nan
+        self.filter['phase'][pairs_indexes] = np.nan
 
-        return phase_nan
+    def wrap_phase(self) -> None:
+        self.filter['phase'] = ((self.filter['phase'] + 180) % 360) - 180
