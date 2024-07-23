@@ -1,12 +1,4 @@
 import numpy as np
-from scipy import signal
-
-from PyQt6.QtWidgets import QGridLayout
-
-from matplotlib.backends.backend_qtagg import FigureCanvas, NavigationToolbar2QT as NavigationToolbar
-from matplotlib.figure import Figure
-from matplotlib.ticker import ScalarFormatter
-
 
 class GraphEngine:
     def __init__(self,
@@ -18,7 +10,7 @@ class GraphEngine:
         self.set_cutoff(cutoff)
         self.set_filtertype(filtertype)
 
-        self.__filter = {
+        self.filter = {
             "frequencies": [],
             "magnitude": [],
             "phase": []
@@ -26,56 +18,48 @@ class GraphEngine:
 
     def set_order(self, order: int) -> None:
         if order <= 0:
-            self.__order = 1
+            self.order = 1
             raise ValueError("Order must be a positive integer")
         else:
-            self.__order = order
+            self.order = order
 
     def get_order(self) -> int:
-        return self.__order
+        return self.order
 
     def set_cutoff(self, cutoff: float) -> None:
         if cutoff < 1:
-            self.__cutoff = 1000
+            self.cutoff = 1000
             raise ValueError("Cutoff must be a positive value")
         else:
-            self.__cutoff = cutoff
+            self.cutoff = cutoff
 
     def get_cutoff(self) -> float:
-        return self.__cutoff
+        return self.cutoff
 
     def set_filtertype(self, filtertype: str) -> None:
         if filtertype.casefold() not in ["highpass", "lowpass", "bandpass", "bandstop"]:
-            self.__filtertype = "highpass"
+            self.filtertype = "highpass"
             raise ValueError("Incorrect filter type")
         else:
-            self.__filtertype = filtertype
+            self.filtertype = filtertype
 
     def get_filtertype(self) -> str:
-        return self.__filtertype
+        return self.filtertype
 
     def compute_filter(self) -> None:
-        b, a = signal.butter(self.__order, self.__cutoff, self.__filtertype, True)
-        frequencies, magnitude = signal.freqs(b, a, worN=np.logspace(0, 5, 1000))
-
-        mag_db = 20 * np.log10(abs(magnitude))
-        phase_deg = np.angle(magnitude, deg=True)
-        phase_deg_nan = self.remove_phase_discontinuities(phase_deg)
-
-        self.__filter = {
-            "frequencies": frequencies,
-            "magnitude": mag_db,
-            "phase": phase_deg_nan
-        }
+        '''
+        Must be implemented by child classes
+        '''
+        raise NotImplementedError
 
     def get_frequencies(self) -> list[float]:
-        return self.__filter['frequencies']
+        return self.filter['frequencies']
 
     def get_magnitude(self) -> list[float]:
-        return self.__filter['magnitude']
+        return self.filter['magnitude']
 
     def get_phase(self) -> list[float]:
-        return self.__filter['phase']
+        return self.filter['phase']
 
     def remove_phase_discontinuities(self, phase: list) -> list:
         """

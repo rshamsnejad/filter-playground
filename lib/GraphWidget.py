@@ -6,7 +6,7 @@ from matplotlib.backends.backend_qtagg import FigureCanvas, NavigationToolbar2QT
 from matplotlib.figure import Figure
 from matplotlib.ticker import ScalarFormatter
 
-from lib.GraphEngine import GraphEngine
+from lib.ButterEngine import ButterEngine
 
 class GraphWidget(QWidget):
     '''
@@ -25,7 +25,7 @@ class GraphWidget(QWidget):
         self.layout().addWidget(NavigationToolbar(self.canvas))
         self.layout().addWidget(self.canvas)
 
-        self.filter_engine = GraphEngine()
+        self.filter_engine = ButterEngine()
 
         self.init_graph()
         self.filter_engine.compute_filter()
