@@ -1,7 +1,8 @@
 import logging
 from PyQt6.QtWidgets import (
     QWidget,
-    QVBoxLayout
+    QVBoxLayout,
+    QAbstractButton
 )
 from lib.FilterToolbarWidget import FilterToolbarWidget
 from lib.GraphWidget import GraphWidget
@@ -16,20 +17,16 @@ class InputFilterWidget(QWidget):
         self.graph = GraphWidget(ButterEngine())
         self.filter_toolbar = FilterToolbarWidget()
 
-        for button in self.filter_toolbar.filter_type.radio_buttons:
-            button.toggled.connect(self.handle_type)
-
+        self.filter_toolbar.filter_type.button_group.buttonToggled.connect(self.handle_type)
         self.filter_toolbar.filter_parameters.field_order.textChanged.connect(self.handle_order)
         self.filter_toolbar.filter_parameters.field_cutoff.textChanged.connect(self.handle_cutoff)
 
         self.layout().addWidget(self.filter_toolbar)
         self.layout().addWidget(self.graph)
 
-    def handle_type(self):
-        rb = self.sender()
-
+    def handle_type(self, button: QAbstractButton):
         try:
-            self.graph.engine.set_filtertype(rb.text() or 'highpass')
+            self.graph.engine.set_filtertype(button.text() or 'highpass')
         except ValueError as e:
             logging.warning(e)
 

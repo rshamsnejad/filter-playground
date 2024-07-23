@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import (
     QGroupBox,
     QVBoxLayout,
+    QButtonGroup,
     QRadioButton
 )
 
@@ -15,10 +16,10 @@ class FilterTypeWidget(QGroupBox):
         self.setLayout(QVBoxLayout())
 
         self.types = types
-        self.radio_buttons = []
+        self.button_group = QButtonGroup()
 
         for type in self.types:
-            self.radio_buttons.append(QRadioButton(type, self))
-            self.layout().addWidget(self.radio_buttons[-1])
+            self.button_group.addButton(QRadioButton(type, self))
+            self.layout().addWidget(self.button_group.buttons()[-1])
 
-        self.radio_buttons[0].setChecked(True)
+        self.button_group.buttons()[0].setChecked(True)
