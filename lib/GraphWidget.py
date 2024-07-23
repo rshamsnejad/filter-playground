@@ -6,14 +6,17 @@ from matplotlib.backends.backend_qtagg import FigureCanvas, NavigationToolbar2QT
 from matplotlib.figure import Figure
 from matplotlib.ticker import ScalarFormatter
 
-from lib.ButterEngine import ButterEngine
+from lib.GraphEngine import GraphEngine
 
 class GraphWidget(QWidget):
     '''
     QT widget for displaying a matplotlib graph with toolbar
     '''
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self,
+        engine: GraphEngine,
+        *args, **kwargs
+    ):
         super().__init__(*args, **kwargs)
 
         self.setLayout(QVBoxLayout())
@@ -25,10 +28,10 @@ class GraphWidget(QWidget):
         self.layout().addWidget(NavigationToolbar(self.canvas))
         self.layout().addWidget(self.canvas)
 
-        self.filter_engine = ButterEngine()
+        self.engine = engine
 
         self.init_graph()
-        self.filter_engine.compute_filter()
+        self.engine.compute_filter()
         self.update_graph()
 
     def init_graph(self,
@@ -66,16 +69,16 @@ class GraphWidget(QWidget):
         self.update_title()
 
         self.magnitude_graph.set_data(
-            self.filter_engine.get_frequencies(),
-            self.filter_engine.get_magnitude()
+            self.engine.get_frequencies(),
+            self.engine.get_magnitude()
         )
         self.phase_graph.set_data(
-            self.filter_engine.get_frequencies(),
-            self.filter_engine.get_phase()
+            self.engine.get_frequencies(),
+            self.engine.get_phase()
         )
 
-        self.axline_mag.set_xdata([self.filter_engine.get_cutoff()])
-        self.axline_phase.set_xdata([self.filter_engine.get_cutoff()])
+        self.axline_mag.set_xdata([self.engine.get_cutoff()])
+        self.axline_phase.set_xdata([self.engine.get_cutoff()])
 
         self.magnitude_graph.figure.canvas.draw()
         self.phase_graph.figure.canvas.draw()
@@ -83,9 +86,9 @@ class GraphWidget(QWidget):
     def update_title(self) -> None:
         self.figure.suptitle(
             (
-                f"Butterworth {self.filter_engine.get_filtertype().lower()} filter, "
-                f"order {self.filter_engine.get_order()}, "
-                f"$f_0 = {self.filter_engine.get_cutoff()}$ Hz"
+                f"Butterworth {self.engine.get_filtertype().lower()} filter, "
+                f"order {self.engine.get_order()}, "
+                f"$f_0 = {self.engine.get_cutoff()}$ Hz"
             )
         )
 
