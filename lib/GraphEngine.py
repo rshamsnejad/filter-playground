@@ -46,7 +46,7 @@ class GraphEngine:
     def get_filtertype(self) -> str:
         return self.filtertype
 
-    def compute_filter(self) -> None:
+    def compute(self) -> None:
         '''
         Must be implemented by child classes
         '''

@@ -31,7 +31,7 @@ class GraphWidget(QWidget):
         self.engine = engine
 
         self.init_graph()
-        self.engine.compute_filter()
+        self.engine.compute()
         self.update_graph()
 
     def init_graph(self,

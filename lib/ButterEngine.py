@@ -6,7 +6,7 @@ class ButterEngine(GraphEngine):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def compute_filter(self) -> None:
+    def compute(self) -> None:
         b, a = butter(self.order, self.cutoff, self.filtertype, True)
         frequencies, magnitude = freqs(b, a, worN=logspace(0, 5, 1000))
 
