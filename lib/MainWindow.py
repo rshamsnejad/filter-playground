@@ -21,13 +21,19 @@ class MainWindow(QWidget):
         self.setLayout(QGridLayout())
 
         self.input_filters = [InputFilterWidget(), InputFilterWidget()]
+        self.output_graph = GraphWidget(SumEngine([filter.graph.engine for filter in self.input_filters]))
+
 
         column = 0
         for filter in self.input_filters:
             self.layout().addWidget(filter, 0, column, 1, 1)
+            for button in filter.filter_toolbar.filter_type.radio_buttons:
+                button.toggled.connect(self.output_graph.compute_and_update)
+            filter.filter_toolbar.filter_parameters.field_order.textChanged.connect(self.output_graph.compute_and_update)
+            filter.filter_toolbar.filter_parameters.field_cutoff.textChanged.connect(self.output_graph.compute_and_update)
             column += 1
 
-        self.output_graph = GraphWidget(SumEngine([filter.graph.engine for filter in self.input_filters]))
+
 
         self.layout().addWidget(self.output_graph, 1, 0, 1, -1)
 

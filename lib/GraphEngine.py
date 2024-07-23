@@ -1,11 +1,15 @@
+from PyQt6.QtCore import QObject
 import numpy as np
 
-class GraphEngine:
+class GraphEngine(QObject):
     def __init__(self,
         order:      int = 4,
         cutoff:     float = 1000,
-        filtertype: str = "highpass"
+        filtertype: str = "highpass",
+        *args, **kwargs
     ) -> None:
+        super().__init__(*args, **kwargs)
+
         self.set_order(order)
         self.set_cutoff(cutoff)
         self.set_filtertype(filtertype)

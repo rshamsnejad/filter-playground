@@ -85,3 +85,7 @@ class GraphWidget(QWidget):
 
     def update_title(self) -> None:
         self.figure.suptitle(self.engine.generate_title())
+
+    def compute_and_update(self) -> None:
+        self.engine.compute()
+        self.update_graph()
