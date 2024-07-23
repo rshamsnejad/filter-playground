@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import (
     QIcon
 )
-from lib.SingleFilterWidget import SingleFilterWidget
+from lib.InputFilterWidget import InputFilterWidget
 
 
 class MainWindow(QWidget):
@@ -19,7 +19,7 @@ class MainWindow(QWidget):
         self.__layout = QGridLayout()
         self.setLayout(self.__layout)
 
-        self.__filters = [SingleFilterWidget(), SingleFilterWidget()]
+        self.__filters = [InputFilterWidget(), InputFilterWidget()]
 
         column = 0
         for filter in self.__filters:

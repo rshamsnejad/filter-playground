@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import (
 from lib.FilterEngine import FilterEngine
 
 
-class SingleFilterWidget(QWidget):
+class InputFilterWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
