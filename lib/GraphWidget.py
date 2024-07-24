@@ -31,8 +31,6 @@ class GraphWidget(QWidget):
         self.engine = engine
 
         self.init_graph()
-        self.engine.compute()
-        self.update_graph()
 
     def init_graph(self,
             freq_range:     list[float] = [20, 20e3],
@@ -59,7 +57,10 @@ class GraphWidget(QWidget):
         self.axs[0].set_ylim(mag_range)
         self.axs[0].margins(0, 0.1)
         self.axs[0].grid(which='both', axis='both')
-        self.axline_mag = self.axs[0].axvline(0, linestyle='--', color='red')
+
+        self.axline_mag = [
+            self.axs[0].axvline(0, linestyle='--', color='red')
+        ]
 
         # Phase
         self.phase_graph, = self.axs[1].semilogx([], [])
@@ -69,7 +70,10 @@ class GraphWidget(QWidget):
         self.axs[1].set_ylim(phase_range)
         self.axs[1].margins(0, 0.1)
         self.axs[1].grid(which='both', axis='both')
-        self.axline_phase = self.axs[1].axvline(0, linestyle='--', color='red')
+
+        self.axline_phase = [
+            self.axs[1].axvline(0, linestyle='--', color='red')
+        ]
 
         self.axs[1].xaxis.set_major_formatter(ScalarFormatter())
         self.axs[1].ticklabel_format(axis='x', style='plain')
@@ -86,8 +90,7 @@ class GraphWidget(QWidget):
             self.engine.get_phase()
         )
 
-        self.axline_mag.set_xdata([self.engine.get_cutoff()])
-        self.axline_phase.set_xdata([self.engine.get_cutoff()])
+        self.update_axvlines()
 
         self.magnitude_graph.figure.canvas.draw()
         self.phase_graph.figure.canvas.draw()
@@ -98,3 +101,9 @@ class GraphWidget(QWidget):
     def compute_and_update(self) -> None:
         self.engine.compute()
         self.update_graph()
+
+    def update_axvlines(self) -> None:
+        '''
+        To be implemented by child classes
+        '''
+        raise NotImplementedError

@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
     QAbstractButton
 )
 from lib.FilterToolbarWidget import FilterToolbarWidget
-from lib.GraphWidget import GraphWidget
+from lib.InputGraphWidget import InputGraphWidget
 from lib.ButterEngine import ButterEngine
 
 class InputFilterWidget(QWidget):
@@ -14,7 +14,7 @@ class InputFilterWidget(QWidget):
 
         self.setLayout(QVBoxLayout())
 
-        self.graph = GraphWidget(ButterEngine())
+        self.graph = InputGraphWidget(ButterEngine())
         self.filter_toolbar = FilterToolbarWidget()
 
         self.filter_toolbar.filter_type.button_group.buttonToggled.connect(self.handle_type)

@@ -6,7 +6,7 @@ from PyQt6.QtGui import (
     QIcon
 )
 from lib.InputFilterWidget import InputFilterWidget
-from lib.GraphWidget import GraphWidget
+from lib.OutputGraphWidget import OutputGraphWidget
 from lib.SumEngine import SumEngine
 
 
@@ -19,8 +19,8 @@ class MainWindow(QWidget):
 
         self.setLayout(QGridLayout())
 
-        self.input_filters = [InputFilterWidget(), InputFilterWidget()]
-        self.output_graph = GraphWidget(SumEngine([filter.graph.engine for filter in self.input_filters]))
+        self.input_filters = [InputFilterWidget(), InputFilterWidget(), InputFilterWidget(), InputFilterWidget()]
+        self.output_graph = OutputGraphWidget(SumEngine([filter.graph.engine for filter in self.input_filters]))
 
 
         column = 0
