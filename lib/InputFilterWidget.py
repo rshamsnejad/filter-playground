@@ -48,7 +48,7 @@ class InputFilterWidget(QWidget):
         rb = self.sender()
 
         try:
-            self.graph.engine.set_cutoff(int(rb.text() or 1000))
+            self.graph.engine.set_cutoff(float(rb.text() or 1000))
         except ValueError as e:
             logging.warning(e)
 
