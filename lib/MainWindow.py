@@ -22,8 +22,9 @@ class MainWindow(QMainWindow):
         self.spinbox = QSpinBox()
         self.spinbox.setMinimum(2)
         self.spinbox.setMaximum(10)
-        self.spinbox.value = 2
+        self.spinbox.setValue(2)
         self.spinbox.setFixedWidth(70)
+        self.spinbox.valueChanged.connect(self.main_widget.update_input_filter_amount)
 
         self.toolbar = QToolBar('Main toolbar')
         self.toolbar.setFloatable(False)

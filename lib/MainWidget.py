@@ -16,9 +16,10 @@ class MainWidget(QWidget):
 
         self.setLayout(QGridLayout())
 
-        self.input_filters = [InputFilterWidget(), InputFilterWidget(), InputFilterWidget(), InputFilterWidget()]
+        self.input_filters = [InputFilterWidget(), InputFilterWidget()]
         self.output_graph = OutputGraphWidget(SumEngine([filter.graph.engine for filter in self.input_filters]))
 
+        self.hidden_filters = 0
 
         column = 0
         for filter in self.input_filters:
@@ -29,3 +30,25 @@ class MainWidget(QWidget):
             column += 1
 
         self.layout().addWidget(self.output_graph, 1, 0, 1, -1)
+
+    def update_input_filter_amount(self) -> None:
+        spinbox = self.sender()
+
+        current_amount = self.layout().columnCount() - self.hidden_filters
+        new_amount = spinbox.value()
+
+        if new_amount == current_amount:
+            return
+        if new_amount > current_amount:
+            for i in range(current_amount, new_amount):
+                item = self.layout().itemAtPosition(0, i)
+                if(item):
+                    item.widget().show()
+                    self.hidden_filters -= 1
+                else:
+                    self.layout().addWidget(InputFilterWidget(), 0, i, 1, 1)
+        elif new_amount < current_amount:
+            for i in range(new_amount, current_amount):
+                self.layout().itemAtPosition(0, i).widget().hide()
+                self.hidden_filters += 1
+
