@@ -1,5 +1,8 @@
 from PyQt6.QtWidgets import (
-    QMainWindow
+    QMainWindow,
+    QToolBar,
+    QSpinBox,
+    QLabel
 )
 from PyQt6.QtGui import (
     QIcon
@@ -15,5 +18,19 @@ class MainWindow(QMainWindow):
 
         self.main_widget = MainWidget()
         self.setCentralWidget(self.main_widget)
+
+        self.spinbox = QSpinBox()
+        self.spinbox.setMinimum(2)
+        self.spinbox.setMaximum(10)
+        self.spinbox.value = 2
+        self.spinbox.setFixedWidth(70)
+
+        self.toolbar = QToolBar('Main toolbar')
+        self.toolbar.setFloatable(False)
+        self.toolbar.setMovable(False)
+        self.toolbar.addWidget(QLabel("Amount of input filters:"))
+        self.toolbar.addWidget(self.spinbox)
+
+        self.addToolBar(self.toolbar)
 
         self.show()
