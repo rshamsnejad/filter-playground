@@ -2,9 +2,6 @@ from PyQt6.QtWidgets import (
     QWidget,
     QGridLayout
 )
-from PyQt6.QtGui import (
-    QIcon
-)
 from lib.InputFilterWidget import InputFilterWidget
 from lib.OutputGraphWidget import OutputGraphWidget
 from lib.SumEngine import SumEngine
