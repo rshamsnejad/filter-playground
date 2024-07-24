@@ -10,7 +10,7 @@ from lib.OutputGraphWidget import OutputGraphWidget
 from lib.SumEngine import SumEngine
 
 
-class MainWindow(QWidget):
+class MainWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
