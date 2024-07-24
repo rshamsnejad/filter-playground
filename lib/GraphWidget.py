@@ -43,6 +43,15 @@ class GraphWidget(QWidget):
         Prepares an empty graph to host filter data later on.
         '''
 
+        self.figure.subplots_adjust(
+            left=0.2,
+            bottom=0.15,
+            right=None,
+            top=None,
+            wspace=None,
+            hspace=None
+        )
+
         # Magnitude
         self.magnitude_graph, = self.axs[0].semilogx([], [])
         self.axs[0].set_xlim(freq_range)
