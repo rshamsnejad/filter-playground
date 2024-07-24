@@ -14,9 +14,6 @@ class MainWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.setWindowTitle("Filter Playground")
-        self.setWindowIcon(QIcon('images/arkamys.jpg'))
-
         self.setLayout(QGridLayout())
 
         self.input_filters = [InputFilterWidget(), InputFilterWidget(), InputFilterWidget(), InputFilterWidget()]
@@ -32,5 +29,3 @@ class MainWidget(QWidget):
             column += 1
 
         self.layout().addWidget(self.output_graph, 1, 0, 1, -1)
-
-        self.show()
