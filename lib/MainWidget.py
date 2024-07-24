@@ -36,6 +36,7 @@ class MainWidget(QWidget):
 
         if new_amount == current_amount:
             return
+
         if new_amount > current_amount:
             for i in range(current_amount, new_amount):
                 item = self.layout().itemAtPosition(0, i)
@@ -43,9 +44,22 @@ class MainWidget(QWidget):
                     item.widget().show()
                     self.hidden_filters -= 1
                 else:
-                    self.layout().addWidget(InputFilterWidget(), 0, i, 1, 1)
+                    filter = InputFilterWidget()
+                    filter.filter_toolbar.filter_type.button_group.buttonToggled.connect(self.output_graph.compute_and_update)
+                    filter.filter_toolbar.filter_parameters.field_order.textChanged.connect(self.output_graph.compute_and_update)
+                    filter.filter_toolbar.filter_parameters.field_cutoff.textChanged.connect(self.output_graph.compute_and_update)
+                    self.layout().addWidget(filter, 0, i, 1, 1)
+
+                self.output_graph.engine.add_engine(self.layout().itemAtPosition(0, i).widget().graph.engine)
+                self.output_graph.add_axvline()
+
         elif new_amount < current_amount:
             for i in range(new_amount, current_amount):
                 self.layout().itemAtPosition(0, i).widget().hide()
                 self.hidden_filters += 1
+
+                self.output_graph.engine.remove_last_engine()
+                self.output_graph.remove_last_axvline()
+
+        self.output_graph.compute_and_update()
 

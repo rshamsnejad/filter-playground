@@ -27,3 +27,9 @@ class SumEngine(GraphEngine):
 
     def generate_title(self) -> str:
         return "Sum of the inputs"
+
+    def add_engine(self, engine: GraphEngine) -> None:
+        self.input_engines.append(engine)
+
+    def remove_last_engine(self) -> None:
+        del self.input_engines[-1]
