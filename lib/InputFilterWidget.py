@@ -37,7 +37,7 @@ class InputFilterWidget(QWidget):
         rb = self.sender()
 
         try:
-            self.graph.engine.set_order(float(rb.text() or 1))
+            self.graph.engine.set_order(int(rb.text() or 1))
         except ValueError as e:
             logging.warning(e)
 
