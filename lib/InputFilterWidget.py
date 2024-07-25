@@ -19,7 +19,7 @@ class InputFilterWidget(QWidget):
 
         self.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.handle_type)
         self.filter_toolbar.filter_parameters.field_order.textChanged.connect(self.handle_order)
-        self.filter_toolbar.filter_parameters.field_cutoff.textChanged.connect(self.handle_cutoff)
+        self.filter_toolbar.filter_parameters.field_cutoff.textChanged.connect(self.handle_frequency)
 
         self.layout().addWidget(self.filter_toolbar)
         self.layout().addWidget(self.graph)
@@ -33,22 +33,18 @@ class InputFilterWidget(QWidget):
         self.graph.engine.compute()
         self.graph.update_graph()
 
-    def handle_order(self):
-        rb = self.sender()
-
+    def handle_order(self, order: str):
         try:
-            self.graph.engine.set_order(int(rb.text() or 1))
+            self.graph.engine.set_order(int(order or 1))
         except ValueError as e:
             logging.warning(e)
 
         self.graph.engine.compute()
         self.graph.update_graph()
 
-    def handle_cutoff(self):
-        rb = self.sender()
-
+    def handle_frequency(self, frequency: str):
         try:
-            self.graph.engine.set_cutoff(float(rb.text() or 1000))
+            self.graph.engine.set_cutoff(float(frequency or 1000))
         except ValueError as e:
             logging.warning(e)
 
