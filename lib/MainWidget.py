@@ -23,7 +23,7 @@ class MainWidget(QWidget):
             self.layout().addWidget(filter, 0, column, 1, 1)
             filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_graph.compute_and_update)
             filter.filter_toolbar.filter_parameters.field_order.textChanged.connect(self.output_graph.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_cutoff.textChanged.connect(self.output_graph.compute_and_update)
+            filter.filter_toolbar.filter_parameters.field_frequency.textChanged.connect(self.output_graph.compute_and_update)
             column += 1
 
         self.layout().addWidget(self.output_graph, 1, 0, 1, -1)
@@ -47,7 +47,7 @@ class MainWidget(QWidget):
                     filter = InputFilterWidget()
                     filter.filter_toolbar.filter_type.button_group.buttonToggled.connect(self.output_graph.compute_and_update)
                     filter.filter_toolbar.filter_parameters.field_order.textChanged.connect(self.output_graph.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_cutoff.textChanged.connect(self.output_graph.compute_and_update)
+                    filter.filter_toolbar.filter_parameters.field_frequency.textChanged.connect(self.output_graph.compute_and_update)
                     self.layout().addWidget(filter, 0, i, 1, 1)
 
                 self.output_graph.engine.add_engine(self.layout().itemAtPosition(0, i).widget().graph.engine)

@@ -13,8 +13,8 @@ class OutputGraphWidget(GraphWidget):
     def update_axvlines(self) -> None:
         i = 0
         for engine in self.engine.input_engines:
-            self.axline_mag[i].set_xdata([engine.get_cutoff()])
-            self.axline_phase[i].set_xdata([engine.get_cutoff()])
+            self.axline_mag[i].set_xdata([engine.get_frequency()])
+            self.axline_phase[i].set_xdata([engine.get_frequency()])
             i += 1
 
     def add_axvline(self) -> None:

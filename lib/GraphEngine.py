@@ -5,7 +5,7 @@ class GraphEngine(QObject):
     def __init__(self,
         filtertype: str = "highpass",
         order:      int = 2,
-        cutoff:     float = 1000,
+        frequency:     float = 1000,
         gain:       float = 3,
         Q:          float = 0.71,
         *args, **kwargs
@@ -13,7 +13,7 @@ class GraphEngine(QObject):
         super().__init__(*args, **kwargs)
 
         self.set_order(order)
-        self.set_cutoff(cutoff)
+        self.set_frequency(frequency)
         self.set_filtertype(filtertype)
 
         self.filter = {
@@ -45,15 +45,15 @@ class GraphEngine(QObject):
     def get_order(self) -> int:
         return self.order
 
-    def set_cutoff(self, cutoff: float) -> None:
-        if cutoff < 1:
-            self.cutoff = 1000
+    def set_frequency(self, frequency: float) -> None:
+        if frequency < 1:
+            self.frequency = 1000
             raise ValueError("Frequency must be a positive value")
         else:
-            self.cutoff = cutoff
+            self.frequency = frequency
 
-    def get_cutoff(self) -> float:
-        return self.cutoff
+    def get_frequency(self) -> float:
+        return self.frequency
 
     def set_gain(self, gain: float) -> None:
         self.gain = gain

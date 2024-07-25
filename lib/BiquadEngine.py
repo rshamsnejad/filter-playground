@@ -7,15 +7,15 @@ class BiquadEngine(GraphEngine):
         super().__init__(*args, **kwargs)
 
     def compute(self) -> None:
-        self.w0 = 2 * pi * self.get_cutoff() / self.fs
+        self.w0 = 2 * pi * self.get_frequency() / self.fs
         self.Q = sqrt(2) / 2
         self.alpha = sin(self.w0) / (2 * self.Q)
 
         if self.get_filtertype().lower() in ["highpass", "lowpass"]:
-            self.b, self.a = butter(self.order, self.cutoff, self.filtertype, fs=self.fs)
+            self.b, self.a = butter(self.get_order(), self.get_frequency(), self.get_filtertype(), fs=self.fs)
 
         elif self.get_filtertype().lower() == "allpass":
-            coeff1 = (tan(pi * self.get_cutoff()/self.fs) - 1) / (tan(pi * self.get_cutoff()/self.fs) + 1)
+            coeff1 = (tan(pi * self.get_frequency()/self.fs) - 1) / (tan(pi * self.get_frequency()/self.fs) + 1)
             b_order1 = [coeff1, 1]
             a_order1 = [1, coeff1]
             b_order2 = [1 - self.alpha, -2 * cos(self.w0), 1 + self.alpha]
@@ -70,4 +70,4 @@ class BiquadEngine(GraphEngine):
                 # ", order {self.get_order()}, Q = {self.Q:.2f}"
             )
 
-        return type_string # + f", $f_0 = {self.get_cutoff()}$ Hz"
+        return type_string # + f", $f_0 = {self.get_frequency()}$ Hz"
