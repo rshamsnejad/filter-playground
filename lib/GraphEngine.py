@@ -3,9 +3,11 @@ import numpy as np
 
 class GraphEngine(QObject):
     def __init__(self,
+        filtertype: str = "highpass",
         order:      int = 2,
         cutoff:     float = 1000,
-        filtertype: str = "highpass",
+        gain:       float = 3,
+        Q:          float = 0.71,
         *args, **kwargs
     ) -> None:
         super().__init__(*args, **kwargs)
@@ -22,6 +24,16 @@ class GraphEngine(QObject):
 
         self.fs = 48000
         self.frequency_points = 5000
+
+    def set_filtertype(self, filtertype: str) -> None:
+        if filtertype.casefold() not in ["highpass", "lowpass", "allpass"]:
+            self.filtertype = "highpass"
+            raise ValueError("Incorrect filter type")
+        else:
+            self.filtertype = filtertype
+
+    def get_filtertype(self) -> str:
+        return self.filtertype
 
     def set_order(self, order: int) -> None:
         if order <= 0:
@@ -43,15 +55,18 @@ class GraphEngine(QObject):
     def get_cutoff(self) -> float:
         return self.cutoff
 
-    def set_filtertype(self, filtertype: str) -> None:
-        if filtertype.casefold() not in ["highpass", "lowpass", "allpass"]:
-            self.filtertype = "highpass"
-            raise ValueError("Incorrect filter type")
-        else:
-            self.filtertype = filtertype
+    def set_gain(self, gain: float) -> None:
+        self.gain = gain
 
-    def get_filtertype(self) -> str:
-        return self.filtertype
+    def get_gain(self) -> float:
+        return self.gain
+
+    def set_Q(self, Q: float) -> None:
+        if Q <= 0:
+            self.Q = 0.71
+            raise ValueError("Q must be a positive value")
+        else:
+            self.Q = Q
 
     def compute(self) -> None:
         '''
