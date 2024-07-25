@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import (
     QGroupBox,
     QGridLayout,
     QLabel,
-    QLineEdit
+    QSpinBox
 )
 
 class FilterParametersWidget(QGroupBox):
@@ -17,17 +17,19 @@ class FilterParametersWidget(QGroupBox):
         self.setLayout(QGridLayout())
 
         label_order = QLabel("Filter order:")
-        self.field_order = QLineEdit(str(order), self)
-        self.field_order.placeholderText = "Order"
-        self.field_order.maxLength = 3
+        self.field_order = QSpinBox()
+        self.field_order.setMinimum(1)
+        self.field_order.setMaximum(10)
+        self.field_order.setValue(order)
 
         self.layout().addWidget(label_order, 0, 0, 1, 1)
         self.layout().addWidget(self.field_order, 0, 1, 1, 1)
 
         label_cutoff = QLabel("Cutoff frequency:")
-        self.field_cutoff = QLineEdit(str(cutoff), self)
-        self.field_cutoff.placeholderText = "Cutoff"
-        self.field_cutoff.maxLength = 5
+        self.field_cutoff = QSpinBox()
+        self.field_cutoff.setMinimum(1)
+        self.field_cutoff.setMaximum(100000)
+        self.field_cutoff.setValue(cutoff)
 
         self.layout().addWidget(label_cutoff, 1, 0, 1, 1)
         self.layout().addWidget(self.field_cutoff, 1, 1, 1, 1)
