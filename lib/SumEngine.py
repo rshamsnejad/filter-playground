@@ -41,7 +41,7 @@ class SumEngine(GraphEngine):
         self.remove_phase_discontinuities()
 
     def generate_title(self) -> str:
-        return "Sum of the inputs"
+        return "Convolution of the inputs"
 
     def add_engine(self, engine: GraphEngine) -> None:
         self.input_engines.append(engine)
