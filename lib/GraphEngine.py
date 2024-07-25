@@ -3,7 +3,7 @@ import numpy as np
 
 class GraphEngine(QObject):
     def __init__(self,
-        order:      int = 4,
+        order:      float = 4,
         cutoff:     float = 1000,
         filtertype: str = "highpass",
         *args, **kwargs
@@ -22,14 +22,14 @@ class GraphEngine(QObject):
 
         self.fs = 48000
 
-    def set_order(self, order: int) -> None:
+    def set_order(self, order: float) -> None:
         if order <= 0:
             self.order = 1
             raise ValueError("Order must be a positive integer")
         else:
             self.order = order
 
-    def get_order(self) -> int:
+    def get_order(self) -> float:
         return self.order
 
     def set_cutoff(self, cutoff: float) -> None:

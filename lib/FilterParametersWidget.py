@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
 
 class FilterParametersWidget(QGroupBox):
     def __init__(self,
-        order: int,
+        order: float,
         cutoff: float,
         *args, **kwargs
     ) -> None:
