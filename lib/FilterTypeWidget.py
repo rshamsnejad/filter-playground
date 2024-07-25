@@ -1,8 +1,7 @@
 from PyQt6.QtWidgets import (
     QGroupBox,
     QVBoxLayout,
-    QButtonGroup,
-    QRadioButton
+    QComboBox
 )
 
 class FilterTypeWidget(QGroupBox):
@@ -16,10 +15,8 @@ class FilterTypeWidget(QGroupBox):
         self.setLayout(QVBoxLayout())
 
         self.types = types
-        self.button_group = QButtonGroup()
 
-        for type in self.types:
-            self.button_group.addButton(QRadioButton(type, self))
-            self.layout().addWidget(self.button_group.buttons()[-1])
+        self.combo_box = QComboBox()
+        self.combo_box.addItems(self.types)
 
-        self.button_group.buttons()[0].setChecked(True)
+        self.layout().addWidget(self.combo_box)
