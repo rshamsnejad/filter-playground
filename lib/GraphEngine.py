@@ -3,7 +3,7 @@ import numpy as np
 
 class GraphEngine(QObject):
     def __init__(self,
-        order:      int = 4,
+        order:      int = 2,
         cutoff:     float = 1000,
         filtertype: str = "highpass",
         *args, **kwargs
