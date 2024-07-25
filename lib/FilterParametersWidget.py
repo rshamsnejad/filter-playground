@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (
     QSpinBox,
     QDoubleSpinBox
 )
+from PyQt6.QtCore import QLocale
 
 class FilterParametersWidget(QGroupBox):
     def __init__(self,
@@ -33,6 +34,7 @@ class FilterParametersWidget(QGroupBox):
 
         label_frequency = QLabel("Frequency (Hz):")
         self.field_frequency = QDoubleSpinBox()
+        self.field_frequency.setLocale(QLocale("en_US"))
         self.field_frequency.setMinimum(1)
         self.field_frequency.setMaximum(100000)
         self.field_frequency.setValue(frequency)
@@ -43,6 +45,7 @@ class FilterParametersWidget(QGroupBox):
 
         label_gain = QLabel("Gain (dB):")
         self.field_gain = QDoubleSpinBox()
+        self.field_gain.setLocale(QLocale("en_US"))
         self.field_gain.setMinimum(-100)
         self.field_gain.setMaximum(100)
         self.field_gain.setValue(gain)
@@ -53,6 +56,7 @@ class FilterParametersWidget(QGroupBox):
 
         label_Q = QLabel("Q:")
         self.field_Q = QDoubleSpinBox()
+        self.field_Q.setLocale(QLocale("en_US"))
         self.field_Q.setMinimum(0)
         self.field_Q.setMaximum(100)
         self.field_Q.setValue(Q)
