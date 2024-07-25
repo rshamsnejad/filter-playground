@@ -45,7 +45,7 @@ class BiquadEngine(GraphEngine):
                     self.b = convolve(self.b, b_order2)
                     self.a = convolve(self.a, a_order2)
 
-        frequencies, magnitude = freqz(self.b, self.a, worN=logspace(0, 5, 1000), fs=self.fs)
+        frequencies, magnitude = freqz(self.b, self.a, worN=self.frequency_points, fs=self.fs)
 
         mag_db = 20 * log10(abs(magnitude))
         phase_deg = angle(magnitude, deg=True)

@@ -21,6 +21,7 @@ class GraphEngine(QObject):
         }
 
         self.fs = 48000
+        self.frequency_points = 5000
 
     def set_order(self, order: int) -> None:
         if order <= 0:

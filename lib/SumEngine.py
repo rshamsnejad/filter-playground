@@ -1,5 +1,6 @@
 from lib.GraphEngine import GraphEngine
 import numpy as np
+from scipy.signal import freqz
 
 class SumEngine(GraphEngine):
     def __init__(self,
@@ -18,9 +19,23 @@ class SumEngine(GraphEngine):
             'phase': np.zeros(len(self.input_engines[0].filter['frequencies']))
         }
 
-        for engine in self.input_engines:
-            self.filter['magnitude'] = np.array(self.filter['magnitude']) + np.array(engine.filter['magnitude'])
-            self.filter['phase'] = np.array(self.filter['phase']) + np.array(engine.filter['phase'])
+        self.b = self.input_engines[0].b
+        self.a = self.input_engines[0].a
+
+        for engine in self.input_engines[1:]:
+            self.b = np.convolve(self.b, engine.b)
+            self.a = np.convolve(self.a, engine.a)
+
+        frequencies, magnitude = freqz(self.b, self.a, worN=self.frequency_points, fs=self.fs)
+
+        mag_db = 20 * np.log10(abs(magnitude))
+        phase_deg = np.angle(magnitude, deg=True)
+
+        self.filter = {
+            "frequencies": frequencies,
+            "magnitude": mag_db,
+            "phase": phase_deg
+        }
 
         self.wrap_phase()
         self.remove_phase_discontinuities()
