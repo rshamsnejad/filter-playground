@@ -48,7 +48,7 @@ class GraphEngine(QObject):
     def set_cutoff(self, cutoff: float) -> None:
         if cutoff < 1:
             self.cutoff = 1000
-            raise ValueError("Cutoff must be a positive value")
+            raise ValueError("Frequency must be a positive value")
         else:
             self.cutoff = cutoff
 
