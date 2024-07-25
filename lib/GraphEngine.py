@@ -43,7 +43,7 @@ class GraphEngine(QObject):
         return self.cutoff
 
     def set_filtertype(self, filtertype: str) -> None:
-        if filtertype.casefold() not in ["highpass", "lowpass", "bandpass", "bandstop"]:
+        if filtertype.casefold() not in ["highpass", "lowpass", "allpass"]:
             self.filtertype = "highpass"
             raise ValueError("Incorrect filter type")
         else:
