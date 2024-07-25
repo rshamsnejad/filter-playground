@@ -2,7 +2,7 @@ from lib.GraphEngine import GraphEngine
 from scipy.signal import butter, freqz
 from numpy import logspace, log10, angle, pi, sin, cos, sqrt
 
-class ButterEngine(GraphEngine):
+class BiquadEngine(GraphEngine):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 

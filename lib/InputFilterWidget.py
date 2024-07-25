@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
 )
 from lib.FilterToolbarWidget import FilterToolbarWidget
 from lib.InputGraphWidget import InputGraphWidget
-from lib.ButterEngine import ButterEngine
+from lib.BiquadEngine import BiquadEngine
 
 class InputFilterWidget(QWidget):
     def __init__(self, *args, **kwargs) -> None:
@@ -14,7 +14,7 @@ class InputFilterWidget(QWidget):
 
         self.setLayout(QVBoxLayout())
 
-        self.graph = InputGraphWidget(ButterEngine())
+        self.graph = InputGraphWidget(BiquadEngine())
         self.filter_toolbar = FilterToolbarWidget()
 
         self.filter_toolbar.filter_type.button_group.buttonToggled.connect(self.handle_type)
