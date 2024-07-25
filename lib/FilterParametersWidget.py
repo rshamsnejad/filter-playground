@@ -28,7 +28,7 @@ class FilterParametersWidget(QGroupBox):
         self.layout().addWidget(label_order, 0, 0, 1, 1)
         self.layout().addWidget(self.field_order, 0, 1, 1, 1)
 
-        label_cutoff = QLabel("Cutoff frequency (Hz):")
+        label_cutoff = QLabel("Frequency (Hz):")
         self.field_cutoff = QDoubleSpinBox()
         self.field_cutoff.setMinimum(1)
         self.field_cutoff.setMaximum(100000)

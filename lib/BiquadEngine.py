@@ -62,11 +62,12 @@ class BiquadEngine(GraphEngine):
         if self.get_filtertype().lower() in ["highpass", "lowpass"]:
             type_string = (
                 f"Butterworth {self.get_filtertype().lower()} filter"
-                f", order {self.get_order()}"
+                # f", order {self.get_order()}"
             )
         elif self.get_filtertype().lower() == "allpass":
-            type_string = f"Biquad allpass filter, order {self.get_order()}, Q = {self.Q:.2f}"
+            type_string = (
+                f"Biquad allpass filter"
+                # ", order {self.get_order()}, Q = {self.Q:.2f}"
+            )
 
-        return type_string + (
-            f", $f_0 = {self.get_cutoff()}$ Hz"
-        )
+        return type_string # + f", $f_0 = {self.get_cutoff()}$ Hz"
