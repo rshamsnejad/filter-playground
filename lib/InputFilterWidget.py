@@ -1,8 +1,7 @@
 import logging
 from PyQt6.QtWidgets import (
     QWidget,
-    QVBoxLayout,
-    QAbstractButton
+    QVBoxLayout
 )
 from lib.FilterToolbarWidget import FilterToolbarWidget
 from lib.InputGraphWidget import InputGraphWidget
