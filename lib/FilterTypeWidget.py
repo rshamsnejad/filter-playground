@@ -6,7 +6,12 @@ from PyQt6.QtWidgets import (
 
 class FilterTypeWidget(QGroupBox):
     def __init__(self,
-        types: list[str] = ["Highpass", "Lowpass", "Allpass"],
+        types: list[str] = [
+            "Highpass",
+            "Lowpass",
+            "Allpass",
+            "Peak"
+        ],
         *args, **kwargs
     ) -> None:
         super().__init__(*args, **kwargs)

@@ -86,5 +86,11 @@ class InputFilterWidget(QWidget):
                 self.filter_toolbar.filter_parameters.field_gain.setDisabled(True)
                 self.filter_toolbar.filter_parameters.field_Q.setDisabled(False)
 
+            case "peak":
+                self.filter_toolbar.filter_parameters.field_order.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_frequency.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_gain.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_Q.setDisabled(False)
+
             case _:
                 raise ValueError("Unknown filter type")

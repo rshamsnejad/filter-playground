@@ -9,6 +9,7 @@ class BiquadEngine(GraphEngine):
     def compute(self) -> None:
         self.w0 = 2 * pi * self.get_frequency() / self.fs
         self.alpha = sin(self.w0) / (2 * self.Q)
+        self.A = 10**(self.get_gain() / 40)
 
         match self.get_filtertype().lower():
             case "highpass" | "lowpass":
@@ -45,6 +46,17 @@ class BiquadEngine(GraphEngine):
                         self.b = convolve(self.b, b_order2)
                         self.a = convolve(self.a, a_order2)
 
+            case "peak":
+                self.b = [
+                    1 + self.alpha * self.A,
+                    -2 * cos(self.w0),
+                    1 - self.alpha * self.A
+                ]
+                self.a = [
+                    1 + self.alpha / self.A,
+                    -2 * cos(self.w0),
+                    1 - self.alpha / self.A
+                ]
 
             case _:
                 raise ValueError("Unknown filter type")
@@ -69,11 +81,15 @@ class BiquadEngine(GraphEngine):
                     f"Butterworth {self.get_filtertype().lower()} filter"
                     # f", order {self.get_order()}"
                 )
+
             case "allpass":
                 type_string = (
                     f"Biquad allpass filter"
                     # ", order {self.get_order()}, Q = {self.Q:.2f}"
                 )
+
+            case "peak":
+                type_string = "Biquad peaking EQ"
 
             case _:
                 raise ValueError("Unknown filter type")
