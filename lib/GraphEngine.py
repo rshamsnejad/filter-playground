@@ -55,7 +55,7 @@ class GraphEngine(QObject):
         return self.order
 
     def set_frequency(self, frequency: float) -> None:
-        if frequency < 1:
+        if frequency <= 0:
             self.frequency = 1000
             raise ValueError("Frequency must be a positive value")
         else:
