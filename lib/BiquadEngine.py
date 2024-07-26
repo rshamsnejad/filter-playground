@@ -95,12 +95,12 @@ class BiquadEngine(GraphEngine):
             frequency (int): The filter frequency
 
         Raises:
-            ValueError: In case of a zero or negative number
+            ValueError: In case of value out of bounds
         """
 
-        if frequency <= 0:
+        if frequency <= 0 or frequency >= self.fs / 2:
             self.frequency = 1000
-            raise ValueError("Frequency must be a positive value")
+            raise ValueError("Frequency must be a positive value under fs/2")
         else:
             self.frequency = frequency
 
