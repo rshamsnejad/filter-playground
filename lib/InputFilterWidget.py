@@ -25,11 +25,15 @@ class InputFilterWidget(QWidget):
         self.layout().addWidget(self.filter_toolbar)
         self.layout().addWidget(self.graph)
 
+        self.disable_unused_fields()
+
     def handle_type(self, filter_type: str):
         try:
             self.graph.engine.set_filtertype(filter_type or 'highpass')
         except ValueError as e:
             logging.warning(e)
+
+        self.disable_unused_fields()
 
         self.graph.compute_and_update()
 
@@ -64,3 +68,23 @@ class InputFilterWidget(QWidget):
             logging.warning(e)
 
         self.graph.compute_and_update()
+
+    def disable_unused_fields(self) -> None:
+        match self.graph.engine.get_filtertype().lower():
+            case "highpass" | "lowpass":
+                self.filter_toolbar.filter_parameters.field_order.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_frequency.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_gain.setValue(0)
+                self.filter_toolbar.filter_parameters.field_gain.setDisabled(True)
+                self.filter_toolbar.filter_parameters.field_Q.setValue(0.71)
+                self.filter_toolbar.filter_parameters.field_Q.setDisabled(True)
+
+            case "allpass":
+                self.filter_toolbar.filter_parameters.field_order.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_frequency.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_gain.setValue(0)
+                self.filter_toolbar.filter_parameters.field_gain.setDisabled(True)
+                self.filter_toolbar.filter_parameters.field_Q.setDisabled(False)
+
+            case _:
+                raise ValueError("Unknown filter type")
