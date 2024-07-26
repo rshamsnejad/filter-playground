@@ -27,7 +27,7 @@ class InputFilterWidget(QWidget):
 
         self.disable_unused_fields()
 
-    def handle_type(self, filter_type: str):
+    def handle_type(self, filter_type: str) -> None:
         try:
             self.graph.engine.set_filtertype(filter_type or 'highpass')
         except ValueError as e:
@@ -37,7 +37,7 @@ class InputFilterWidget(QWidget):
 
         self.graph.compute_and_update()
 
-    def handle_order(self, order: int):
+    def handle_order(self, order: int) -> None:
         try:
             self.graph.engine.set_order(order or 1)
         except ValueError as e:
@@ -45,7 +45,7 @@ class InputFilterWidget(QWidget):
 
         self.graph.compute_and_update()
 
-    def handle_frequency(self, frequency: float):
+    def handle_frequency(self, frequency: float) -> None:
         try:
             self.graph.engine.set_frequency(frequency or 1000)
         except ValueError as e:
@@ -53,7 +53,7 @@ class InputFilterWidget(QWidget):
 
         self.graph.compute_and_update()
 
-    def handle_gain(self, gain: float):
+    def handle_gain(self, gain: float) -> None:
         try:
             self.graph.engine.set_gain(gain or 0)
         except ValueError as e:
@@ -61,7 +61,7 @@ class InputFilterWidget(QWidget):
 
         self.graph.compute_and_update()
 
-    def handle_Q(self, Q: float):
+    def handle_Q(self, Q: float) -> None:
         try:
             self.graph.engine.set_Q(Q or 0.71)
         except ValueError as e:

@@ -16,7 +16,7 @@ class GraphWidget(QWidget):
     def __init__(self,
         engine: GraphEngine,
         *args, **kwargs
-    ):
+    ) -> None:
         super().__init__(*args, **kwargs)
 
         self.setLayout(QVBoxLayout())

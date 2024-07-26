@@ -12,7 +12,7 @@ from PyQt6.QtGui import (
 )
 
 class MainWindow(QWidget):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self.setWindowTitle("Pouet")
@@ -39,7 +39,7 @@ class MainWindow(QWidget):
 
         self.show()
 
-    def button_clicked(self):
+    def button_clicked(self) -> None:
         self.line_edit.clear()
         self.label.setText("Reset !")
 

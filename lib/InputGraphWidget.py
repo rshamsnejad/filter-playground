@@ -1,7 +1,7 @@
 from lib.GraphWidget import GraphWidget
 
 class InputGraphWidget(GraphWidget):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self.engine.compute()

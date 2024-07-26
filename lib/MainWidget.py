@@ -8,7 +8,7 @@ from lib.SumEngine import SumEngine
 
 
 class MainWidget(QWidget):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self.setLayout(QGridLayout())
