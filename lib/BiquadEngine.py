@@ -7,8 +7,141 @@ class BiquadEngine(GraphEngine):
     Child class to compute an input cell's biquad filter
     """
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self,
+        filtertype: str = "highpass",
+        order:      int = 2,
+        frequency:     float = 1000,
+        gain:       float = 0,
+        Q:          float = 0.71,
+        *args, **kwargs
+    ) -> None:
+        """
+        Args:
+            filtertype (str, optional):
+                String representing the filter type. Defaults to "highpass".
+            order (int, optional):
+                Filter order. Defaults to 2.
+            frequency (float, optional):
+                Filter's charateristic frequency. Defaults to 1000.
+            gain (float, optional):
+                Filter's gain. Defaults to 0.
+            Q (float, optional):
+                Filter's quality factor. Defaults to 0.71.
+        """
+
         super().__init__(*args, **kwargs)
+
+        self.set_order(order)
+        self.set_frequency(frequency)
+        self.set_filtertype(filtertype)
+        self.set_gain(gain)
+        self.set_Q(Q)
+
+    def set_filtertype(self, filtertype: str) -> None:
+        """
+        Args:
+            filtertype (str): String representing the filter type
+
+        Raises:
+            ValueError: Raised in case of an invalid string
+        """
+
+        if filtertype.casefold() not in [
+            "highpass",
+            "lowpass",
+            "allpass",
+            "peak",
+            "highshelf",
+            "lowshelf"
+        ]:
+            self.filtertype = "highpass"
+            raise ValueError("Incorrect filter type")
+        else:
+            self.filtertype = filtertype
+
+    def get_filtertype(self) -> str:
+        """
+        Returns:
+            str: String representing the current filter type
+        """
+        return self.filtertype
+
+    def set_order(self, order: int) -> None:
+        """
+        Args:
+            order (int): Filter order
+
+        Raises:
+            ValueError: In case of a zero or negative number
+        """
+
+        if order <= 0:
+            self.order = 1
+            raise ValueError("Order must be a positive integer")
+        else:
+            self.order = order
+
+    def get_order(self) -> int:
+        """
+        Returns:
+            int: The current filter order
+        """
+
+        return self.order
+
+    def set_frequency(self, frequency: float) -> None:
+        """
+        Args:
+            frequency (float): The filter frequency
+
+        Raises:
+            ValueError: In case of a zero or negative number
+        """
+
+        if frequency <= 0:
+            self.frequency = 1000
+            raise ValueError("Frequency must be a positive value")
+        else:
+            self.frequency = frequency
+
+    def get_frequency(self) -> float:
+        """
+        Returns:
+            float: The current filter frequency
+        """
+
+        return self.frequency
+
+    def set_gain(self, gain: float) -> None:
+        """
+        Args:
+            gain (float): The filter gain
+        """
+
+        self.gain = gain
+
+    def get_gain(self) -> float:
+        """
+        Returns:
+            float: The current filter gain
+        """
+
+        return self.gain
+
+    def set_Q(self, Q: float) -> None:
+        """
+        Args:
+            Q (float): The filter quality factor
+
+        Raises:
+            ValueError: In case of a zero or negative number
+        """
+
+        if Q <= 0:
+            self.Q = 0.71
+            raise ValueError("Q must be a positive value")
+        else:
+            self.Q = Q
 
     def compute(self) -> None:
         """
