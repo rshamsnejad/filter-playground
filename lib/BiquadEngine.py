@@ -1,6 +1,6 @@
 from lib.GraphEngine import GraphEngine
 from scipy.signal import butter, freqz
-from numpy import log10, angle, pi, sin, cos, tan, convolve
+from numpy import log10, angle, pi, sin, cos, sqrt, tan, convolve
 
 class BiquadEngine(GraphEngine):
     def __init__(self, *args, **kwargs) -> None:
