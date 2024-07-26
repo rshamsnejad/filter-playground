@@ -143,6 +143,14 @@ class BiquadEngine(GraphEngine):
         else:
             self.Q = Q
 
+    def get_Q(self) -> float:
+        """
+        Returns:
+            float: The current filter quality factor
+        """
+
+        return self.Q
+
     def compute(self) -> None:
         """
         Compute the filter data based on the parameters.
@@ -153,7 +161,7 @@ class BiquadEngine(GraphEngine):
         """
 
         self.w0 = 2 * pi * self.get_frequency() / self.fs
-        self.alpha = sin(self.w0) / (2 * self.Q)
+        self.alpha = sin(self.w0) / (2 * self.get_Q())
         self.A = 10**(self.get_gain() / 40)
 
         match self.get_filtertype().lower():
@@ -258,7 +266,7 @@ class BiquadEngine(GraphEngine):
             case "allpass":
                 type_string = (
                     f"Biquad allpass filter"
-                    # ", order {self.get_order()}, Q = {self.Q:.2f}"
+                    # ", order {self.get_order()}, Q = {self.get_Q():.2f}"
                 )
 
             case "peak":
