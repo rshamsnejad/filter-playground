@@ -30,8 +30,7 @@ class InputFilterWidget(QWidget):
         except ValueError as e:
             logging.warning(e)
 
-        self.graph.engine.compute()
-        self.graph.update_graph()
+        self.graph.compute_and_update()
 
     def handle_order(self, order: str):
         try:
@@ -39,8 +38,7 @@ class InputFilterWidget(QWidget):
         except ValueError as e:
             logging.warning(e)
 
-        self.graph.engine.compute()
-        self.graph.update_graph()
+        self.graph.compute_and_update()
 
     def handle_frequency(self, frequency: str):
         try:
@@ -48,5 +46,4 @@ class InputFilterWidget(QWidget):
         except ValueError as e:
             logging.warning(e)
 
-        self.graph.engine.compute()
-        self.graph.update_graph()
+        self.graph.compute_and_update()
