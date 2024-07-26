@@ -34,7 +34,7 @@ class GraphWidget(QWidget):
 
     def init_graph(self,
             freq_range:     list[float] = [20, 20e3],
-            mag_range:      list[float] = [-40, 10],
+            mag_range:      list[float] = [-30, 30],
             phase_range:    list[float] = [-200, 200]
     ) -> None:
         '''
