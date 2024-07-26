@@ -55,7 +55,7 @@ class InputFilterWidget(QWidget):
 
     def handle_gain(self, gain: float):
         try:
-            self.graph.engine.set_gain(gain or 3)
+            self.graph.engine.set_gain(gain or 0)
         except ValueError as e:
             logging.warning(e)
 

@@ -6,7 +6,7 @@ class GraphEngine(QObject):
         filtertype: str = "highpass",
         order:      int = 2,
         frequency:     float = 1000,
-        gain:       float = 3,
+        gain:       float = 0,
         Q:          float = 0.71,
         *args, **kwargs
     ) -> None:
