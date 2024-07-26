@@ -59,7 +59,7 @@ class InputFilterWidget(QWidget):
 
         self.graph.compute_and_update()
 
-    def handle_frequency(self, frequency: float) -> None:
+    def handle_frequency(self, frequency: int) -> None:
         """
         Qt slot to update the filter frequency according to
         the spinbox in the toolbar

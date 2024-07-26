@@ -10,7 +10,7 @@ class BiquadEngine(GraphEngine):
     def __init__(self,
         filtertype: str = "highpass",
         order:      int = 2,
-        frequency:     float = 1000,
+        frequency:  int = 1000,
         gain:       float = 0,
         Q:          float = 0.71,
         *args, **kwargs
@@ -21,7 +21,7 @@ class BiquadEngine(GraphEngine):
                 String representing the filter type. Defaults to "highpass".
             order (int, optional):
                 Filter order. Defaults to 2.
-            frequency (float, optional):
+            frequency (int, optional):
                 Filter's charateristic frequency. Defaults to 1000.
             gain (float, optional):
                 Filter's gain. Defaults to 0.
@@ -89,10 +89,10 @@ class BiquadEngine(GraphEngine):
 
         return self.order
 
-    def set_frequency(self, frequency: float) -> None:
+    def set_frequency(self, frequency: int) -> None:
         """
         Args:
-            frequency (float): The filter frequency
+            frequency (int): The filter frequency
 
         Raises:
             ValueError: In case of a zero or negative number
@@ -104,10 +104,10 @@ class BiquadEngine(GraphEngine):
         else:
             self.frequency = frequency
 
-    def get_frequency(self) -> float:
+    def get_frequency(self) -> int:
         """
         Returns:
-            float: The current filter frequency
+            int: The current filter frequency
         """
 
         return self.frequency

@@ -14,7 +14,7 @@ class FilterParametersWidget(QGroupBox):
 
     def __init__(self,
         order: int,
-        frequency: float,
+        frequency: int,
         gain: float,
         Q: float,
         *args, **kwargs
@@ -22,7 +22,7 @@ class FilterParametersWidget(QGroupBox):
         """
         Args:
             order (int): The default filter order
-            frequency (float): The default filter frequency
+            frequency (int): The default filter frequency
             gain (float): The default filter gain
             Q (float): The default filter quality factor
         """
@@ -32,7 +32,7 @@ class FilterParametersWidget(QGroupBox):
         self.setTitle("Filter parameters")
         self.setLayout(QGridLayout())
 
-        spinbox_width = 120
+        spinbox_width = 100
 
         label_order = QLabel("Filter order:")
         self.field_order = QSpinBox()
@@ -45,8 +45,7 @@ class FilterParametersWidget(QGroupBox):
         self.layout().addWidget(self.field_order, 0, 1, 1, 1)
 
         label_frequency = QLabel("Frequency (Hz):")
-        self.field_frequency = QDoubleSpinBox()
-        self.field_frequency.setLocale(QLocale("en_US"))
+        self.field_frequency = QSpinBox()
         self.field_frequency.setMinimum(1)
         self.field_frequency.setMaximum(100000)
         self.field_frequency.setValue(frequency)
