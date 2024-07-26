@@ -17,10 +17,10 @@ class InputFilterWidget(QWidget):
         self.filter_toolbar = FilterToolbarWidget()
 
         self.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.handle_type)
-        self.filter_toolbar.filter_parameters.field_order.textChanged.connect(self.handle_order)
-        self.filter_toolbar.filter_parameters.field_frequency.textChanged.connect(self.handle_frequency)
-        self.filter_toolbar.filter_parameters.field_gain.textChanged.connect(self.handle_gain)
-        self.filter_toolbar.filter_parameters.field_Q.textChanged.connect(self.handle_Q)
+        self.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.handle_order)
+        self.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.handle_frequency)
+        self.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.handle_gain)
+        self.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.handle_Q)
 
         self.layout().addWidget(self.filter_toolbar)
         self.layout().addWidget(self.graph)
@@ -37,33 +37,33 @@ class InputFilterWidget(QWidget):
 
         self.graph.compute_and_update()
 
-    def handle_order(self, order: str):
+    def handle_order(self, order: int):
         try:
-            self.graph.engine.set_order(int(order or 1))
+            self.graph.engine.set_order(order or 1)
         except ValueError as e:
             logging.warning(e)
 
         self.graph.compute_and_update()
 
-    def handle_frequency(self, frequency: str):
+    def handle_frequency(self, frequency: float):
         try:
-            self.graph.engine.set_frequency(float(frequency or 1000))
+            self.graph.engine.set_frequency(frequency or 1000)
         except ValueError as e:
             logging.warning(e)
 
         self.graph.compute_and_update()
 
-    def handle_gain(self, gain: str):
+    def handle_gain(self, gain: float):
         try:
-            self.graph.engine.set_gain(float(gain or 3))
+            self.graph.engine.set_gain(gain or 3)
         except ValueError as e:
             logging.warning(e)
 
         self.graph.compute_and_update()
 
-    def handle_Q(self, Q: str):
+    def handle_Q(self, Q: float):
         try:
-            self.graph.engine.set_Q(float(Q or 0.71))
+            self.graph.engine.set_Q(Q or 0.71)
         except ValueError as e:
             logging.warning(e)
 
