@@ -9,14 +9,22 @@ from matplotlib.ticker import ScalarFormatter
 from lib.GraphEngine import GraphEngine
 
 class GraphWidget(QWidget):
-    '''
-    QT widget for displaying a matplotlib graph with toolbar
-    '''
+    """
+    Base class for displaying a matplotlib graph with toolbar.
+
+    Must be inherited by a child class implementing the
+    virtual method(s)
+    """
 
     def __init__(self,
         engine: GraphEngine,
         *args, **kwargs
     ) -> None:
+        """
+        Args:
+            engine (GraphEngine): The engine to use to compute the graph
+        """
+
         super().__init__(*args, **kwargs)
 
         self.setLayout(QVBoxLayout())
@@ -37,9 +45,17 @@ class GraphWidget(QWidget):
             mag_range:      list[float] = [-30, 30],
             phase_range:    list[float] = [-200, 200]
     ) -> None:
-        '''
+        """
         Prepares an empty graph to host filter data later on.
-        '''
+
+        Args:
+            freq_range (list[float], optional):
+                Range to display on X axis in Hz. Defaults to [20, 20e3].
+            mag_range (list[float], optional):
+                Range to display on Y axis of the magnitude plot in dB. Defaults to [-30, 30].
+            phase_range (list[float], optional):
+                Range to display on the Y axis of the phase plot in degrees. Defaults to [-200, 200].
+        """
 
         self.figure.subplots_adjust(
             left=0.2,
@@ -75,10 +91,16 @@ class GraphWidget(QWidget):
             self.axs[1].axvline(0, linestyle='--', color='red')
         ]
 
+        # Disable scientific notation on the frequency axis
         self.axs[1].xaxis.set_major_formatter(ScalarFormatter())
         self.axs[1].ticklabel_format(axis='x', style='plain')
 
     def update_graph(self) -> None:
+        """
+        Updates the graph with the data currently stored in the object.
+        Usually called after self.engine.compute()
+        """
+
         self.update_title()
 
         self.magnitude_graph.set_data(
@@ -96,14 +118,27 @@ class GraphWidget(QWidget):
         self.phase_graph.figure.canvas.draw()
 
     def update_title(self) -> None:
+        """
+        Updates the graph title depending on the filter type
+        """
+
         self.figure.suptitle(self.engine.generate_title())
 
     def compute_and_update(self) -> None:
+        """
+        Convenience method to wrap computing the filter
+        and updating the graph in one go
+        """
+
         self.engine.compute()
         self.update_graph()
 
     def update_axvlines(self) -> None:
-        '''
-        To be implemented by child classes
-        '''
+        """
+        Updates the dotted vertical lines depending on
+        the computed filter.
+
+        To be implemented by child classes.
+        """
+
         raise NotImplementedError

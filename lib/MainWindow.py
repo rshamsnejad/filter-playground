@@ -10,6 +10,10 @@ from PyQt6.QtGui import (
 from lib.MainWidget import MainWidget
 
 class MainWindow(QMainWindow):
+    """
+    Base Qt window to display in main
+    """
+
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 

@@ -6,6 +6,10 @@ from lib.FilterTypeWidget import FilterTypeWidget
 from lib.FilterParametersWidget import FilterParametersWidget
 
 class FilterToolbarWidget(QWidget):
+    """
+    Qt widget to set a cell's filter type and parameters
+    """
+
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 

@@ -8,6 +8,10 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QLocale
 
 class FilterParametersWidget(QGroupBox):
+    """
+    Qt widget for the filter parameter fields
+    """
+
     def __init__(self,
         order: int,
         frequency: float,
@@ -15,6 +19,14 @@ class FilterParametersWidget(QGroupBox):
         Q: float,
         *args, **kwargs
     ) -> None:
+        """
+        Args:
+            order (int): The default filter order
+            frequency (float): The default filter frequency
+            gain (float): The default filter gain
+            Q (float): The default filter quality factor
+        """
+
         super().__init__(*args, **kwargs)
 
         self.setTitle("Filter parameters")

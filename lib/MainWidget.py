@@ -8,6 +8,10 @@ from lib.SumEngine import SumEngine
 
 
 class MainWidget(QWidget):
+    """
+    Main Qt widget to display in the window
+    """
+
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
@@ -31,6 +35,10 @@ class MainWidget(QWidget):
         self.layout().addWidget(self.output_graph, 1, 0, 1, -1)
 
     def update_input_filter_amount(self) -> None:
+        """
+        Qt slot, allows to dynamically update the amount of filter cells
+        according to the spinbox in the main window
+        """
         spinbox = self.sender()
 
         current_amount = self.layout().columnCount() - self.hidden_filters
@@ -42,9 +50,13 @@ class MainWidget(QWidget):
         if new_amount > current_amount:
             for i in range(current_amount, new_amount):
                 item = self.layout().itemAtPosition(0, i)
+
+                # If a cell was previously added and hidden, simply show it again
                 if(item):
                     item.widget().show()
                     self.hidden_filters -= 1
+
+                # Otherwise create a new one
                 else:
                     filter = InputFilterWidget()
                     filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_graph.compute_and_update)

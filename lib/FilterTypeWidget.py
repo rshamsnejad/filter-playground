@@ -5,6 +5,10 @@ from PyQt6.QtWidgets import (
 )
 
 class FilterTypeWidget(QGroupBox):
+    """
+    Qt widget for the selection of the filter type
+    """
+
     def __init__(self,
         types: list[str] = [
             "Highpass",
@@ -16,6 +20,13 @@ class FilterTypeWidget(QGroupBox):
         ],
         *args, **kwargs
     ) -> None:
+        """
+        Args:
+            types (list[str], optional):
+            The list to display in the drop-down list.
+            Defaults to [ "Highpass", "Lowpass", "Allpass", "Peak", "Highshelf", "Lowshelf" ].
+        """
+
         super().__init__(*args, **kwargs)
 
         self.setTitle("Filter type")

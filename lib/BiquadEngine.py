@@ -3,15 +3,22 @@ from scipy.signal import butter, freqz
 from numpy import log10, angle, pi, sin, cos, sqrt, tan, convolve
 
 class BiquadEngine(GraphEngine):
+    """
+    Child class to compute an input cell's biquad filter
+    """
+
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
     def compute(self) -> None:
-        '''
+        """
+        Compute the filter data based on the parameters.
+
         References :
             * https://webaudio.github.io/Audio-EQ-Cookbook/audio-eq-cookbook.html
             * https://thewolfsound.com/allpass-filter/
-        '''
+        """
+
         self.w0 = 2 * pi * self.get_frequency() / self.fs
         self.alpha = sin(self.w0) / (2 * self.Q)
         self.A = 10**(self.get_gain() / 40)
@@ -104,6 +111,10 @@ class BiquadEngine(GraphEngine):
         self.remove_phase_discontinuities()
 
     def generate_title(self) -> str:
+        """
+        Create a string to display as graph title.
+        """
+
         match self.get_filtertype().lower():
             case "highpass" | "lowpass":
                 type_string = (
