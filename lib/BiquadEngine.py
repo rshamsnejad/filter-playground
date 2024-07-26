@@ -7,6 +7,11 @@ class BiquadEngine(GraphEngine):
         super().__init__(*args, **kwargs)
 
     def compute(self) -> None:
+        '''
+        References :
+            * https://webaudio.github.io/Audio-EQ-Cookbook/audio-eq-cookbook.html
+            * https://thewolfsound.com/allpass-filter/
+        '''
         self.w0 = 2 * pi * self.get_frequency() / self.fs
         self.alpha = sin(self.w0) / (2 * self.Q)
         self.A = 10**(self.get_gain() / 40)
