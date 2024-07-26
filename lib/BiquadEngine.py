@@ -63,6 +63,30 @@ class BiquadEngine(GraphEngine):
                     1 - self.alpha / self.A
                 ]
 
+            case "highshelf":
+                self.b = [
+                    self.A * ( self.A + 1 + (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha ),
+                    -2 * self.A * ( self.A - 1 + (self.A + 1) * cos(self.w0) ),
+                    self.A * ( self.A + 1 + (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha )
+                ]
+                self.a = [
+                    self.A + 1 - (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha,
+                    2 * ( self.A - 1 - (self.A + 1) * cos(self.w0) ),
+                    self.A + 1 - (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha
+                ]
+
+            case "lowshelf":
+                self.b = [
+                    self.A * ( self.A + 1 - (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha ),
+                    2 * self.A * ( self.A - 1 - (self.A + 1) * cos(self.w0) ),
+                    self.A * ( self.A + 1 - (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha )
+                ]
+                self.a = [
+                    self.A + 1 + (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha,
+                    -2 * ( self.A - 1 + (self.A + 1) * cos(self.w0) ),
+                    self.A + 1 + (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha
+                ]
+
             case _:
                 raise ValueError("Unknown filter type")
 
@@ -95,6 +119,12 @@ class BiquadEngine(GraphEngine):
 
             case "peak":
                 type_string = "Biquad peaking EQ"
+
+            case "highshelf":
+                type_string = "Biquad high shelf"
+
+            case "lowshelf":
+                type_string = "Biquad low shelf"
 
             case _:
                 raise ValueError("Unknown filter type")

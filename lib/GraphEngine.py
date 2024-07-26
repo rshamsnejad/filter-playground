@@ -28,7 +28,14 @@ class GraphEngine(QObject):
         self.frequency_points = 5000
 
     def set_filtertype(self, filtertype: str) -> None:
-        if filtertype.casefold() not in ["highpass", "lowpass", "allpass", "peak"]:
+        if filtertype.casefold() not in [
+            "highpass",
+            "lowpass",
+            "allpass",
+            "peak",
+            "highshelf",
+            "lowshelf"
+        ]:
             self.filtertype = "highpass"
             raise ValueError("Incorrect filter type")
         else:

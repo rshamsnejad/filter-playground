@@ -10,7 +10,9 @@ class FilterTypeWidget(QGroupBox):
             "Highpass",
             "Lowpass",
             "Allpass",
-            "Peak"
+            "Peak",
+            "Highshelf",
+            "Lowshelf"
         ],
         *args, **kwargs
     ) -> None:
