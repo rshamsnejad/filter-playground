@@ -15,6 +15,8 @@ class GraphEngine(QObject):
         self.set_order(order)
         self.set_frequency(frequency)
         self.set_filtertype(filtertype)
+        self.set_gain(gain)
+        self.set_Q(Q)
 
         self.filter = {
             "frequencies": [],

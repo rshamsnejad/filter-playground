@@ -8,7 +8,6 @@ class BiquadEngine(GraphEngine):
 
     def compute(self) -> None:
         self.w0 = 2 * pi * self.get_frequency() / self.fs
-        self.Q = sqrt(2) / 2
         self.alpha = sin(self.w0) / (2 * self.Q)
 
         if self.get_filtertype().lower() in ["highpass", "lowpass"]:
