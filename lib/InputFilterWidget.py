@@ -19,6 +19,8 @@ class InputFilterWidget(QWidget):
         self.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.handle_type)
         self.filter_toolbar.filter_parameters.field_order.textChanged.connect(self.handle_order)
         self.filter_toolbar.filter_parameters.field_frequency.textChanged.connect(self.handle_frequency)
+        self.filter_toolbar.filter_parameters.field_gain.textChanged.connect(self.handle_gain)
+        self.filter_toolbar.filter_parameters.field_Q.textChanged.connect(self.handle_Q)
 
         self.layout().addWidget(self.filter_toolbar)
         self.layout().addWidget(self.graph)
@@ -42,6 +44,22 @@ class InputFilterWidget(QWidget):
     def handle_frequency(self, frequency: str):
         try:
             self.graph.engine.set_frequency(float(frequency or 1000))
+        except ValueError as e:
+            logging.warning(e)
+
+        self.graph.compute_and_update()
+
+    def handle_gain(self, gain: str):
+        try:
+            self.graph.engine.set_gain(float(gain or 3))
+        except ValueError as e:
+            logging.warning(e)
+
+        self.graph.compute_and_update()
+
+    def handle_Q(self, Q: str):
+        try:
+            self.graph.engine.set_Q(float(Q or 0.71))
         except ValueError as e:
             logging.warning(e)
 
