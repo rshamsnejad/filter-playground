@@ -1,4 +1,5 @@
 from lib.GraphWidget import GraphWidget
+from lib.SumEngine import SumEngine
 
 class OutputGraphWidget(GraphWidget):
     """
@@ -7,6 +8,18 @@ class OutputGraphWidget(GraphWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+
+    def set_engine(self, engine: SumEngine) -> None:
+        """
+        Set the computing engine. Has to be done outside of constructor
+        otherwise the input widget and the output widget are inter-dependent
+
+        Args:
+            engine (GraphEngine): The engine to use to compute the graph
+        """
+
+        self.engine = engine
 
         for i in range(len(self.engine.input_engines) - 1):
             self.add_axvline()

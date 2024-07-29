@@ -1,11 +1,12 @@
 from PyQt6.QtWidgets import (
     QWidget,
-    QGridLayout
+    QVBoxLayout,
+    QScrollArea
 )
-from lib.InputFilterWidget import InputFilterWidget
-from lib.OutputGraphWidget import OutputGraphWidget
-from lib.SumEngine import SumEngine
 
+from lib.InputWidget import InputWidget
+from lib.OutputWidget import OutputWidget
+from lib.SumEngine import SumEngine
 
 class MainWidget(QWidget):
     """
@@ -15,67 +16,18 @@ class MainWidget(QWidget):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-        self.setLayout(QGridLayout())
+        self.setLayout(QVBoxLayout())
 
-        self.input_filters = [InputFilterWidget(), InputFilterWidget()]
-        self.output_graph = OutputGraphWidget(SumEngine([filter.graph.engine for filter in self.input_filters]))
+        self.output_widget = OutputWidget()
+        self.input_widget = InputWidget(self.output_widget)
+        self.output_widget.output_graph.set_engine(
+            SumEngine([filter.graph.engine for filter in self.input_widget.input_filters])
+        )
 
-        self.hidden_filters = 0
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidget(self.input_widget)
+        self.scroll_area.setWidgetResizable(True)
 
-        column = 0
-        for filter in self.input_filters:
-            self.layout().addWidget(filter, 0, column, 1, 1)
-            filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_graph.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_graph.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_graph.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_graph.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_graph.compute_and_update)
-            column += 1
-
-        self.layout().addWidget(self.output_graph, 1, 0, 1, -1)
-
-    def update_input_filter_amount(self) -> None:
-        """
-        Qt slot, allows to dynamically update the amount of filter cells
-        according to the spinbox in the main window
-        """
-        spinbox = self.sender()
-
-        current_amount = self.layout().columnCount() - self.hidden_filters
-        new_amount = spinbox.value()
-
-        if new_amount == current_amount:
-            return
-
-        if new_amount > current_amount:
-            for i in range(current_amount, new_amount):
-                item = self.layout().itemAtPosition(0, i)
-
-                # If a cell was previously added and hidden, simply show it again
-                if(item):
-                    item.widget().show()
-                    self.hidden_filters -= 1
-
-                # Otherwise create a new one
-                else:
-                    filter = InputFilterWidget()
-                    filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_graph.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_graph.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_graph.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_graph.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_graph.compute_and_update)
-                    self.layout().addWidget(filter, 0, i, 1, 1)
-
-                self.output_graph.engine.add_engine(self.layout().itemAtPosition(0, i).widget().graph.engine)
-                self.output_graph.add_axvline()
-
-        elif new_amount < current_amount:
-            for i in range(new_amount, current_amount):
-                self.layout().itemAtPosition(0, i).widget().hide()
-                self.hidden_filters += 1
-
-                self.output_graph.engine.remove_last_engine()
-                self.output_graph.remove_last_axvline()
-
-        self.output_graph.compute_and_update()
+        self.layout().addWidget(self.scroll_area)
+        self.layout().addWidget(self.output_widget)
 

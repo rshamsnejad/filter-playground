@@ -5,7 +5,6 @@ from PyQt6.QtWidgets import (
 )
 from lib.FilterToolbarWidget import FilterToolbarWidget
 from lib.InputGraphWidget import InputGraphWidget
-from lib.BiquadEngine import BiquadEngine
 
 class InputFilterWidget(QWidget):
     """
@@ -17,7 +16,7 @@ class InputFilterWidget(QWidget):
 
         self.setLayout(QVBoxLayout())
 
-        self.graph = InputGraphWidget(BiquadEngine())
+        self.graph = InputGraphWidget()
         self.filter_toolbar = FilterToolbarWidget()
 
         self.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.handle_type)

@@ -16,14 +16,7 @@ class GraphWidget(QWidget):
     virtual method(s)
     """
 
-    def __init__(self,
-        engine: GraphEngine,
-        *args, **kwargs
-    ) -> None:
-        """
-        Args:
-            engine (GraphEngine): The engine to use to compute the graph
-        """
+    def __init__(self, *args, **kwargs) -> None:
 
         super().__init__(*args, **kwargs)
 
@@ -36,9 +29,18 @@ class GraphWidget(QWidget):
         self.layout().addWidget(NavigationToolbar(self.canvas))
         self.layout().addWidget(self.canvas)
 
-        self.engine = engine
-
         self.init_graph()
+
+    def set_engine(self, engine: GraphEngine) -> None:
+        """
+        Set the computing engine. Has to be done outside of constructor
+        otherwise the input widget and the output widget are inter-dependent
+
+        Args:
+            engine (GraphEngine): The engine to use to compute the graph
+        """
+
+        raise NotImplementedError
 
     def init_graph(self,
             freq_range:     list[float] = [20, 20e3],
