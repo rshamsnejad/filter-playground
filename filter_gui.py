@@ -1,6 +1,6 @@
 import sys
 import os
-from PyQt6.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication, QStyleFactory
 from lib.MainWindow import MainWindow
 
 if __name__ == '__main__':
@@ -11,7 +11,10 @@ if __name__ == '__main__':
         myappid = 'mycompany.myproduct.subproduct.version' # arbitrary string
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
+    style = QStyleFactory()
+
     app = QApplication(sys.argv)
+    app.setStyle(style.create('Fusion'))
 
     window = MainWindow()
 
