@@ -8,6 +8,7 @@ class InputGraphWidget(GraphWidget):
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self.setFixedHeight(500)
 
         self.set_engine(BiquadEngine())
         self.compute_and_update()
