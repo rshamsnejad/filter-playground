@@ -65,8 +65,8 @@ class FilterParametersWidget(QGroupBox):
         self.field_gain.setFixedWidth(spinbox_width)
         self.field_gain.setAccelerated(True)
 
-        self.layout().addWidget(label_gain, 0, 2, 1, 1)
-        self.layout().addWidget(self.field_gain, 0, 3, 1, 1)
+        self.layout().addWidget(label_gain, 2, 0, 1, 1)
+        self.layout().addWidget(self.field_gain, 2, 1, 1, 1)
 
         label_Q = QLabel("Q:")
         self.field_Q = QDoubleSpinBox()
@@ -77,5 +77,5 @@ class FilterParametersWidget(QGroupBox):
         self.field_Q.setFixedWidth(spinbox_width)
         self.field_Q.setAccelerated(True)
 
-        self.layout().addWidget(label_Q, 1, 2, 1, 1)
-        self.layout().addWidget(self.field_Q, 1, 3, 1, 1)
+        self.layout().addWidget(label_Q, 3, 0, 1, 1)
+        self.layout().addWidget(self.field_Q, 3, 1, 1, 1)
