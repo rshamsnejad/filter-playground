@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import (
     QWidget,
     QVBoxLayout
 )
-from matplotlib.backends.backend_qtagg import FigureCanvas, NavigationToolbar2QT as NavigationToolbar
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 from matplotlib.ticker import ScalarFormatter
 
@@ -22,7 +22,7 @@ class GraphWidget(QWidget):
 
         self.setLayout(QVBoxLayout())
 
-        self.canvas = FigureCanvas(Figure())
+        self.canvas = FigureCanvasQTAgg(Figure())
         self.figure = self.canvas.figure
         self.axs = self.figure.subplots(2, 1, sharex=True)
 
