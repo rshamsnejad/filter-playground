@@ -37,7 +37,7 @@ class FilterParametersWidget(QGroupBox):
         label_order = QLabel("Filter order:")
         self.field_order = QSpinBox()
         self.field_order.setMinimum(1)
-        self.field_order.setMaximum(10)
+        self.field_order.setMaximum(100)
         self.field_order.setValue(order)
         self.field_order.setFixedWidth(spinbox_width)
         self.field_order.setAccelerated(True)
