@@ -10,6 +10,7 @@ class FilterTypeWidget(QGroupBox):
     """
 
     def __init__(self,
+        id: int,
         types: list[str] = [
             "Highpass",
             "Lowpass",
@@ -22,14 +23,21 @@ class FilterTypeWidget(QGroupBox):
     ) -> None:
         """
         Args:
+            id (int): The number of the filter to display
             types (list[str], optional):
-            The list to display in the drop-down list.
-            Defaults to [ "Highpass", "Lowpass", "Allpass", "Peak", "Highshelf", "Lowshelf" ].
+                The list to display in the drop-down list.
+                Defaults to [ "Highpass", "Lowpass", "Allpass", "Peak", "Highshelf", "Lowshelf" ].
         """
+
+        if id <= 0:
+            self.id = 1
+            raise ValueError("ID must be a positive integer")
+        else:
+            self.id = id
 
         super().__init__(*args, **kwargs)
 
-        self.setTitle("Filter type")
+        self.setTitle(f"Filter {self.id}")
         self.setLayout(QVBoxLayout())
 
         self.types = types

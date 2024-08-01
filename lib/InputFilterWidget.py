@@ -11,13 +11,20 @@ class InputFilterWidget(QWidget):
     Qt widget containing an input cell's toolbar and graph
     """
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, id: int, *args, **kwargs) -> None:
+        """
+        Args:
+            id (int): The number of the filter to display
+        """
+
         super().__init__(*args, **kwargs)
+
+        self.id = id
 
         self.setLayout(QVBoxLayout())
 
         self.graph = InputGraphWidget()
-        self.filter_toolbar = FilterToolbarWidget()
+        self.filter_toolbar = FilterToolbarWidget(self.id)
 
         self.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.handle_type)
         self.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.handle_order)

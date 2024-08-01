@@ -11,7 +11,11 @@ class InputWidget(QWidget):
     Qt widget for the input filters
     """
 
-    def __init__(self, output_widget: OutputWidget, *args, **kwargs) -> None:
+    def __init__(self,
+        output_widget: OutputWidget,
+        initial_amount: int = 2,
+        *args, **kwargs
+    ) -> None:
         """
         Args:
             output_widget (OutputWidget): The output widget of the main window
@@ -23,7 +27,15 @@ class InputWidget(QWidget):
 
         self.setLayout(QHBoxLayout())
 
-        self.input_filters = [InputFilterWidget(), InputFilterWidget()]
+        if initial_amount <= 0:
+            self.initial_amount = 2
+            raise ValueError("Input amount should be a positive integer")
+        else:
+            self.initial_amount = initial_amount
+
+        self.input_filters = []
+        for i in range(self.initial_amount):
+            self.input_filters.append(InputFilterWidget(i + 1))
 
         self.hidden_filters = 0
 
@@ -59,7 +71,7 @@ class InputWidget(QWidget):
 
                 # Otherwise create a new one
                 else:
-                    filter = InputFilterWidget()
+                    filter = InputFilterWidget(i + 1)
                     filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.output_graph.compute_and_update)
                     filter.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_widget.output_graph.compute_and_update)
                     filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_graph.compute_and_update)
