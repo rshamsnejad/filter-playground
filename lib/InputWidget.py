@@ -27,7 +27,6 @@ class InputWidget(QWidget):
 
         self.hidden_filters = 0
 
-        column = 0
         for filter in self.input_filters:
             self.layout().addWidget(filter)
             filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.output_graph.compute_and_update)
@@ -35,7 +34,6 @@ class InputWidget(QWidget):
             filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_graph.compute_and_update)
             filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.output_graph.compute_and_update)
             filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.output_graph.compute_and_update)
-            column += 1
 
     def update_input_filter_amount(self) -> None:
         """
