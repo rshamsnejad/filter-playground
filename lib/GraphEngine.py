@@ -1,5 +1,6 @@
 from PyQt6.QtCore import QObject
 import numpy as np
+from scipy.signal import tf2zpk
 
 class GraphEngine(QObject):
     """
@@ -98,3 +99,10 @@ class GraphEngine(QObject):
         """
 
         self.filter['phase'] = ((self.filter['phase'] + 180) % 360) - 180
+
+    def generate_zpk(self) -> None:
+        """
+        Generates zero, poles and gain from the transfer function
+        """
+
+        self.z, self.p, self.k = tf2zpk(self.b, self.a)

@@ -251,6 +251,8 @@ class BiquadEngine(GraphEngine):
 
         self.remove_phase_discontinuities()
 
+        self.generate_zpk()
+
     def generate_title(self) -> str:
         """
         Create a string to display as graph title.
