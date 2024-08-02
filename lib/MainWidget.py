@@ -21,7 +21,7 @@ class MainWidget(QWidget):
         self.output_widget = OutputWidget()
         self.input_widget = InputWidget(self.output_widget)
         self.output_widget.output_dualgraph.set_engine(
-            SumEngine([filter.graph.engine for filter in self.input_widget.input_filters])
+            SumEngine([filter.dualgraph.engine for filter in self.input_widget.input_filters])
         )
 
         self.scroll_area = QScrollArea()

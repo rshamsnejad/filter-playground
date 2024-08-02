@@ -7,6 +7,7 @@ class OutputBodeGraphWidget(BodeGraphWidget):
     """
 
     def __init__(self, *args, **kwargs):
+
         super().__init__(*args, **kwargs)
 
     def set_engine(self, engine: SumEngine) -> None:

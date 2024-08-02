@@ -79,7 +79,7 @@ class InputWidget(QTabWidget):
                     self.addTab(filter, f"{i + 1}")
                     widget = filter
 
-                self.output_widget.output_dualgraph.engine.add_engine(widget.graph.engine)
+                self.output_widget.output_dualgraph.engine.add_engine(widget.dualgraph.engine)
                 self.output_widget.output_dualgraph.bode_graph.add_axvline()
 
         elif new_amount < current_amount:

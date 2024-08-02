@@ -10,8 +10,7 @@ class InputBodeGraphWidget(BodeGraphWidget):
 
         super().__init__(*args, **kwargs)
 
-        self.set_engine(BiquadEngine())
-        self.compute_and_update()
+        self.engine = None
 
     def set_engine(self, engine: BiquadEngine) -> None:
         """
@@ -23,6 +22,8 @@ class InputBodeGraphWidget(BodeGraphWidget):
         """
 
         self.engine = engine
+
+        self.compute_and_update()
 
     def update_axvlines(self) -> None:
         """
