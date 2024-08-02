@@ -25,6 +25,7 @@ class InputFilterWidget(QWidget):
 
         self.graph = InputGraphWidget()
         self.filter_toolbar = FilterToolbarWidget(self.id)
+        self.filter_toolbar.setFixedHeight(200)
 
         self.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.handle_type)
         self.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.handle_order)

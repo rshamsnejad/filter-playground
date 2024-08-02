@@ -1,12 +1,11 @@
 from PyQt6.QtWidgets import (
-    QWidget,
-    QHBoxLayout,
+    QTabWidget,
 )
 from lib.InputFilterWidget import InputFilterWidget
 from lib.OutputWidget import OutputWidget
 
 
-class InputWidget(QWidget):
+class InputWidget(QTabWidget):
     """
     Qt widget for the input filters
     """
@@ -25,8 +24,6 @@ class InputWidget(QWidget):
 
         self.output_widget = output_widget
 
-        self.setLayout(QHBoxLayout())
-
         if initial_amount <= 0:
             self.initial_amount = 2
             raise ValueError("Input amount should be a positive integer")
@@ -39,13 +36,15 @@ class InputWidget(QWidget):
 
         self.hidden_filters = 0
 
+        currentTab = 1
         for filter in self.input_filters:
-            self.layout().addWidget(filter)
+            self.addTab(filter, f"{currentTab}")
             filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.output_graph.compute_and_update)
             filter.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_widget.output_graph.compute_and_update)
             filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_graph.compute_and_update)
             filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.output_graph.compute_and_update)
             filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.output_graph.compute_and_update)
+            currentTab += 1
 
     def update_input_filter_amount(self) -> None:
         """
@@ -54,7 +53,7 @@ class InputWidget(QWidget):
         """
         spinbox = self.sender()
 
-        current_amount = self.layout().count() - self.hidden_filters
+        current_amount = self.count() - self.hidden_filters
         new_amount = spinbox.value()
 
         if new_amount == current_amount:
@@ -62,11 +61,11 @@ class InputWidget(QWidget):
 
         if new_amount > current_amount:
             for i in range(current_amount, new_amount):
-                item = self.layout().itemAt(i)
+                widget = self.widget(i)
 
                 # If a cell was previously added and hidden, simply show it again
-                if(item):
-                    item.widget().show()
+                if(widget):
+                    self.setTabVisible(i, True)
                     self.hidden_filters -= 1
 
                 # Otherwise create a new one
@@ -77,14 +76,15 @@ class InputWidget(QWidget):
                     filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_graph.compute_and_update)
                     filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.output_graph.compute_and_update)
                     filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.output_graph.compute_and_update)
-                    self.layout().addWidget(filter)
+                    self.addTab(filter, f"{i + 1}")
+                    widget = filter
 
-                self.output_widget.output_graph.engine.add_engine(self.layout().itemAt(i).widget().graph.engine)
+                self.output_widget.output_graph.engine.add_engine(widget.graph.engine)
                 self.output_widget.output_graph.add_axvline()
 
         elif new_amount < current_amount:
             for i in range(new_amount, current_amount):
-                self.layout().itemAt(i).widget().hide()
+                self.setTabVisible(i, False)
                 self.hidden_filters += 1
 
                 self.output_widget.output_graph.engine.remove_last_engine()

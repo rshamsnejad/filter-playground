@@ -37,7 +37,7 @@ class FilterTypeWidget(QGroupBox):
 
         super().__init__(*args, **kwargs)
 
-        self.setTitle(f"Filter {self.id}")
+        self.setTitle("Filter Type")
         self.setLayout(QVBoxLayout())
 
         self.types = types

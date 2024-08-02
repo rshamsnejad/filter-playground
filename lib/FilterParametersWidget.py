@@ -29,7 +29,7 @@ class FilterParametersWidget(QGroupBox):
 
         super().__init__(*args, **kwargs)
 
-        self.setTitle("Parameters")
+        self.setTitle("Filter parameters")
         self.setLayout(QGridLayout())
 
         spinbox_width = 60
