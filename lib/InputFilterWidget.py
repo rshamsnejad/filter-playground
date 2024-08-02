@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout
 )
 from lib.FilterToolbarWidget import FilterToolbarWidget
-from lib.InputGraphWidget import InputGraphWidget
+from lib.InputBodeGraphWidget import InputBodeGraphWidget
 
 class InputFilterWidget(QWidget):
     """
@@ -23,7 +23,7 @@ class InputFilterWidget(QWidget):
 
         self.setLayout(QVBoxLayout())
 
-        self.graph = InputGraphWidget()
+        self.graph = InputBodeGraphWidget()
         self.filter_toolbar = FilterToolbarWidget(self.id)
         self.filter_toolbar.setFixedHeight(200)
 

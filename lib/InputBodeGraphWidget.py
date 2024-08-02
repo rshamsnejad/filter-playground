@@ -1,7 +1,7 @@
-from lib.GraphWidget import GraphWidget
+from lib.BodeGraphWidget import BodeGraphWidget
 from lib.BiquadEngine import BiquadEngine
 
-class InputGraphWidget(GraphWidget):
+class InputBodeGraphWidget(BodeGraphWidget):
     """
     Qt widget to display a input cell's graph
     """

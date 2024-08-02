@@ -1,14 +1,13 @@
-from lib.GraphWidget import GraphWidget
+from lib.BodeGraphWidget import BodeGraphWidget
 from lib.SumEngine import SumEngine
 
-class OutputGraphWidget(GraphWidget):
+class OutputBodeGraphWidget(BodeGraphWidget):
     """
     Qt widget to display the output graph
     """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
 
     def set_engine(self, engine: SumEngine) -> None:
         """
