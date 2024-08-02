@@ -23,8 +23,7 @@ class OutputBodeGraphWidget(BodeGraphWidget):
         for i in range(len(self.engine.input_engines) - 1):
             self.add_axvline()
 
-        self.engine.compute()
-        self.update_graph()
+        self.compute_and_update()
 
     def update_axvlines(self) -> None:
         """

@@ -104,8 +104,7 @@ class BodeGraphWidget(GraphWidget):
 
         self.update_axvlines()
 
-        self.magnitude_graph.figure.canvas.draw()
-        self.phase_graph.figure.canvas.draw()
+        self.canvas.draw()
 
     def update_axvlines(self) -> None:
         """
