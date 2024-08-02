@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (
     QWidget,
-    QVBoxLayout,
+    QHBoxLayout,
     QScrollArea
 )
 
@@ -16,7 +16,7 @@ class MainWidget(QWidget):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-        self.setLayout(QVBoxLayout())
+        self.setLayout(QHBoxLayout())
 
         self.output_widget = OutputWidget()
         self.input_widget = InputWidget(self.output_widget)
