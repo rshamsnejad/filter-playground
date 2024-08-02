@@ -1,5 +1,5 @@
-from lib.BodeGraphWidget import BodeGraphWidget
-from lib.SumEngine import SumEngine
+from lib.Graph.BodeGraphWidget import BodeGraphWidget
+from lib.Engine.SumEngine import SumEngine
 
 class OutputBodeGraphWidget(BodeGraphWidget):
     """

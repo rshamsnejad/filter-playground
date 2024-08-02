@@ -3,8 +3,8 @@ from PyQt6.QtWidgets import (
     QHBoxLayout
 )
 
-from lib.DualGraphWidget import DualGraphWidget
-from lib.OutputBodeGraphWidget import OutputBodeGraphWidget
+from lib.Graph.DualGraphWidget import DualGraphWidget
+from lib.Output.OutputBodeGraphWidget import OutputBodeGraphWidget
 
 
 class OutputWidget(QWidget):

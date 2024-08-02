@@ -1,5 +1,5 @@
-from lib.BodeGraphWidget import BodeGraphWidget
-from lib.BiquadEngine import BiquadEngine
+from lib.Graph.BodeGraphWidget import BodeGraphWidget
+from lib.Engine.BiquadEngine import BiquadEngine
 
 class InputBodeGraphWidget(BodeGraphWidget):
     """

@@ -2,8 +2,8 @@ from PyQt6.QtWidgets import (
     QWidget,
     QHBoxLayout,
 )
-from lib.FilterTypeWidget import FilterTypeWidget
-from lib.FilterParametersWidget import FilterParametersWidget
+from lib.Input.FilterTypeWidget import FilterTypeWidget
+from lib.Input.FilterParametersWidget import FilterParametersWidget
 
 class FilterToolbarWidget(QWidget):
     """

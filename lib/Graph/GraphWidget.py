@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 
-from lib.GraphEngine import GraphEngine
+from lib.Engine.GraphEngine import GraphEngine
 
 class GraphWidget(QWidget):
     """

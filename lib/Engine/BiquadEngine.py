@@ -1,4 +1,4 @@
-from lib.GraphEngine import GraphEngine
+from lib.Engine.GraphEngine import GraphEngine
 from scipy.signal import butter, freqz
 from numpy import log10, angle, pi, sin, cos, sqrt, tan, convolve
 

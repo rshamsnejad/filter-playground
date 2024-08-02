@@ -3,9 +3,9 @@ from PyQt6.QtWidgets import (
     QWidget,
     QVBoxLayout
 )
-from lib.FilterToolbarWidget import FilterToolbarWidget
-from lib.DualGraphWidget import DualGraphWidget
-from lib.InputBodeGraphWidget import InputBodeGraphWidget
+from lib.Input.FilterToolbarWidget import FilterToolbarWidget
+from lib.Graph.DualGraphWidget import DualGraphWidget
+from lib.Input.InputBodeGraphWidget import InputBodeGraphWidget
 
 class InputFilterWidget(QWidget):
     """

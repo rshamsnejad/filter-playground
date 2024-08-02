@@ -2,8 +2,8 @@ from PyQt6.QtWidgets import (
     QTabWidget
 )
 
-from lib.BodeGraphWidget import BodeGraphWidget
-from lib.GraphEngine import GraphEngine
+from lib.Graph.BodeGraphWidget import BodeGraphWidget
+from lib.Engine.GraphEngine import GraphEngine
 
 class DualGraphWidget(QTabWidget):
 

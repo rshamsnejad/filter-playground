@@ -1,8 +1,8 @@
 from PyQt6.QtWidgets import (
     QTabWidget,
 )
-from lib.InputFilterWidget import InputFilterWidget
-from lib.OutputWidget import OutputWidget
+from lib.Input.InputFilterWidget import InputFilterWidget
+from lib.Output.OutputWidget import OutputWidget
 
 
 class InputWidget(QTabWidget):

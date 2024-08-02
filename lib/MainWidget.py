@@ -4,9 +4,9 @@ from PyQt6.QtWidgets import (
     QScrollArea
 )
 
-from lib.InputWidget import InputWidget
-from lib.OutputWidget import OutputWidget
-from lib.SumEngine import SumEngine
+from lib.Input.InputWidget import InputWidget
+from lib.Output.OutputWidget import OutputWidget
+from lib.Engine.SumEngine import SumEngine
 
 class MainWidget(QWidget):
     """

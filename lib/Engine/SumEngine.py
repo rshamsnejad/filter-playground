@@ -1,4 +1,4 @@
-from lib.GraphEngine import GraphEngine
+from lib.Engine.GraphEngine import GraphEngine
 import numpy as np
 from scipy.signal import freqz
 

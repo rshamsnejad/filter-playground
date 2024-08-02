@@ -1,7 +1,7 @@
 from matplotlib.ticker import ScalarFormatter
 
-from lib.GraphWidget import GraphWidget
-from lib.GraphEngine import GraphEngine
+from lib.Graph.GraphWidget import GraphWidget
+from lib.Engine.GraphEngine import GraphEngine
 
 class BodeGraphWidget(GraphWidget):
     """
