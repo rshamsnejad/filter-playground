@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout
 )
 from lib.FilterToolbarWidget import FilterToolbarWidget
+from lib.DualGraphWidget import DualGraphWidget
 from lib.InputBodeGraphWidget import InputBodeGraphWidget
 
 class InputFilterWidget(QWidget):
@@ -23,9 +24,11 @@ class InputFilterWidget(QWidget):
 
         self.setLayout(QVBoxLayout())
 
-        self.graph = InputBodeGraphWidget()
         self.filter_toolbar = FilterToolbarWidget(self.id)
         self.filter_toolbar.setFixedHeight(200)
+
+        self.graph = InputBodeGraphWidget()
+        self.dualgraph = DualGraphWidget(self.graph)
 
         self.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.handle_type)
         self.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.handle_order)
@@ -34,7 +37,7 @@ class InputFilterWidget(QWidget):
         self.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.handle_Q)
 
         self.layout().addWidget(self.filter_toolbar)
-        self.layout().addWidget(self.graph)
+        self.layout().addWidget(self.dualgraph)
 
         self.disable_unused_fields()
 

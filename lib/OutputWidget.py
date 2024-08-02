@@ -2,6 +2,8 @@ from PyQt6.QtWidgets import (
     QWidget,
     QHBoxLayout
 )
+
+from lib.DualGraphWidget import DualGraphWidget
 from lib.OutputBodeGraphWidget import OutputBodeGraphWidget
 
 
@@ -16,6 +18,6 @@ class OutputWidget(QWidget):
 
         self.setLayout(QHBoxLayout())
 
-        self.output_graph = OutputBodeGraphWidget()
+        self.output_dualgraph = DualGraphWidget(OutputBodeGraphWidget())
 
-        self.layout().addWidget(self.output_graph)
+        self.layout().addWidget(self.output_dualgraph)
