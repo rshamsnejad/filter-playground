@@ -194,7 +194,7 @@ class BiquadEngine(GraphEngine):
                         self.sos = sos_order2
 
                     for i in range(int(iterations)):
-                        self.sos.append(sos_order2[0])
+                        self.sos.extend(sos_order2)
 
             case "peak":
                 b = [

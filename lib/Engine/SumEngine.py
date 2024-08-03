@@ -29,7 +29,7 @@ class SumEngine(GraphEngine):
         self.sos = list(self.input_engines[0].sos)
 
         for engine in self.input_engines[1:]:
-            self.sos.append(engine.sos[0])
+            self.sos.extend(engine.sos)
 
         frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.fs)
 
