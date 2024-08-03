@@ -44,15 +44,14 @@ w0 = 2 * np.pi * f0 / fs
 alpha = np.sin(w0) / (2 * Q)
 
 coeff1 = (np.tan(np.pi * f0/fs) - 1) / (np.tan(np.pi * f0/fs) + 1)
-b_order1 = [coeff1, 1]
-a_order1 = [1, coeff1]
+b_order1 = [coeff1, 1, 0]
+a_order1 = [1, coeff1, 0]
 b_order2 = [1 - alpha, -2 * np.cos(w0), 1 + alpha]
 a_order2 = [1 + alpha, -2 * np.cos(w0), 1 - alpha]
 
-b_order3 = np.convolve(b_order1, b_order2)
-a_order3 = np.convolve(a_order1, a_order2)
+sos = [signal.tf2sos(b_order1, a_order1)[0], signal.tf2sos(b_order2, a_order2)[0]]
 
-frequencies, magnitude = signal.freqz(b_order3, a_order3, worN=np.logspace(0, 5, 1000), fs=fs)
+frequencies, magnitude = signal.sosfreqz(sos, worN=np.logspace(0, 5, 1000), fs=fs)
 
 mag_db = 20 * np.log10(abs(magnitude))
 phase_deg = np.angle(magnitude, deg=True)

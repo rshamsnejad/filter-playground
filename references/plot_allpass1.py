@@ -36,16 +36,17 @@ def remove_phase_discontinuities(phase: list) -> list:
     return phase_nan
 
 Q = np.sqrt(2) / 2
-f0 = 500
+f0 = 1000
 fs = 48000
 w0 = 2 * np.pi * f0 / fs
 
 alpha = np.sin(w0) / (2 * Q)
 
 coeff1 = (np.tan(np.pi * f0/fs) - 1) / (np.tan(np.pi * f0/fs) + 1)
-b = [coeff1, 1]
-a = [1, coeff1]
-frequencies, magnitude = signal.freqz(b, a, worN=np.logspace(0, 5, 1000), fs=fs)
+b = [coeff1, 1, 0]
+a = [1, coeff1, 0]
+sos = signal.tf2sos(b, a)
+frequencies, magnitude = signal.sosfreqz(sos, worN=np.logspace(0, 5, 1000), fs=fs)
 
 mag_db = 20 * np.log10(abs(magnitude))
 phase_deg = np.angle(magnitude, deg=True)
