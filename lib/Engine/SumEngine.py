@@ -52,7 +52,7 @@ class SumEngine(GraphEngine):
         Create a string to display as graph title.
         """
 
-        return "Convolution of the inputs"
+        return "Cascading of the inputs"
 
     def add_engine(self, engine: GraphEngine) -> None:
         """
