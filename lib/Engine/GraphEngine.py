@@ -1,6 +1,6 @@
 from PyQt6.QtCore import QObject
 import numpy as np
-from scipy.signal import tf2zpk
+from scipy.signal import sos2zpk
 
 class GraphEngine(QObject):
     """
@@ -105,4 +105,4 @@ class GraphEngine(QObject):
         Generates zero, poles and gain from the transfer function
         """
 
-        self.z, self.p, self.k = tf2zpk(self.b, self.a)
+        self.z, self.p, self.k = sos2zpk(self.sos)

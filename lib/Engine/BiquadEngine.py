@@ -1,6 +1,6 @@
 from lib.Engine.GraphEngine import GraphEngine
-from scipy.signal import butter, freqz
-from numpy import log10, angle, pi, sin, cos, sqrt, tan, convolve
+from scipy.signal import butter, sosfreqz, tf2sos
+from numpy import log10, angle, pi, sin, cos, sqrt, tan
 
 class BiquadEngine(GraphEngine):
     """
@@ -166,79 +166,79 @@ class BiquadEngine(GraphEngine):
 
         match self.get_filtertype().lower():
             case "highpass" | "lowpass":
-                self.b, self.a = butter(self.get_order(), self.get_frequency(), self.get_filtertype(), fs=self.fs)
+                self.sos = butter(self.get_order(), self.get_frequency(), self.get_filtertype(), fs=self.fs, output='sos')
 
             case "allpass":
                 coeff1 = (tan(pi * self.get_frequency()/self.fs) - 1) / (tan(pi * self.get_frequency()/self.fs) + 1)
-                b_order1 = [coeff1, 1]
-                a_order1 = [1, coeff1]
+                b_order1 = [coeff1, 1, 0]
+                a_order1 = [1, coeff1, 0]
+                sos_order1 = tf2sos(b_order1, a_order1)
                 b_order2 = [1 - self.alpha, -2 * cos(self.w0), 1 + self.alpha]
                 a_order2 = [1 + self.alpha, -2 * cos(self.w0), 1 - self.alpha]
+                sos_order2 = tf2sos(b_order2, a_order2)
 
                 if self.get_order() == 1:
-                    self.b = b_order1
-                    self.a = a_order1
+                    self.sos = sos_order1
                 elif self.get_order() == 2:
-                    self.b = b_order2
-                    self.a = a_order2
+                    self.sos = sos_order2
                 else:
                     # Odd order of 3 or more
                     if self.get_order() % 2 == 1:
                         iterations = (self.get_order() - 1) / 2
 
-                        self.b = b_order1
-                        self.a = a_order1
+                        self.sos = sos_order1
                     # Even order of 4 or more
                     else:
                         iterations = self.get_order() / 2
 
-                        self.b = b_order2
-                        self.a = b_order2
+                        self.sos = sos_order2
 
                     for i in range(int(iterations)):
-                        self.b = convolve(self.b, b_order2)
-                        self.a = convolve(self.a, a_order2)
+                        self.sos.append(sos_order2[0])
 
             case "peak":
-                self.b = [
+                b = [
                     1 + self.alpha * self.A,
                     -2 * cos(self.w0),
                     1 - self.alpha * self.A
                 ]
-                self.a = [
+                a = [
                     1 + self.alpha / self.A,
                     -2 * cos(self.w0),
                     1 - self.alpha / self.A
                 ]
+                self.sos = tf2sos(b, a)
 
             case "highshelf":
-                self.b = [
+                b = [
                     self.A * ( self.A + 1 + (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha ),
                     -2 * self.A * ( self.A - 1 + (self.A + 1) * cos(self.w0) ),
                     self.A * ( self.A + 1 + (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha )
                 ]
-                self.a = [
+                a = [
                     self.A + 1 - (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha,
                     2 * ( self.A - 1 - (self.A + 1) * cos(self.w0) ),
                     self.A + 1 - (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha
                 ]
+                self.sos = tf2sos(b, a)
 
             case "lowshelf":
-                self.b = [
+                b = [
                     self.A * ( self.A + 1 - (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha ),
                     2 * self.A * ( self.A - 1 - (self.A + 1) * cos(self.w0) ),
                     self.A * ( self.A + 1 - (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha )
                 ]
-                self.a = [
+                a = [
                     self.A + 1 + (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha,
                     -2 * ( self.A - 1 + (self.A + 1) * cos(self.w0) ),
                     self.A + 1 + (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha
                 ]
+                self.sos = tf2sos(b, a)
 
             case _:
                 raise ValueError("Unknown filter type")
 
-        frequencies, magnitude = freqz(self.b, self.a, worN=self.frequency_points, fs=self.fs)
+        frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.fs)
 
         mag_db = 20 * log10(abs(magnitude))
         phase_deg = angle(magnitude, deg=True)

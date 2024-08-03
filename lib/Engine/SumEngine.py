@@ -1,6 +1,6 @@
 from lib.Engine.GraphEngine import GraphEngine
 import numpy as np
-from scipy.signal import freqz
+from scipy.signal import sosfreqz
 
 class SumEngine(GraphEngine):
     """
@@ -26,20 +26,12 @@ class SumEngine(GraphEngine):
         Compute the convolution of all the input cells
         """
 
-        self.filter = {
-            'frequencies': self.input_engines[0].filter['frequencies'],
-            'magnitude': np.zeros(len(self.input_engines[0].filter['frequencies'])),
-            'phase': np.zeros(len(self.input_engines[0].filter['frequencies']))
-        }
-
-        self.b = self.input_engines[0].b
-        self.a = self.input_engines[0].a
+        self.sos = list(self.input_engines[0].sos)
 
         for engine in self.input_engines[1:]:
-            self.b = np.convolve(self.b, engine.b)
-            self.a = np.convolve(self.a, engine.a)
+            self.sos.append(engine.sos[0])
 
-        frequencies, magnitude = freqz(self.b, self.a, worN=self.frequency_points, fs=self.fs)
+        frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.fs)
 
         mag_db = 20 * np.log10(abs(magnitude))
         phase_deg = np.angle(magnitude, deg=True)
