@@ -172,10 +172,10 @@ class BiquadEngine(GraphEngine):
                 coeff1 = (tan(pi * self.get_frequency()/self.fs) - 1) / (tan(pi * self.get_frequency()/self.fs) + 1)
                 b_order1 = [coeff1, 1, 0]
                 a_order1 = [1, coeff1, 0]
-                sos_order1 = tf2sos(b_order1, a_order1)
+                sos_order1 = list(tf2sos(b_order1, a_order1))
                 b_order2 = [1 - self.alpha, -2 * cos(self.w0), 1 + self.alpha]
                 a_order2 = [1 + self.alpha, -2 * cos(self.w0), 1 - self.alpha]
-                sos_order2 = tf2sos(b_order2, a_order2)
+                sos_order2 = list(tf2sos(b_order2, a_order2))
 
                 if self.get_order() == 1:
                     self.sos = sos_order1
