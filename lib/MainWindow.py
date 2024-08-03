@@ -24,8 +24,8 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
         self.spinbox = QSpinBox()
-        self.spinbox.setMinimum(2)
-        self.spinbox.setMaximum(10)
+        self.spinbox.setMinimum(1)
+        self.spinbox.setMaximum(100)
         self.spinbox.setValue(2)
         self.spinbox.setFixedWidth(40)
         self.spinbox.valueChanged.connect(self.main_widget.input_widget.update_input_filter_amount)
