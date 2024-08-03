@@ -26,7 +26,7 @@ class InputFilterWidget(QWidget):
         self.setLayout(QVBoxLayout())
 
         self.filter_toolbar = FilterToolbarWidget(self.id)
-        self.filter_toolbar.setFixedHeight(200)
+        self.filter_toolbar.setFixedHeight(165)
 
         self.bode_graph = InputBodeGraphWidget()
         self.dualgraph = DualGraphWidget(self.bode_graph)
