@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
 
 from lib.Input.InputWidget import InputWidget
 from lib.Output.OutputWidget import OutputWidget
-from lib.Engine.SumEngine import SumEngine
+from lib.Engine.CascadeEngine import CascadeEngine
 
 class MainWidget(QWidget):
     """
@@ -21,7 +21,7 @@ class MainWidget(QWidget):
         self.output_widget = OutputWidget()
         self.input_widget = InputWidget(self.output_widget)
         self.output_widget.output_dualgraph.set_engine(
-            SumEngine([filter.dualgraph.engine for filter in self.input_widget.input_filters])
+            CascadeEngine([filter.dualgraph.engine for filter in self.input_widget.input_filters])
         )
 
         self.scroll_area = QScrollArea()

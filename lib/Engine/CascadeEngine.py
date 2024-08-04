@@ -2,7 +2,7 @@ from lib.Engine.GraphEngine import GraphEngine
 import numpy as np
 from scipy.signal import sosfreqz
 
-class SumEngine(GraphEngine):
+class CascadeEngine(GraphEngine):
     """
     Child class to compute the output convolution
     """

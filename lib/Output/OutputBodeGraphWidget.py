@@ -1,5 +1,5 @@
 from lib.Graph.BodeGraphWidget import BodeGraphWidget
-from lib.Engine.SumEngine import SumEngine
+from lib.Engine.CascadeEngine import CascadeEngine
 
 class OutputBodeGraphWidget(BodeGraphWidget):
     """
@@ -10,7 +10,7 @@ class OutputBodeGraphWidget(BodeGraphWidget):
 
         super().__init__(*args, **kwargs)
 
-    def set_engine(self, engine: SumEngine) -> None:
+    def set_engine(self, engine: CascadeEngine) -> None:
         """
         Set the computing engine. Has to be done outside of constructor
         otherwise the input widget and the output widget are inter-dependent
