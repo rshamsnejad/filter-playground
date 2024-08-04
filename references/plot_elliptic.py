@@ -35,11 +35,11 @@ def remove_phase_discontinuities(phase: list) -> list:
 
     return phase_nan
 
-N = 24
+N = 4
 f0 = 1000
 fs = 48000
 
-sos = signal.butter(N, f0, 'high', analog=False, fs=fs, output='sos')
+sos = signal.ellip(N, 0.5, 30, f0, 'high', analog=False, fs=fs, output='sos')
 frequencies, magnitude = signal.sosfreqz(sos, worN=np.logspace(0, 5, 1000), fs=fs)
 
 mag_db = 20 * np.log10(abs(magnitude))

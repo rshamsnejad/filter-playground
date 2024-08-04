@@ -35,11 +35,11 @@ def remove_phase_discontinuities(phase: list) -> list:
 
     return phase_nan
 
-N = 24
+N = 16
 f0 = 1000
 fs = 48000
 
-sos = signal.butter(N, f0, 'high', analog=False, fs=fs, output='sos')
+sos = signal.cheby2(N, 60, f0, 'high', analog=False, fs=fs, output='sos')
 frequencies, magnitude = signal.sosfreqz(sos, worN=np.logspace(0, 5, 1000), fs=fs)
 
 mag_db = 20 * np.log10(abs(magnitude))
@@ -47,11 +47,11 @@ phase_deg = np.angle(magnitude, deg=True)
 phase_deg_nan = remove_phase_discontinuities(phase_deg)
 
 plot_freq_range     = [20, 20e3]
-plot_mag_range      = [-40, 10]
+plot_mag_range      = [-100, 10]
 plot_phase_range    = [-200, 200]
 
 fig, axs = plt.subplots(2, 1, sharex=True)
-fig.suptitle(f"Butterworth highpass filter, order {N}, $f_0 = {f0}$ Hz")
+fig.suptitle(f"Chebyshev type 2 highpass filter, order {N}, $f_0 = {f0}$ Hz")
 
 # Magnitude
 axs[0].semilogx(frequencies, mag_db)
