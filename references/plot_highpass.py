@@ -51,7 +51,7 @@ phase_deg_nan = remove_phase_discontinuities(phase_deg)
 
 # freq_gd, gd = signal.group_delay(signal.sos2tf(sos), frequency_points, fs=fs)
 group_delay = -np.diff(np.unwrap(np.angle(magnitude))) / np.diff(frequencies)
-group_delay *= 1000
+group_delay_ms = group_delay * 1000
 
 plot_freq_range     = [20, 20e3]
 plot_mag_range      = [-40, 10]
@@ -86,7 +86,7 @@ axs[1].yaxis.label.set_color('C0')
 gd_color = 'salmon'
 gd_ax = axs[1].twinx()
 gd_ax.set_ylabel("Group delay [ms]")
-gd_ax.semilogx(frequencies[:-1], group_delay, color=gd_color)
+gd_ax.semilogx(frequencies[:-1], group_delay_ms, color=gd_color)
 gd_ax.tick_params(axis='y', colors=gd_color)
 gd_ax.yaxis.label.set_color(gd_color)
 
