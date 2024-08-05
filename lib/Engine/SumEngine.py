@@ -39,11 +39,11 @@ class SumEngine(GraphEngine):
         self.filter = {
             "frequencies": frequencies,
             "magnitude": mag_db,
-            "phase": phase_deg
+            "phase_deg": phase_deg
         }
 
-        self.wrap_phase()
         self.remove_phase_discontinuities()
+        self.wrap_phase()
 
         self.generate_zpk()
 

@@ -246,7 +246,7 @@ class BiquadEngine(GraphEngine):
         self.filter = {
             "frequencies": frequencies,
             "magnitude": mag_db,
-            "phase": phase_deg
+            "phase_deg": phase_deg
         }
 
         self.remove_phase_discontinuities()

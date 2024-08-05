@@ -99,7 +99,7 @@ class BodeGraphWidget(GraphWidget):
         )
         self.phase_graph.set_data(
             self.engine.get_frequencies(),
-            self.engine.get_phase()
+            self.engine.get_phase_nan()
         )
 
         self.update_axvlines()

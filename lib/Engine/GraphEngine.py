@@ -18,7 +18,9 @@ class GraphEngine(QObject):
         self.filter = {
             "frequencies": [],
             "magnitude": [],
-            "phase": []
+            "phase_deg": [],
+            "phase_deg_nan": [],
+            "group_delay_ms": []
         }
 
         self.fs = 48000
@@ -58,13 +60,14 @@ class GraphEngine(QObject):
 
         return self.filter['magnitude']
 
-    def get_phase(self) -> list[float]:
+    def get_phase_nan(self) -> list[float]:
         """
         Returns:
-            list[float]: The Y axis phase values
+            list[float]:
+                The Y axis phase values without discontinuities
         """
 
-        return self.filter['phase']
+        return self.filter['phase_deg_nan']
 
     def remove_phase_discontinuities(self) -> None:
         """
@@ -80,7 +83,7 @@ class GraphEngine(QObject):
         # Negative  gives -1
         # Positive  gives 1
         # Zero      gives 0
-        signs = np.sign(self.filter['phase'])
+        signs = np.sign(self.filter['phase_deg'])
 
         # Split the list in adjacent pairs
         pairs = []
@@ -91,14 +94,16 @@ class GraphEngine(QObject):
         pairs_indexes = [index for index, element in enumerate(pairs) if element == (-1, 1) or element == (1, -1)]
 
         # Replace all points before the wraps with NaN
-        self.filter['phase'][pairs_indexes] = np.nan
+        self.filter['phase_deg_nan'] = self.filter['phase_deg'].copy()
+        self.filter['phase_deg_nan'][pairs_indexes] = np.nan
 
     def wrap_phase(self) -> None:
         """
         Wraps the phase data to fit in the [-180, 180] range
         """
 
-        self.filter['phase'] = ((self.filter['phase'] + 180) % 360) - 180
+        self.filter['phase_deg'] = ((self.filter['phase_deg'] + 180) % 360) - 180
+        self.filter['phase_deg_nan'] = ((self.filter['phase_deg_nan'] + 180) % 360) - 180
 
     def generate_zpk(self) -> None:
         """
