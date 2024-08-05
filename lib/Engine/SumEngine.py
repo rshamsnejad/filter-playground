@@ -21,7 +21,7 @@ class SumEngine(GraphEngine):
 
         self.input_engines = input_engines
 
-    def compute(self) -> None:
+    def compute_specific(self) -> None:
         """
         Compute the convolution of all the input cells
         """
@@ -41,11 +41,6 @@ class SumEngine(GraphEngine):
             "magnitude": mag_db,
             "phase_deg": phase_deg
         }
-
-        self.remove_phase_discontinuities()
-        self.wrap_phase()
-
-        self.generate_zpk()
 
     def generate_title(self) -> str:
         """

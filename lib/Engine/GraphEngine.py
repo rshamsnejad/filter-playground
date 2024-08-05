@@ -26,14 +26,27 @@ class GraphEngine(QObject):
         self.fs = 48000
         self.frequency_points = 5000
 
-    def compute(self) -> None:
+    def compute_specific(self) -> None:
         """
-        Compute the filter data based on the parameters.
+        Compute the specific filter data based on the parameters.
 
         Must be implemented by child classes
         """
 
         raise NotImplementedError
+
+    def compute(self) -> None:
+        """
+        Computes the generic data after the specific data
+        """
+
+        self.compute_specific()
+
+        self.remove_phase_discontinuities()
+        self.wrap_phase()
+
+        self.generate_zpk()
+        self.compute_group_delay()
 
     def generate_title(self) -> str:
         """
@@ -111,3 +124,10 @@ class GraphEngine(QObject):
         """
 
         self.z, self.p, self.k = sos2zpk(self.sos)
+
+    def compute_group_delay(self) -> None:
+
+        group_delay = -np.diff(np.unwrap(np.angle(self.filter['magnitude']))) / np.diff(self.filter['frequencies'])
+        group_delay_ms = group_delay * 1000
+
+        self.filter['group_delay_ms'] = group_delay_ms

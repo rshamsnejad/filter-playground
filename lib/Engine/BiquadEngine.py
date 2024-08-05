@@ -151,9 +151,9 @@ class BiquadEngine(GraphEngine):
 
         return self.Q
 
-    def compute(self) -> None:
+    def compute_specific(self) -> None:
         """
-        Compute the filter data based on the parameters.
+        Compute the specific filter data based on the parameters.
 
         References :
             * https://webaudio.github.io/Audio-EQ-Cookbook/audio-eq-cookbook.html
@@ -248,10 +248,6 @@ class BiquadEngine(GraphEngine):
             "magnitude": mag_db,
             "phase_deg": phase_deg
         }
-
-        self.remove_phase_discontinuities()
-
-        self.generate_zpk()
 
     def generate_title(self) -> str:
         """
