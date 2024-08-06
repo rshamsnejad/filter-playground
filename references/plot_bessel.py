@@ -42,7 +42,7 @@ fs = 48000
 
 frequency_points = np.logspace(0, 5, 1000)
 
-sos = signal.butter(N, f0, 'high', analog=False, fs=fs, output='sos')
+sos = signal.bessel(N, f0, 'high', analog=False, fs=fs, output='sos')
 frequencies, magnitude = signal.sosfreqz(sos, worN=frequency_points, fs=fs)
 
 mag_db = 20 * np.log10(abs(magnitude))
