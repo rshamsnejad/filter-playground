@@ -36,7 +36,7 @@ def remove_phase_discontinuities(phase: list) -> list:
 
     return phase_nan
 
-N = 24
+N = 2
 f0 = 1000
 fs = 48000
 
@@ -49,8 +49,9 @@ mag_db = 20 * np.log10(abs(magnitude))
 phase_deg = np.angle(magnitude, deg=True)
 phase_deg_nan = remove_phase_discontinuities(phase_deg)
 
-# freq_gd, gd = signal.group_delay(signal.sos2tf(sos), frequency_points, fs=fs)
-group_delay = -np.diff(np.unwrap(np.angle(magnitude))) / np.diff(frequencies)
+# freq_gd, group_delay = signal.group_delay(signal.sos2tf(sos), frequency_points, fs=fs)
+# group_delay_ms = group_delay * 1000 / fs
+group_delay = -np.diff(np.unwrap(np.angle(magnitude))) / np.diff(2 * np.pi * frequencies)
 group_delay_ms = group_delay * 1000
 
 plot_freq_range     = [20, 20e3]
@@ -86,6 +87,8 @@ axs[1].yaxis.label.set_color('C0')
 gd_color = 'salmon'
 gd_ax = axs[1].twinx()
 gd_ax.set_ylabel("Group delay [ms]")
+gd_ax.set_ylim(0, np.max(group_delay_ms))
+# gd_ax.semilogx(freq_gd, group_delay_ms, color=gd_color)
 gd_ax.semilogx(frequencies[:-1], group_delay_ms, color=gd_color)
 gd_ax.tick_params(axis='y', colors=gd_color)
 gd_ax.yaxis.label.set_color(gd_color)

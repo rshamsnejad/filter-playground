@@ -165,7 +165,7 @@ class GraphEngine(QObject):
 
         group_delay = (
             -np.diff(np.unwrap(self.get_phase_rad()))
-            / np.diff(self.get_frequencies())
+            / np.diff(2 * np.pi * self.get_frequencies())
         )
         group_delay_ms = group_delay * 1000
 
