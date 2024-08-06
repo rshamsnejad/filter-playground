@@ -181,7 +181,7 @@ class BiquadEngine(GraphEngine):
                 self.sos = tf2sos(b, a)
 
             case "lowpass":
-                b = [ (1 - cos(self.w0)) / 2, 1 - cos(self.w0), (1 - cos(self.w0) / 2) ]
+                b = [ (1 - cos(self.w0)) / 2, 1 - cos(self.w0), (1 - cos(self.w0)) / 2 ]
                 a = [ 1 + self.alpha, -2 * cos(self.w0), 1 - self.alpha ]
                 self.sos = tf2sos(b, a)
 
