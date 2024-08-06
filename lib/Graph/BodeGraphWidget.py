@@ -95,11 +95,11 @@ class BodeGraphWidget(GraphWidget):
 
         self.magnitude_graph.set_data(
             self.engine.get_frequencies(),
-            self.engine.get_magnitude()
+            self.engine.get_magnitude_db()
         )
         self.phase_graph.set_data(
             self.engine.get_frequencies(),
-            self.engine.get_phase_nan()
+            self.engine.get_phase_deg_nan()
         )
 
         self.update_axvlines()

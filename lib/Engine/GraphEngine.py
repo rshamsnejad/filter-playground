@@ -18,6 +18,8 @@ class GraphEngine(QObject):
         self.filter = {
             "frequencies": [],
             "magnitude": [],
+            "magnitude_db": [],
+            "phase_rad": [],
             "phase_deg": [],
             "phase_deg_nan": [],
             "group_delay_ms": []
@@ -68,19 +70,53 @@ class GraphEngine(QObject):
     def get_magnitude(self) -> list[float]:
         """
         Returns:
-            list[float]: The Y axis magnitude values
+            list[float]: The Y axis complex magnitude values
         """
 
         return self.filter['magnitude']
 
-    def get_phase_nan(self) -> list[float]:
+    def get_magnitude_db(self) -> list[float]:
+        """
+        Returns:
+            list[float]: The Y axis real magnitude values in dB
+        """
+
+        return self.filter['magnitude_db']
+
+    def get_phase_rad(self) -> list[float]:
         """
         Returns:
             list[float]:
-                The Y axis phase values without discontinuities
+                The Y axis phase values in radians
+        """
+
+        return self.filter['phase_rad']
+
+    def get_phase_deg(self) -> list[float]:
+        """
+        Returns:
+            list[float]:
+                The Y axis phase values in degrees
+        """
+
+        return self.filter['phase_deg']
+
+    def get_phase_deg_nan(self) -> list[float]:
+        """
+        Returns:
+            list[float]:
+                The Y axis phase values in degrees without discontinuities
         """
 
         return self.filter['phase_deg_nan']
+
+    def get_group_delay_ms(self) -> list[float]:
+        """
+        Returns:
+            list[float]: The Y axis group delay values
+        """
+
+        return self.filter['group_delay_ms']
 
     def remove_phase_discontinuities(self) -> None:
         """
@@ -127,7 +163,10 @@ class GraphEngine(QObject):
 
     def compute_group_delay(self) -> None:
 
-        group_delay = -np.diff(np.unwrap(np.angle(self.filter['magnitude']))) / np.diff(self.filter['frequencies'])
+        group_delay = (
+            -np.diff(np.unwrap(self.get_phase_rad()))
+            / np.diff(self.get_frequencies())
+        )
         group_delay_ms = group_delay * 1000
 
         self.filter['group_delay_ms'] = group_delay_ms

@@ -34,11 +34,14 @@ class SumEngine(GraphEngine):
         frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.fs)
 
         mag_db = 20 * np.log10(abs(magnitude))
+        phase_rad = np.angle(magnitude, deg=False)
         phase_deg = np.angle(magnitude, deg=True)
 
         self.filter = {
             "frequencies": frequencies,
-            "magnitude": mag_db,
+            "magnitude": magnitude,
+            "magnitude_db": mag_db,
+            "phase_rad": phase_rad,
             "phase_deg": phase_deg
         }
 
