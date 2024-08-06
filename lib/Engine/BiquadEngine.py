@@ -151,9 +151,9 @@ class BiquadEngine(GraphEngine):
 
         return self.Q
 
-    def compute(self) -> None:
+    def compute_specific(self) -> None:
         """
-        Compute the filter data based on the parameters.
+        Compute the specific filter data based on the parameters.
 
         References :
             * https://webaudio.github.io/Audio-EQ-Cookbook/audio-eq-cookbook.html
@@ -241,17 +241,16 @@ class BiquadEngine(GraphEngine):
         frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.fs)
 
         mag_db = 20 * log10(abs(magnitude))
+        phase_rad = angle(magnitude, deg=False)
         phase_deg = angle(magnitude, deg=True)
 
         self.filter = {
             "frequencies": frequencies,
-            "magnitude": mag_db,
-            "phase": phase_deg
+            "magnitude": magnitude,
+            "magnitude_db": mag_db,
+            "phase_rad": phase_rad,
+            "phase_deg": phase_deg
         }
-
-        self.remove_phase_discontinuities()
-
-        self.generate_zpk()
 
     def generate_title(self) -> str:
         """
