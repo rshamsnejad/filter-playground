@@ -63,7 +63,6 @@ class BodeGraphWidget(GraphWidget):
         self.axs[0].set_xlim(freq_range)
         self.axs[0].set_ylabel('Gain [dB]')
         self.axs[0].set_ylim(mag_range)
-        self.axs[0].margins(0, 0.1)
         self.axs[0].grid(which='both', axis='both')
 
         self.axline_mag = [
@@ -76,7 +75,6 @@ class BodeGraphWidget(GraphWidget):
         self.axs[1].set_xlim(freq_range)
         self.axs[1].set_ylabel('Phase [°]')
         self.axs[1].set_ylim(phase_range)
-        self.axs[1].margins(0, 0.1)
         self.axs[1].grid(which='both', axis='both')
 
         phase_color = 'C0'
