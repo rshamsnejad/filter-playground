@@ -1,6 +1,5 @@
 # Filter playground backlog
 
+* Add ripple/passband input fields
 * Fix bode plot margins
-* Add other filter types
-* Add biquad high/lowpass
 * Clarify cascading/summing for the output

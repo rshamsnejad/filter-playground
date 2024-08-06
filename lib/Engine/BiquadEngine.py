@@ -1,5 +1,5 @@
 from lib.Engine.GraphEngine import GraphEngine
-from scipy.signal import butter, sosfreqz, tf2sos
+from scipy.signal import butter, bessel, cheby1, cheby2, ellip, sosfreqz, tf2sos
 from numpy import log10, angle, pi, sin, cos, sqrt, tan
 
 class BiquadEngine(GraphEngine):
@@ -51,8 +51,18 @@ class BiquadEngine(GraphEngine):
             "lowpass",
             "allpass",
             "peak",
+            "lowshelf",
             "highshelf",
-            "lowshelf"
+            "butterworth highpass",
+            "butterworth lowpass",
+            "bessel highpass",
+            "bessel lowpass",
+            "chebyshev i highpass",
+            "chebyshev i lowpass",
+            "chebyshev ii highpass",
+            "chebyshev ii lowpass",
+            "elliptic highpass",
+            "elliptic lowpass"
         ]:
             self.filtertype = "highpass"
             raise ValueError("Incorrect filter type")
@@ -165,8 +175,15 @@ class BiquadEngine(GraphEngine):
         self.A = 10**(self.get_gain() / 40)
 
         match self.get_filtertype().lower():
-            case "highpass" | "lowpass":
-                self.sos = butter(self.get_order(), self.get_frequency(), self.get_filtertype(), fs=self.fs, output='sos')
+            case "highpass":
+                b = [ (1 + cos(self.w0)) / 2, -(1 + cos(self.w0)), (1 + cos(self.w0)) / 2 ]
+                a = [ 1 + self.alpha, -2 * cos(self.w0), 1 - self.alpha ]
+                self.sos = tf2sos(b, a)
+
+            case "lowpass":
+                b = [ (1 - cos(self.w0)) / 2, 1 - cos(self.w0), (1 - cos(self.w0) / 2) ]
+                a = [ 1 + self.alpha, -2 * cos(self.w0), 1 - self.alpha ]
+                self.sos = tf2sos(b, a)
 
             case "allpass":
                 coeff1 = (tan(pi * self.get_frequency()/self.fs) - 1) / (tan(pi * self.get_frequency()/self.fs) + 1)
@@ -209,19 +226,6 @@ class BiquadEngine(GraphEngine):
                 ]
                 self.sos = tf2sos(b, a)
 
-            case "highshelf":
-                b = [
-                    self.A * ( self.A + 1 + (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha ),
-                    -2 * self.A * ( self.A - 1 + (self.A + 1) * cos(self.w0) ),
-                    self.A * ( self.A + 1 + (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha )
-                ]
-                a = [
-                    self.A + 1 - (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha,
-                    2 * ( self.A - 1 - (self.A + 1) * cos(self.w0) ),
-                    self.A + 1 - (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha
-                ]
-                self.sos = tf2sos(b, a)
-
             case "lowshelf":
                 b = [
                     self.A * ( self.A + 1 - (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha ),
@@ -234,6 +238,74 @@ class BiquadEngine(GraphEngine):
                     self.A + 1 + (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha
                 ]
                 self.sos = tf2sos(b, a)
+
+            case "highshelf":
+                b = [
+                    self.A * ( self.A + 1 + (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha ),
+                    -2 * self.A * ( self.A - 1 + (self.A + 1) * cos(self.w0) ),
+                    self.A * ( self.A + 1 + (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha )
+                ]
+                a = [
+                    self.A + 1 - (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha,
+                    2 * ( self.A - 1 - (self.A + 1) * cos(self.w0) ),
+                    self.A + 1 - (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha
+                ]
+                self.sos = tf2sos(b, a)
+            
+            case "butterworth highpass" | "butterworth lowpass":
+                self.sos = butter(
+                    N=self.get_order(),
+                    Wn=self.get_frequency(),
+                    btype=self.get_filtertype().lower().replace("butterworth ", ""),
+                    analog=False,
+                    output='sos',
+                    fs=self.fs
+                )
+
+            case "bessel highpass" | "bessel lowpass":
+                self.sos = bessel(
+                    N=self.get_order(),
+                    Wn=self.get_frequency(),
+                    btype=self.get_filtertype().lower().replace("bessel ", ""),
+                    analog=False,
+                    output='sos',
+                    norm='mag',
+                    fs=self.fs
+                )
+
+            case "chebyshev i highpass" | "chebyshev i lowpass":
+                self.sos = cheby1(
+                    N=self.get_order(),
+                    rp=2,
+                    Wn=self.get_frequency(),
+                    btype=self.get_filtertype().lower().replace("chebyshev i ", ""),
+                    analog=False,
+                    output='sos',
+                    fs=self.fs
+                )
+
+            case "chebyshev ii highpass" | "chebyshev ii lowpass":
+                self.sos = cheby2(
+                    N=self.get_order(),
+                    rs=30,
+                    Wn=self.get_frequency(),
+                    btype=self.get_filtertype().lower().replace("chebyshev ii ", ""),
+                    analog=False,
+                    output='sos',
+                    fs=self.fs
+                )
+
+            case "elliptic highpass" | "elliptic lowpass":
+                self.sos = ellip(
+                    N=self.get_order(),
+                    rp=2,
+                    rs=30,
+                    Wn=self.get_frequency(),
+                    btype=self.get_filtertype().lower().replace("elliptic ", ""),
+                    analog=False,
+                    output='sos',
+                    fs=self.fs
+                )
 
             case _:
                 raise ValueError("Unknown filter type")
@@ -259,10 +331,7 @@ class BiquadEngine(GraphEngine):
 
         match self.get_filtertype().lower():
             case "highpass" | "lowpass":
-                type_string = (
-                    f"Butterworth {self.get_filtertype().lower()} filter"
-                    # f", order {self.get_order()}"
-                )
+                type_string = f"Biquad {self.get_filtertype().lower()} filter"
 
             case "allpass":
                 type_string = (
@@ -273,11 +342,19 @@ class BiquadEngine(GraphEngine):
             case "peak":
                 type_string = "Biquad peaking EQ"
 
-            case "highshelf":
-                type_string = "Biquad high shelf"
-
             case "lowshelf":
-                type_string = "Biquad low shelf"
+                type_string = "Biquad low shelf EQ"
+
+            case "highshelf":
+                type_string = "Biquad high shelf EQ"
+
+            case "bessel highpass" | "bessel lowpass" \
+                | "butterworth highpass" | "butterworth lowpass" \
+                | "chebyshev i highpass" | "chebyshev i lowpass" \
+                | "chebyshev ii highpass" | "chebyshev ii lowpass" \
+                | "elliptic highpass" | "elliptic lowpass":
+                type_string = f"{self.get_filtertype()} filter"
+            
 
             case _:
                 raise ValueError("Unknown filter type")

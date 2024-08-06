@@ -118,12 +118,12 @@ class InputFilterWidget(QWidget):
 
         match self.dualgraph.engine.get_filtertype().lower():
             case "highpass" | "lowpass":
-                self.filter_toolbar.filter_parameters.field_order.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_order.setValue(2)
+                self.filter_toolbar.filter_parameters.field_order.setDisabled(True)
                 self.filter_toolbar.filter_parameters.field_frequency.setDisabled(False)
                 self.filter_toolbar.filter_parameters.field_gain.setValue(0)
                 self.filter_toolbar.filter_parameters.field_gain.setDisabled(True)
-                self.filter_toolbar.filter_parameters.field_Q.setValue(0.71)
-                self.filter_toolbar.filter_parameters.field_Q.setDisabled(True)
+                self.filter_toolbar.filter_parameters.field_Q.setDisabled(False)
 
             case "allpass":
                 self.filter_toolbar.filter_parameters.field_order.setDisabled(False)
@@ -138,6 +138,18 @@ class InputFilterWidget(QWidget):
                 self.filter_toolbar.filter_parameters.field_frequency.setDisabled(False)
                 self.filter_toolbar.filter_parameters.field_gain.setDisabled(False)
                 self.filter_toolbar.filter_parameters.field_Q.setDisabled(False)
+
+            case "bessel highpass" | "bessel lowpass" \
+                | "butterworth highpass" | "butterworth lowpass" \
+                | "chebyshev i highpass" | "chebyshev i lowpass" \
+                | "chebyshev ii highpass" | "chebyshev ii lowpass" \
+                | "elliptic highpass" | "elliptic lowpass":
+                self.filter_toolbar.filter_parameters.field_order.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_frequency.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_gain.setValue(0)
+                self.filter_toolbar.filter_parameters.field_gain.setDisabled(True)
+                self.filter_toolbar.filter_parameters.field_Q.setValue(0.71)
+                self.filter_toolbar.filter_parameters.field_Q.setDisabled(True)
 
             case _:
                 raise ValueError("Unknown filter type")

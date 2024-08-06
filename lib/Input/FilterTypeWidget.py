@@ -16,8 +16,18 @@ class FilterTypeWidget(QGroupBox):
             "Lowpass",
             "Allpass",
             "Peak",
+            "Lowshelf",
             "Highshelf",
-            "Lowshelf"
+            "Butterworth Highpass",
+            "Butterworth Lowpass",
+            "Bessel Highpass",
+            "Bessel Lowpass",
+            "Chebyshev I Highpass",
+            "Chebyshev I Lowpass",
+            "Chebyshev II Highpass",
+            "Chebyshev II Lowpass",
+            "Elliptic Highpass",
+            "Elliptic Lowpass"
         ],
         *args, **kwargs
     ) -> None:
