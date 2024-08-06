@@ -119,7 +119,13 @@ class BodeGraphWidget(GraphWidget):
             self.engine.get_frequencies()[:-1],
             self.engine.get_group_delay_ms()
         )
-        self.gd_ax.set_ylim(0, np.max(self.engine.get_group_delay_ms()))
+
+        # Drop first group delay point for determining the maximum
+        # as it is garbage and can be way too high
+        gd_max =  np.max(self.engine.get_group_delay_ms()[1:])
+        ylim_max = gd_max + (gd_max / 10)
+
+        self.gd_ax.set_ylim(0, ylim_max)
 
         self.update_axvlines()
 
