@@ -3,6 +3,8 @@ from matplotlib.ticker import ScalarFormatter
 from lib.Graph.GraphWidget import GraphWidget
 from lib.Engine.GraphEngine import GraphEngine
 
+import numpy as np
+
 class BodeGraphWidget(GraphWidget):
     """
     Base class for displaying a matplotlib graph with toolbar.
@@ -77,6 +79,18 @@ class BodeGraphWidget(GraphWidget):
         self.axs[1].margins(0, 0.1)
         self.axs[1].grid(which='both', axis='both')
 
+        phase_color = 'C0'
+        self.axs[1].tick_params(axis='y', colors=phase_color)
+        self.axs[1].yaxis.label.set_color(phase_color)
+
+        gd_color = 'salmon'
+        self.gd_ax = self.axs[1].twinx()
+        self.gd_ax.set_ylabel("Group delay [ms]")
+        self.gd_ax.set_ylim([0, 10])
+        self.gd_graph, = self.gd_ax.semilogx([], [], color=gd_color)
+        self.gd_ax.tick_params(axis='y', colors=gd_color)
+        self.gd_ax.yaxis.label.set_color(gd_color)
+
         self.axline_phase = [
             self.axs[1].axvline(0, linestyle='--', color='red')
         ]
@@ -101,6 +115,11 @@ class BodeGraphWidget(GraphWidget):
             self.engine.get_frequencies(),
             self.engine.get_phase_deg_nan()
         )
+        self.gd_graph.set_data(
+            self.engine.get_frequencies()[:-1],
+            self.engine.get_group_delay_ms()
+        )
+        self.gd_ax.set_ylim(0, np.max(self.engine.get_group_delay_ms()))
 
         self.update_axvlines()
 
