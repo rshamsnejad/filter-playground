@@ -8,7 +8,7 @@ from lib.Graph.DualGraphWidget import DualGraphWidget
 from lib.Output.OutputBodeGraphWidget import OutputBodeGraphWidget
 
 
-class InputWidget(QTabWidget):
+class CascadeWidget(QTabWidget):
     """
     Qt widget for the input filters
     """
