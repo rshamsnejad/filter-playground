@@ -19,7 +19,12 @@ class InputWidget(QWidget):
 
         self.setLayout(QVBoxLayout())
 
-        self.cascade_widgets = [CascadeWidget(self.output_widget), CascadeWidget(self.output_widget)]
+        self.cascade_widgets = []
+        
+        for i in range(2):
+            self.cascade_widgets.append(
+                CascadeWidget(self.output_widget, 2)
+            )
 
         for widget in self.cascade_widgets:
             self.layout().addWidget(widget)

@@ -1,11 +1,9 @@
-from ast import In
 from PyQt6.QtWidgets import (
     QWidget,
     QHBoxLayout,
     QScrollArea
 )
 
-from lib.Input.CascadeWidget import CascadeWidget
 from lib.Output.OutputWidget import OutputWidget
 from lib.Engine.CascadeEngine import CascadeEngine
 from lib.Input.InputWidget import InputWidget
@@ -29,9 +27,9 @@ class MainWidget(QWidget):
             for filter in cascade_widget.input_filters:
                 input_engines.append(filter.engine)
 
-        self.output_widget.output_dualgraph.set_engine(
-            CascadeEngine(input_engines)
-        )
+        engine = CascadeEngine()
+        engine.set_input_engines(input_engines)
+        self.output_widget.output_dualgraph.set_engine(engine)
 
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidget(self.input_widget)

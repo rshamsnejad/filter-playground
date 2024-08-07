@@ -2,9 +2,8 @@ from PyQt6.QtWidgets import (
     QTabWidget,
     QWidget
 )
-from lib.Input.InputBodeGraphWidget import InputBodeGraphWidget
 from lib.Graph.PolezeroGraphWidget import PolezeroGraphWidget
-from lib.Engine.GraphEngine import GraphEngine
+from lib.Graph.BodeGraphWidget import BodeGraphWidget
 
 class ThreeTabWidget(QTabWidget):
     """
@@ -14,7 +13,7 @@ class ThreeTabWidget(QTabWidget):
     def __init__(self,
         first_tab_widget: QWidget,
         first_tab_label: str,
-        engine: GraphEngine,
+        bode_graph_widget: BodeGraphWidget,
         *args, **kwargs
     ) -> None:
         """
@@ -24,13 +23,9 @@ class ThreeTabWidget(QTabWidget):
 
         super().__init__(*args, **kwargs)
 
-        self.engine = engine
-
         self.first_tab_widget = first_tab_widget
-        self.bode_graph = InputBodeGraphWidget()
-        self.bode_graph.set_engine(self.engine)
+        self.bode_graph = bode_graph_widget
         self.polezero_graph = PolezeroGraphWidget()
-        self.polezero_graph.set_engine(self.engine)
 
         self.addTab(self.first_tab_widget, first_tab_label)
         self.addTab(self.bode_graph, "Bode plot")

@@ -1,5 +1,6 @@
 import logging
 from lib.Graph.ThreeTabWidget import ThreeTabWidget
+from lib.Engine.BiquadEngine import BiquadEngine
 
 class InputFilterWidget(ThreeTabWidget):
     """
@@ -8,6 +9,7 @@ class InputFilterWidget(ThreeTabWidget):
 
     def __init__(self,
         id: int,
+        engine: BiquadEngine,
         *args, **kwargs
     ) -> None:
         """
@@ -18,9 +20,13 @@ class InputFilterWidget(ThreeTabWidget):
         super().__init__(*args, **kwargs)
 
         self.id = id
+        self.engine = engine
 
         self.filter_toolbar = self.first_tab_widget
         self.filter_toolbar.setFixedHeight(165)
+
+        self.bode_graph.set_engine(self.engine)
+        self.polezero_graph.set_engine(self.engine)
 
         self.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.handle_type)
         self.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.handle_order)

@@ -7,17 +7,18 @@ class CascadeEngine(GraphEngine):
     Child class to compute the output convolution
     """
 
-    def __init__(self,
-        input_engines: list[GraphEngine],
-        *args, **kwargs
+    def __init__(self, *args, **kwargs) -> None:
+
+        super().__init__(*args, **kwargs)
+
+    def set_input_engines(self,
+        input_engines: list[GraphEngine]
     ) -> None:
         """
         Args:
             input_engines (list[GraphEngine]):
                 List of references to the input cell's engines
         """
-
-        super().__init__(*args, **kwargs)
 
         self.input_engines = input_engines
 

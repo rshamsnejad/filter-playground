@@ -4,11 +4,12 @@ from PyQt6.QtWidgets import (
 from lib.Engine.CascadeEngine import CascadeEngine
 from lib.Engine.BiquadEngine import BiquadEngine
 from lib.Input.InputFilterWidget import InputFilterWidget
+from lib.Input.InputBodeGraphWidget import InputBodeGraphWidget
 from lib.Input.FilterToolbarWidget import FilterToolbarWidget
-from lib.Graph.DualGraphWidget import DualGraphWidget
+from lib.Input.CascadeFilterWidget import CascadeFilterWidget
+from lib.Input.CascadeToolbarWidget import CascadeToolbarWidget
 from lib.Output.OutputBodeGraphWidget import OutputBodeGraphWidget
 from lib.Output.OutputWidget import OutputWidget
-
 
 class CascadeWidget(QTabWidget):
     """
@@ -37,15 +38,25 @@ class CascadeWidget(QTabWidget):
 
         self.input_filters = []
         for i in range(self.initial_amount):
-            self.input_filters.append(InputFilterWidget(i + 1, FilterToolbarWidget(i + 1), "Parameters", BiquadEngine()))
+            self.input_filters.append(
+                InputFilterWidget(
+                    i + 1,
+                    BiquadEngine(),
+                    FilterToolbarWidget(i + 1),
+                    "Parameters",
+                    InputBodeGraphWidget()
+                )
+            )
 
         self.hidden_filters = 0
 
-        self.cascade_widget = DualGraphWidget(OutputBodeGraphWidget())
-        self.cascade_widget.set_engine(
-            CascadeEngine([filter.engine for filter in self.input_filters])
+        self.cascade_widget = CascadeFilterWidget(
+            self.input_filters,
+            CascadeEngine(),
+            CascadeToolbarWidget(),
+            "Parameters",
+            OutputBodeGraphWidget(),
         )
-
         self.addTab(self.cascade_widget, "Cascade")
 
         currentTab = 1
