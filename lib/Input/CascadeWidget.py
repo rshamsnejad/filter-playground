@@ -2,10 +2,12 @@ from PyQt6.QtWidgets import (
     QTabWidget,
 )
 from lib.Engine.CascadeEngine import CascadeEngine
+from lib.Engine.BiquadEngine import BiquadEngine
 from lib.Input.InputFilterWidget import InputFilterWidget
-from lib.Output.OutputWidget import OutputWidget
+from lib.Input.FilterToolbarWidget import FilterToolbarWidget
 from lib.Graph.DualGraphWidget import DualGraphWidget
 from lib.Output.OutputBodeGraphWidget import OutputBodeGraphWidget
+from lib.Output.OutputWidget import OutputWidget
 
 
 class CascadeWidget(QTabWidget):
@@ -35,7 +37,7 @@ class CascadeWidget(QTabWidget):
 
         self.input_filters = []
         for i in range(self.initial_amount):
-            self.input_filters.append(InputFilterWidget(i + 1))
+            self.input_filters.append(InputFilterWidget(i + 1, FilterToolbarWidget(i + 1), "Parameters", BiquadEngine()))
 
         self.hidden_filters = 0
 

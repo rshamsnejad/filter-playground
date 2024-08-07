@@ -1,18 +1,15 @@
 import logging
-from PyQt6.QtWidgets import (
-    QTabWidget
-)
-from lib.Input.FilterToolbarWidget import FilterToolbarWidget
-from lib.Input.InputBodeGraphWidget import InputBodeGraphWidget
-from lib.Graph.PolezeroGraphWidget import PolezeroGraphWidget
-from lib.Engine.BiquadEngine import BiquadEngine
+from lib.Input.ThreeTabWidget import ThreeTabWidget
 
-class InputFilterWidget(QTabWidget):
+class InputFilterWidget(ThreeTabWidget):
     """
     Qt widget containing an input cell's toolbar and graph
     """
 
-    def __init__(self, id: int, *args, **kwargs) -> None:
+    def __init__(self,
+        id: int,
+        *args, **kwargs
+    ) -> None:
         """
         Args:
             id (int): The number of the filter to display
@@ -22,18 +19,8 @@ class InputFilterWidget(QTabWidget):
 
         self.id = id
 
-        self.engine = BiquadEngine()
-
-        self.filter_toolbar = FilterToolbarWidget(self.id)
+        self.filter_toolbar = self.first_tab_widget
         self.filter_toolbar.setFixedHeight(165)
-        self.bode_graph = InputBodeGraphWidget()
-        self.bode_graph.set_engine(self.engine)
-        self.polezero_graph = PolezeroGraphWidget()
-        self.polezero_graph.set_engine(self.engine)
-
-        self.addTab(self.filter_toolbar, "Filter parameters")
-        self.addTab(self.bode_graph, "Bode plot")
-        self.addTab(self.polezero_graph, "Pole-zero map")
 
         self.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.handle_type)
         self.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.handle_order)
@@ -42,12 +29,6 @@ class InputFilterWidget(QTabWidget):
         self.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.handle_Q)
 
         self.disable_unused_fields()
-
-    def compute_and_update(self) -> None:
-
-        self.engine.compute()
-        self.bode_graph.update_graph()
-        self.polezero_graph.update_graph()
 
     def handle_type(self, filter_type: str) -> None:
         """
