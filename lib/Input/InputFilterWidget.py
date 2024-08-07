@@ -1,14 +1,13 @@
 import logging
 from PyQt6.QtWidgets import (
-    QWidget,
-    QVBoxLayout
+    QTabWidget
 )
 from lib.Input.FilterToolbarWidget import FilterToolbarWidget
-from lib.Graph.DualGraphWidget import DualGraphWidget
 from lib.Input.InputBodeGraphWidget import InputBodeGraphWidget
+from lib.Graph.PolezeroGraphWidget import PolezeroGraphWidget
 from lib.Engine.BiquadEngine import BiquadEngine
 
-class InputFilterWidget(QWidget):
+class InputFilterWidget(QTabWidget):
     """
     Qt widget containing an input cell's toolbar and graph
     """
@@ -23,14 +22,18 @@ class InputFilterWidget(QWidget):
 
         self.id = id
 
-        self.setLayout(QVBoxLayout())
+        self.engine = BiquadEngine()
 
         self.filter_toolbar = FilterToolbarWidget(self.id)
         self.filter_toolbar.setFixedHeight(165)
-
         self.bode_graph = InputBodeGraphWidget()
-        self.dualgraph = DualGraphWidget(self.bode_graph)
-        self.dualgraph.set_engine(BiquadEngine())
+        self.bode_graph.set_engine(self.engine)
+        self.polezero_graph = PolezeroGraphWidget()
+        self.polezero_graph.set_engine(self.engine)
+
+        self.addTab(self.filter_toolbar, "Filter parameters")
+        self.addTab(self.bode_graph, "Bode plot")
+        self.addTab(self.polezero_graph, "Pole-zero map")
 
         self.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.handle_type)
         self.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.handle_order)
@@ -38,10 +41,13 @@ class InputFilterWidget(QWidget):
         self.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.handle_gain)
         self.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.handle_Q)
 
-        self.layout().addWidget(self.filter_toolbar)
-        self.layout().addWidget(self.dualgraph)
-
         self.disable_unused_fields()
+
+    def compute_and_update(self) -> None:
+
+        self.engine.compute()
+        self.bode_graph.update_graph()
+        self.polezero_graph.update_graph()
 
     def handle_type(self, filter_type: str) -> None:
         """
@@ -50,13 +56,13 @@ class InputFilterWidget(QWidget):
         """
 
         try:
-            self.dualgraph.engine.set_filtertype(filter_type or 'highpass')
+            self.engine.set_filtertype(filter_type or 'highpass')
         except ValueError as e:
             logging.warning(e)
 
         self.disable_unused_fields()
 
-        self.dualgraph.compute_and_update()
+        self.compute_and_update()
 
     def handle_order(self, order: int) -> None:
         """
@@ -65,11 +71,11 @@ class InputFilterWidget(QWidget):
         """
 
         try:
-            self.dualgraph.engine.set_order(order or 1)
+            self.engine.set_order(order or 1)
         except ValueError as e:
             logging.warning(e)
 
-        self.dualgraph.compute_and_update()
+        self.compute_and_update()
 
     def handle_frequency(self, frequency: int) -> None:
         """
@@ -78,11 +84,11 @@ class InputFilterWidget(QWidget):
         """
 
         try:
-            self.dualgraph.engine.set_frequency(frequency or 1000)
+            self.engine.set_frequency(frequency or 1000)
         except ValueError as e:
             logging.warning(e)
 
-        self.dualgraph.compute_and_update()
+        self.compute_and_update()
 
     def handle_gain(self, gain: float) -> None:
         """
@@ -91,11 +97,11 @@ class InputFilterWidget(QWidget):
         """
 
         try:
-            self.dualgraph.engine.set_gain(gain or 0)
+            self.engine.set_gain(gain or 0)
         except ValueError as e:
             logging.warning(e)
 
-        self.dualgraph.compute_and_update()
+        self.compute_and_update()
 
     def handle_Q(self, Q: float) -> None:
         """
@@ -104,11 +110,11 @@ class InputFilterWidget(QWidget):
         """
 
         try:
-            self.dualgraph.engine.set_Q(Q or 0.71)
+            self.engine.set_Q(Q or 0.71)
         except ValueError as e:
             logging.warning(e)
 
-        self.dualgraph.compute_and_update()
+        self.compute_and_update()
 
     def disable_unused_fields(self) -> None:
         """
@@ -116,7 +122,7 @@ class InputFilterWidget(QWidget):
         on the filter type, and sets suitable default values
         """
 
-        match self.dualgraph.engine.get_filtertype().lower():
+        match self.engine.get_filtertype().lower():
             case "highpass" | "lowpass":
                 self.filter_toolbar.filter_parameters.field_order.setValue(2)
                 self.filter_toolbar.filter_parameters.field_order.setDisabled(True)
