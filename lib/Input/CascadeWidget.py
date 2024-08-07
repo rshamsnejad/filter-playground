@@ -38,22 +38,14 @@ class CascadeWidget(QTabWidget):
 
         self.input_filters = []
         for i in range(self.initial_amount):
-            self.input_filters.append(
-                InputFilterWidget(
-                    i + 1,
-                    BiquadEngine(),
-                    FilterToolbarWidget(i + 1),
-                    "Parameters",
-                    InputBodeGraphWidget()
-                )
-            )
+            self.add_input_filter(i + 1)
 
         self.hidden_filters = 0
 
         self.cascade_widget = CascadeFilterWidget(
             self.input_filters,
             CascadeEngine(),
-            CascadeToolbarWidget(),
+            CascadeToolbarWidget(self.update_input_filter_amount),
             "Parameters",
             OutputBodeGraphWidget(),
         )
@@ -74,6 +66,21 @@ class CascadeWidget(QTabWidget):
             filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.cascade_widget.compute_and_update)
             filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.cascade_widget.compute_and_update)
             currentTab += 1
+
+    def add_input_filter(self, id: int) -> InputFilterWidget:
+
+            self.input_filters.append(
+                InputFilterWidget(
+                    id,
+                    BiquadEngine(),
+                    FilterToolbarWidget(id),
+                    "Parameters",
+                    InputBodeGraphWidget()
+                )
+            )
+
+            return self.input_filters[-1]
+
 
     def update_input_filter_amount(self) -> None:
         """
@@ -101,7 +108,7 @@ class CascadeWidget(QTabWidget):
 
                 # Otherwise create a new one
                 else:
-                    filter = InputFilterWidget(i)
+                    filter = self.add_input_filter(i)
                     filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
                     filter.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
                     filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
