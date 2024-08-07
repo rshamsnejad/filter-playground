@@ -1,5 +1,5 @@
 import logging
-from lib.Input.ThreeTabWidget import ThreeTabWidget
+from lib.Graph.ThreeTabWidget import ThreeTabWidget
 
 class InputFilterWidget(ThreeTabWidget):
     """
