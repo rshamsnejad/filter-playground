@@ -79,6 +79,9 @@ class InputWidget(QTabWidget):
                     self.addTab(filter, f"{i + 1}")
                     widget = filter
 
+                # Focus on the newly appeared tab
+                self.setCurrentIndex(i)
+
                 self.output_widget.output_dualgraph.engine.add_engine(widget.dualgraph.engine)
                 self.output_widget.output_dualgraph.bode_graph.add_axvline()
 
