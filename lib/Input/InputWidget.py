@@ -1,8 +1,11 @@
 from PyQt6.QtWidgets import (
     QTabWidget,
 )
+from lib.Engine.CascadeEngine import CascadeEngine
 from lib.Input.InputFilterWidget import InputFilterWidget
 from lib.Output.OutputWidget import OutputWidget
+from lib.Graph.DualGraphWidget import DualGraphWidget
+from lib.Output.OutputBodeGraphWidget import OutputBodeGraphWidget
 
 
 class InputWidget(QTabWidget):
@@ -36,6 +39,13 @@ class InputWidget(QTabWidget):
 
         self.hidden_filters = 0
 
+        self.cascade_widget = DualGraphWidget(OutputBodeGraphWidget())
+        self.cascade_widget.set_engine(
+            CascadeEngine([filter.engine for filter in self.input_filters])
+        )
+
+        self.addTab(self.cascade_widget, "Cascade")
+
         currentTab = 1
         for filter in self.input_filters:
             self.addTab(filter, f"{currentTab}")
@@ -44,6 +54,12 @@ class InputWidget(QTabWidget):
             filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
             filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
             filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+
+            filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.cascade_widget.compute_and_update)
+            filter.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.cascade_widget.compute_and_update)
+            filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.cascade_widget.compute_and_update)
+            filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.cascade_widget.compute_and_update)
+            filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.cascade_widget.compute_and_update)
             currentTab += 1
 
     def update_input_filter_amount(self) -> None:
@@ -53,14 +69,16 @@ class InputWidget(QTabWidget):
         """
         spinbox = self.sender()
 
-        current_amount = self.count() - self.hidden_filters
+        # -1 for the cascade tab
+        current_amount = self.count() - self.hidden_filters - 1
         new_amount = spinbox.value()
 
         if new_amount == current_amount:
             return
 
         if new_amount > current_amount:
-            for i in range(current_amount, new_amount):
+            # +1 for the cascade tab
+            for i in range(current_amount + 1, new_amount + 1):
                 widget = self.widget(i)
 
                 # If a cell was previously added and hidden, simply show it again
@@ -70,28 +88,40 @@ class InputWidget(QTabWidget):
 
                 # Otherwise create a new one
                 else:
-                    filter = InputFilterWidget(i + 1)
+                    filter = InputFilterWidget(i)
                     filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
                     filter.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
                     filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
                     filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
                     filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-                    self.addTab(filter, f"{i + 1}")
+
+                    filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.cascade_widget.compute_and_update)
+                    filter.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.cascade_widget.compute_and_update)
+                    filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.cascade_widget.compute_and_update)
+                    filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.cascade_widget.compute_and_update)
+                    filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.cascade_widget.compute_and_update)
+                    self.addTab(filter, f"{i}")
                     widget = filter
 
                 # Focus on the newly appeared tab
-                self.setCurrentIndex(i)
+                #self.setCurrentIndex(i)
 
-                self.output_widget.output_dualgraph.engine.add_engine(widget.dualgraph.engine)
+                self.output_widget.output_dualgraph.engine.add_engine(widget.engine)
                 self.output_widget.output_dualgraph.bode_graph.add_axvline()
+                self.cascade_widget.engine.add_engine(widget.engine)
+                self.cascade_widget.bode_graph.add_axvline()
 
         elif new_amount < current_amount:
-            for i in range(new_amount, current_amount):
+            # +1 for the cascade tab
+            for i in range(new_amount + 1, current_amount + 1):
                 self.setTabVisible(i, False)
                 self.hidden_filters += 1
 
                 self.output_widget.output_dualgraph.engine.remove_last_engine()
                 self.output_widget.output_dualgraph.bode_graph.remove_last_axvline()
+                self.cascade_widget.engine.remove_last_engine()
+                self.cascade_widget.bode_graph.remove_last_axvline()
 
         self.output_widget.output_dualgraph.compute_and_update()
+        self.cascade_widget.compute_and_update()
 
