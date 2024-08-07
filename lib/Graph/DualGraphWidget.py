@@ -30,5 +30,6 @@ class DualGraphWidget(QTabWidget):
 
     def compute_and_update(self) -> None:
 
-        self.bode_graph.compute_and_update()
-        self.polezero_graph.compute_and_update()
+        self.engine.compute()
+        self.bode_graph.update_graph()
+        self.polezero_graph.update_graph()
