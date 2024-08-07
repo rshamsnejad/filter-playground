@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (
 )
 
 from lib.Graph.DualGraphWidget import DualGraphWidget
-from lib.Output.OutputBodeGraphWidget import OutputBodeGraphWidget
+from lib.Output.SumOutputBodeGraphWidget import SumOutputBodeGraphWidget
 
 
 class OutputWidget(QWidget):
@@ -18,6 +18,6 @@ class OutputWidget(QWidget):
 
         self.setLayout(QHBoxLayout())
 
-        self.output_dualgraph = DualGraphWidget(OutputBodeGraphWidget())
+        self.output_dualgraph = DualGraphWidget(SumOutputBodeGraphWidget())
 
         self.layout().addWidget(self.output_dualgraph)

@@ -1,10 +1,9 @@
 from lib.Engine.GraphEngine import GraphEngine
 import numpy as np
-from scipy.signal import sosfreqz
 
-class CascadeEngine(GraphEngine):
+class SumEngine(GraphEngine):
     """
-    Child class to compute the output convolution
+    Child class to compute the output sum
     """
 
     def __init__(self, *args, **kwargs) -> None:
@@ -24,18 +23,19 @@ class CascadeEngine(GraphEngine):
 
     def compute_specific(self) -> None:
         """
-        Compute the convolution of all the input cells
+        Compute the sum of all the input cells
         """
 
-        self.sos = list(self.input_engines[0].sos)
+        frequencies = self.input_engines[0].get_frequencies()
+        magnitude = np.array(self.input_engines[0].get_magnitude().copy())
+        mag_lin = np.array(self.input_engines[0].get_magnitude_lin())
 
         for engine in self.input_engines[1:]:
-            self.sos.extend(engine.sos)
+            magnitude += np.array(engine.get_magnitude())
+            mag_lin += np.array(engine.get_magnitude_lin())
 
-        frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.fs)
-
-        mag_lin = abs(magnitude)
-        mag_db = 20 * np.log10(abs(magnitude))
+        # mag_db = 20 * np.log10(abs(magnitude))
+        mag_db = 20 * np.log10(mag_lin)
         phase_rad = np.angle(magnitude, deg=False)
         phase_deg = np.angle(magnitude, deg=True)
 
@@ -53,7 +53,7 @@ class CascadeEngine(GraphEngine):
         Create a string to display as graph title.
         """
 
-        return "Cascading of the inputs"
+        return "Linear sum of the inputs"
 
     def add_engine(self, engine: GraphEngine) -> None:
         """
@@ -68,3 +68,12 @@ class CascadeEngine(GraphEngine):
         """
 
         del self.input_engines[-1]
+    
+    def generate_zpk(self) -> None:
+        """
+        Does nothing until I figure out how to do it
+        """
+
+        self.z = []
+        self.p = []
+        self.k = []

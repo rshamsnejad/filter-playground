@@ -174,6 +174,8 @@ class BiquadEngine(GraphEngine):
         self.alpha = sin(self.w0) / (2 * self.get_Q())
         self.A = 10**(self.get_gain() / 40)
 
+        gain_offset = self.get_gain()
+
         match self.get_filtertype().lower():
             case "highpass":
                 b = [ (1 + cos(self.w0)) / 2, -(1 + cos(self.w0)), (1 + cos(self.w0)) / 2 ]
@@ -212,6 +214,8 @@ class BiquadEngine(GraphEngine):
 
                     for i in range(int(iterations)):
                         self.sos.extend(sos_order2)
+                
+                gain_offset = 0
 
             case "peak":
                 b = [
@@ -226,6 +230,8 @@ class BiquadEngine(GraphEngine):
                 ]
                 self.sos = tf2sos(b, a)
 
+                gain_offset = 0
+
             case "lowshelf":
                 b = [
                     self.A * ( self.A + 1 - (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha ),
@@ -239,6 +245,8 @@ class BiquadEngine(GraphEngine):
                 ]
                 self.sos = tf2sos(b, a)
 
+                gain_offset = 0
+
             case "highshelf":
                 b = [
                     self.A * ( self.A + 1 + (self.A - 1) * cos(self.w0) + 2 * sqrt(self.A) * self.alpha ),
@@ -251,6 +259,8 @@ class BiquadEngine(GraphEngine):
                     self.A + 1 - (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha
                 ]
                 self.sos = tf2sos(b, a)
+
+                gain_offset = 0
 
             case "butterworth highpass" | "butterworth lowpass":
                 self.sos = butter(
@@ -312,13 +322,15 @@ class BiquadEngine(GraphEngine):
 
         frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.fs)
 
-        mag_db = 20 * log10(abs(magnitude))
+        mag_lin = abs(magnitude) * 10**(gain_offset / 10)
+        mag_db = 20 * log10(abs(magnitude)) + gain_offset
         phase_rad = angle(magnitude, deg=False)
         phase_deg = angle(magnitude, deg=True)
 
         self.filter = {
             "frequencies": frequencies,
             "magnitude": magnitude,
+            "magnitude_lin": mag_lin,
             "magnitude_db": mag_db,
             "phase_rad": phase_rad,
             "phase_deg": phase_deg

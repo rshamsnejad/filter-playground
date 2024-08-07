@@ -18,6 +18,7 @@ class GraphEngine(QObject):
         self.filter = {
             "frequencies": [],
             "magnitude": [],
+            "magnitude_lin": [],
             "magnitude_db": [],
             "phase_rad": [],
             "phase_deg": [],
@@ -74,6 +75,15 @@ class GraphEngine(QObject):
         """
 
         return self.filter['magnitude']
+
+    def get_magnitude_lin(self) -> list[float]:
+        """
+        Returns:
+            list[float]: The Y axis real magnitude values in linear form
+        """
+
+        return self.filter['magnitude_lin']
+
 
     def get_magnitude_db(self) -> list[float]:
         """

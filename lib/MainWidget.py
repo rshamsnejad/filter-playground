@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 )
 
 from lib.Output.OutputWidget import OutputWidget
-from lib.Engine.CascadeEngine import CascadeEngine
+from lib.Engine.SumEngine import SumEngine
 from lib.Input.InputWidget import InputWidget
 
 class MainWidget(QWidget):
@@ -24,10 +24,9 @@ class MainWidget(QWidget):
         input_engines = []
 
         for cascade_widget in self.input_widget.cascade_widgets:
-            for filter in cascade_widget.input_filters:
-                input_engines.append(filter.engine)
+            input_engines.append(cascade_widget.cascade_filter_widget.engine)
 
-        engine = CascadeEngine()
+        engine = SumEngine()
         engine.set_input_engines(input_engines)
         self.output_widget.output_dualgraph.set_engine(engine)
 
