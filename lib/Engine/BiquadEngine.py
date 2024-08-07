@@ -251,7 +251,7 @@ class BiquadEngine(GraphEngine):
                     self.A + 1 - (self.A - 1) * cos(self.w0) - 2 * sqrt(self.A) * self.alpha
                 ]
                 self.sos = tf2sos(b, a)
-            
+
             case "butterworth highpass" | "butterworth lowpass":
                 self.sos = butter(
                     N=self.get_order(),
@@ -354,7 +354,6 @@ class BiquadEngine(GraphEngine):
                 | "chebyshev ii highpass" | "chebyshev ii lowpass" \
                 | "elliptic highpass" | "elliptic lowpass":
                 type_string = f"{self.get_filtertype()} filter"
-            
 
             case _:
                 raise ValueError("Unknown filter type")
