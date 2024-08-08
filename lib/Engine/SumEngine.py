@@ -68,7 +68,7 @@ class SumEngine(GraphEngine):
         """
 
         del self.input_engines[-1]
-    
+
     def generate_zpk(self) -> None:
         """
         Does nothing until I figure out how to do it
