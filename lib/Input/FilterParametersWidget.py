@@ -1,3 +1,5 @@
+from locale import locale_alias
+from re import LOCALE
 from PyQt6.QtWidgets import (
     QGroupBox,
     QGridLayout,
@@ -17,6 +19,8 @@ class FilterParametersWidget(QGroupBox):
         frequency: int,
         gain: float,
         Q: float,
+        passband_ripple: float,
+        stopband_attenuation: float,
         *args, **kwargs
     ) -> None:
         """
@@ -33,6 +37,7 @@ class FilterParametersWidget(QGroupBox):
         self.setLayout(QGridLayout())
 
         spinbox_width = 60
+        locale = QLocale("en_US")
 
         label_order = QLabel("Filter order:")
         self.field_order = QSpinBox()
@@ -58,7 +63,7 @@ class FilterParametersWidget(QGroupBox):
 
         label_gain = QLabel("Gain (dB):")
         self.field_gain = QDoubleSpinBox()
-        self.field_gain.setLocale(QLocale("en_US"))
+        self.field_gain.setLocale(locale)
         self.field_gain.setMinimum(-100)
         self.field_gain.setMaximum(100)
         self.field_gain.setValue(gain)
@@ -70,7 +75,7 @@ class FilterParametersWidget(QGroupBox):
 
         label_Q = QLabel("Q:")
         self.field_Q = QDoubleSpinBox()
-        self.field_Q.setLocale(QLocale("en_US"))
+        self.field_Q.setLocale(locale)
         self.field_Q.setMinimum(0)
         self.field_Q.setMaximum(100)
         self.field_Q.setValue(Q)
@@ -79,3 +84,27 @@ class FilterParametersWidget(QGroupBox):
 
         self.layout().addWidget(label_Q, 3, 0, 1, 1)
         self.layout().addWidget(self.field_Q, 3, 1, 1, 1)
+
+        label_passband_ripple = QLabel("Max. passband ripple:")
+        self.field_passband_ripple = QDoubleSpinBox()
+        self.field_passband_ripple.setLocale(locale)
+        self.field_passband_ripple.setMinimum(0)
+        self.field_passband_ripple.setMaximum(100)
+        self.field_passband_ripple.setValue(passband_ripple)
+        self.field_passband_ripple.setFixedWidth(spinbox_width)
+        self.field_passband_ripple.setAccelerated(True)
+
+        self.layout().addWidget(label_passband_ripple, 4, 0, 1, 1)
+        self.layout().addWidget(self.field_passband_ripple, 4, 1, 1, 1)
+
+        label_stopband_attenuation = QLabel("Min. stopband attenuation:")
+        self.field_stopband_attenuation = QDoubleSpinBox()
+        self.field_stopband_attenuation.setLocale(locale)
+        self.field_stopband_attenuation.setMinimum(0)
+        self.field_stopband_attenuation.setMaximum(100)
+        self.field_stopband_attenuation.setValue(stopband_attenuation)
+        self.field_stopband_attenuation.setFixedWidth(spinbox_width)
+        self.field_stopband_attenuation.setAccelerated(True)
+
+        self.layout().addWidget(label_stopband_attenuation, 5, 0, 1, 1)
+        self.layout().addWidget(self.field_stopband_attenuation, 5, 1, 1, 1)

@@ -1,3 +1,4 @@
+from tracemalloc import stop
 from lib.Engine.GraphEngine import GraphEngine
 from scipy.signal import butter, bessel, cheby1, cheby2, ellip, sosfreqz, tf2sos
 from numpy import log10, angle, pi, sin, cos, sqrt, tan
@@ -8,11 +9,13 @@ class BiquadEngine(GraphEngine):
     """
 
     def __init__(self,
-        filtertype: str = "highpass",
-        order:      int = 2,
-        frequency:  int = 1000,
-        gain:       float = 0,
-        Q:          float = 0.71,
+        filtertype:             str = "highpass",
+        order:                  int = 2,
+        frequency:              int = 1000,
+        gain:                   float = 0,
+        Q:                      float = 0.71,
+        passband_ripple:        float = 3,
+        stopband_attenuation:   float = 60,
         *args, **kwargs
     ) -> None:
         """
@@ -36,6 +39,8 @@ class BiquadEngine(GraphEngine):
         self.set_filtertype(filtertype)
         self.set_gain(gain)
         self.set_Q(Q)
+        self.set_passband_ripple(passband_ripple)
+        self.set_stopband_attenuation(stopband_attenuation)
 
     def set_filtertype(self, filtertype: str) -> None:
         """
@@ -160,6 +165,50 @@ class BiquadEngine(GraphEngine):
         """
 
         return self.Q
+
+    def set_passband_ripple(self, passband_ripple: float) -> None:
+        """
+        For Chebyshev I and Elliptic filters only
+
+        Args:
+            passband_ripple (float): Maximum passband ripple in dB
+        """
+
+        if passband_ripple < 0:
+            self.passband_ripple = 3
+            raise ValueError("Passband ripple must be a positive value")
+        else:
+            self.passband_ripple = passband_ripple
+
+    def get_passband_ripple(self) -> float:
+        """
+        Returns:
+            float: The current passband ripple
+        """
+
+        return self.passband_ripple
+
+    def set_stopband_attenuation(self, stopband_attenuation: float) -> None:
+        """
+        For Chebyshev II and Elliptic filters only
+
+        Args:
+            stopband_attenuation (float): The minimum stopband attenuation in dB
+        """
+
+        if stopband_attenuation < 0:
+            self.stopband_attenuation = 60
+            raise ValueError("Stopband attenuation must be a positive value")
+        else:
+            self.stopband_attenuation = stopband_attenuation
+
+    def get_stopband_attenuation(self) -> float:
+        """
+        Returns:
+            float: The current stopband attenuation
+        """
+
+        return self.stopband_attenuation
 
     def compute_specific(self) -> None:
         """
