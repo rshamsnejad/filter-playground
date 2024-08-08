@@ -36,14 +36,14 @@ class CascadeWidget(QTabWidget):
         else:
             self.initial_amount = initial_amount
 
-        self.input_filters = []
+        self.input_filter_widgets = []
         for i in range(self.initial_amount):
-            self.add_input_filter(i + 1)
+            self.add_input_filter_widget(i + 1)
 
         self.hidden_filters = 0
 
         self.cascade_filter_widget = CascadeFilterWidget(
-            self.input_filters,
+            self.input_filter_widgets,
             CascadeEngine(),
             CascadeToolbarWidget(self.update_input_filter_amount),
             "Parameters",
@@ -52,24 +52,26 @@ class CascadeWidget(QTabWidget):
         self.addTab(self.cascade_filter_widget, "Cascade")
 
         currentTab = 1
-        for filter in self.input_filters:
-            self.addTab(filter, f"{currentTab}")
-            filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+        for filter_widget in self.input_filter_widgets:
+            self.addTab(filter_widget, f"{currentTab}")
 
-            filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.cascade_filter_widget.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
-            filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.cascade_filter_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
+
+            filter_widget.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+
             currentTab += 1
 
-    def add_input_filter(self, id: int) -> InputFilterWidget:
+    def add_input_filter_widget(self, id: int) -> InputFilterWidget:
 
-            self.input_filters.append(
+            self.input_filter_widgets.append(
                 InputFilterWidget(
                     id,
                     BiquadEngine(),
@@ -79,7 +81,7 @@ class CascadeWidget(QTabWidget):
                 )
             )
 
-            return self.input_filters[-1]
+            return self.input_filter_widgets[-1]
 
 
     def update_input_filter_amount(self) -> None:
@@ -108,20 +110,22 @@ class CascadeWidget(QTabWidget):
 
                 # Otherwise create a new one
                 else:
-                    filter = self.add_input_filter(i)
-                    filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+                    input_filter_widget = self.add_input_filter_widget(i)
 
-                    filter.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.cascade_filter_widget.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
-                    filter.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
-                    self.addTab(filter, f"{i}")
-                    widget = filter
+                    input_filter_widget.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.cascade_filter_widget.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
+
+                    input_filter_widget.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+
+                    self.addTab(input_filter_widget, f"{i}")
+                    widget = input_filter_widget
 
                 # Focus on the newly appeared tab
                 #self.setCurrentIndex(i)
