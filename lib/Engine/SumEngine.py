@@ -34,7 +34,6 @@ class SumEngine(GraphEngine):
             magnitude += np.array(engine.get_magnitude())
             mag_lin += np.array(engine.get_magnitude_lin())
 
-        # mag_db = 20 * np.log10(abs(magnitude))
         mag_db = 20 * np.log10(mag_lin)
         phase_rad = np.angle(magnitude, deg=False)
         phase_deg = np.angle(magnitude, deg=True)
