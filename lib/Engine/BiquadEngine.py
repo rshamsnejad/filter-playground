@@ -335,7 +335,7 @@ class BiquadEngine(GraphEngine):
             case "chebyshev i highpass" | "chebyshev i lowpass":
                 self.sos = cheby1(
                     N=self.get_order(),
-                    rp=2,
+                    rp=self.get_passband_ripple(),
                     Wn=self.get_frequency(),
                     btype=self.get_filtertype().lower().replace("chebyshev i ", ""),
                     analog=False,
@@ -346,7 +346,7 @@ class BiquadEngine(GraphEngine):
             case "chebyshev ii highpass" | "chebyshev ii lowpass":
                 self.sos = cheby2(
                     N=self.get_order(),
-                    rs=30,
+                    rs=self.get_stopband_attenuation(),
                     Wn=self.get_frequency(),
                     btype=self.get_filtertype().lower().replace("chebyshev ii ", ""),
                     analog=False,
@@ -357,8 +357,8 @@ class BiquadEngine(GraphEngine):
             case "elliptic highpass" | "elliptic lowpass":
                 self.sos = ellip(
                     N=self.get_order(),
-                    rp=2,
-                    rs=30,
+                    rp=self.get_passband_ripple(),
+                    rs=self.get_stopband_attenuation(),
                     Wn=self.get_frequency(),
                     btype=self.get_filtertype().lower().replace("elliptic ", ""),
                     analog=False,
