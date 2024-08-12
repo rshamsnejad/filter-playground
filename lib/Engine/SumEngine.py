@@ -28,12 +28,11 @@ class SumEngine(GraphEngine):
 
         frequencies = self.input_engines[0].get_frequencies()
         magnitude = np.array(self.input_engines[0].get_magnitude().copy())
-        mag_lin = np.array(self.input_engines[0].get_magnitude_lin())
 
         for engine in self.input_engines[1:]:
             magnitude += np.array(engine.get_magnitude())
-            mag_lin += np.array(engine.get_magnitude_lin())
 
+        mag_lin = np.abs(magnitude)
         mag_db = 20 * np.log10(mag_lin)
         phase_rad = np.angle(magnitude, deg=False)
         phase_deg = np.angle(magnitude, deg=True)
