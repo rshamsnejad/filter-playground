@@ -45,8 +45,8 @@ class GraphEngine(QObject):
 
         self.compute_specific()
 
-        self.remove_phase_discontinuities()
         self.wrap_phase()
+        self.remove_phase_discontinuities()
 
         self.generate_zpk()
         self.compute_group_delay()
@@ -162,7 +162,7 @@ class GraphEngine(QObject):
         """
 
         self.filter['phase_deg'] = ((self.filter['phase_deg'] + 180) % 360) - 180
-        self.filter['phase_deg_nan'] = ((self.filter['phase_deg_nan'] + 180) % 360) - 180
+        self.filter['phase_rad'] = ((self.filter['phase_rad'] + np.pi) % (2 * np.pi)) - np.pi
 
     def generate_zpk(self) -> None:
         """
