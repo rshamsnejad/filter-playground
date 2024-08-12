@@ -263,7 +263,7 @@ class BiquadEngine(GraphEngine):
 
                     for i in range(int(iterations)):
                         self.sos.extend(sos_order2)
-                
+
                 gain_offset = 0
 
             case "peak":

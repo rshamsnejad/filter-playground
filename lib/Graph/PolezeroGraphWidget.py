@@ -44,7 +44,7 @@ class PolezeroGraphWidget(GraphWidget):
         self.axs.set_ylim(-1.5, 1.5)
         self.axs.set_ylabel("Imaginary part")
         self.axs.add_patch(patch.Circle([0,0], radius=1, fill=False, linestyle='--'))
-        
+
         self.scatter_zero = self.axs.plot([], [], '.b')
         self.scatter_pole = self.axs.plot([], [], 'xr')
 
