@@ -19,6 +19,8 @@ class MainWidget(QWidget):
         self.setLayout(QHBoxLayout())
 
         self.output_widget = OutputWidget()
+        # Hide unused pole-zero map tab
+        self.output_widget.sum_output_widget.setTabVisible(2, False)
         self.input_widget = InputWidget(self.output_widget)
 
         input_engines = []
@@ -28,7 +30,7 @@ class MainWidget(QWidget):
 
         engine = SumEngine()
         engine.set_input_engines(input_engines)
-        self.output_widget.output_dualgraph.set_engine(engine)
+        self.output_widget.sum_output_widget.set_engine(engine)
 
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidget(self.input_widget)

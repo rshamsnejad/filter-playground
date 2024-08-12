@@ -17,6 +17,7 @@ class CascadeWidget(QTabWidget):
     """
 
     def __init__(self,
+        id: int,
         output_widget: OutputWidget,
         initial_amount: int = 2,
         *args, **kwargs
@@ -28,6 +29,7 @@ class CascadeWidget(QTabWidget):
 
         super().__init__(*args, **kwargs)
 
+        self.id = id
         self.output_widget = output_widget
 
         if initial_amount <= 0:
@@ -63,13 +65,13 @@ class CascadeWidget(QTabWidget):
             filter_widget.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
             filter_widget.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
 
-            filter_widget.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-            filter_widget.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-            filter_widget.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-            filter_widget.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-            filter_widget.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-            filter_widget.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-            filter_widget.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+            filter_widget.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
 
             currentTab += 1
 
@@ -124,13 +126,13 @@ class CascadeWidget(QTabWidget):
                     input_filter_widget.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
                     input_filter_widget.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
 
-                    input_filter_widget.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-                    input_filter_widget.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-                    input_filter_widget.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-                    input_filter_widget.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-                    input_filter_widget.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-                    input_filter_widget.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
-                    input_filter_widget.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.output_widget.output_dualgraph.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
 
                     self.addTab(input_filter_widget, f"{i}")
                     widget = input_filter_widget
@@ -138,7 +140,7 @@ class CascadeWidget(QTabWidget):
                 # Focus on the newly appeared tab
                 #self.setCurrentIndex(i)
 
-                self.output_widget.output_dualgraph.bode_graph.add_axvline()
+                self.output_widget.sum_output_widget.bode_graph.add_axvline()
                 self.cascade_filter_widget.engine.add_engine(widget.engine)
                 self.cascade_filter_widget.bode_graph.add_axvline()
 
@@ -148,10 +150,10 @@ class CascadeWidget(QTabWidget):
                 self.setTabVisible(i, False)
                 self.hidden_filters += 1
 
-                self.output_widget.output_dualgraph.bode_graph.remove_last_axvline()
+                self.output_widget.sum_output_widget.bode_graph.remove_last_axvline()
                 self.cascade_filter_widget.engine.remove_last_engine()
                 self.cascade_filter_widget.bode_graph.remove_last_axvline()
 
         self.cascade_filter_widget.compute_and_update()
-        self.output_widget.output_dualgraph.compute_and_update()
+        self.output_widget.sum_output_widget.compute_and_update()
 
