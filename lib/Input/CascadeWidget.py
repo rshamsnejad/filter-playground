@@ -140,7 +140,7 @@ class CascadeWidget(QTabWidget):
                 # Focus on the newly appeared tab
                 #self.setCurrentIndex(i)
 
-                self.output_widget.sum_output_widget.bode_graph.add_axvline()
+                self.output_widget.sum_output_widget.bode_graph.update_axvlines()
                 self.cascade_filter_widget.engine.add_engine(widget.engine)
                 self.cascade_filter_widget.bode_graph.add_axvline()
 
@@ -150,7 +150,7 @@ class CascadeWidget(QTabWidget):
                 self.setTabVisible(i, False)
                 self.hidden_filters += 1
 
-                self.output_widget.sum_output_widget.bode_graph.remove_last_axvline()
+                self.output_widget.sum_output_widget.bode_graph.update_axvlines()
                 self.cascade_filter_widget.engine.remove_last_engine()
                 self.cascade_filter_widget.bode_graph.remove_last_axvline()
 

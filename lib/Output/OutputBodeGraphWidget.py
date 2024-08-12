@@ -38,13 +38,13 @@ class OutputBodeGraphWidget(BodeGraphWidget):
             self.axline_phase[i].set_xdata([engine.get_frequency()])
             i += 1
 
-    def add_axvline(self) -> None:
+    def add_axvline(self, frequency: float = 0) -> None:
         """
         Adds a new dotted vertical line
         """
 
-        self.axline_mag.append(self.axs[0].axvline(0, linestyle='--', color='red'))
-        self.axline_phase.append(self.axs[1].axvline(0, linestyle='--', color='red'))
+        self.axline_mag.append(self.axs[0].axvline(frequency, linestyle='--', color='red'))
+        self.axline_phase.append(self.axs[1].axvline(frequency, linestyle='--', color='red'))
 
     def remove_last_axvline(self) -> None:
         """

@@ -21,9 +21,9 @@ class SumOutputBodeGraphWidget(OutputBodeGraphWidget):
 
         self.engine = engine
 
-        # for cascade_engine in self.engine.input_engines:
-        #     for engine in cascade_engine.input_engines:
-        #         self.add_axvline()
+        for cascade_engine in self.engine.input_engines:
+            for engine in cascade_engine.input_engines:
+                self.add_axvline()
 
         self.compute_and_update()
 
@@ -33,11 +33,16 @@ class SumOutputBodeGraphWidget(OutputBodeGraphWidget):
         the computed filter.
         """
 
-        pass
+        for axline in self.axline_mag:
+            axline.remove()
+        del self.axline_mag
+        self.axline_mag = []
 
-    #     i = 0
-    #     for cascade_engine in self.engine.input_engines:
-    #         for engine in cascade_engine.input_engines:
-    #             self.axline_mag[i].set_xdata([engine.get_frequency()])
-    #             self.axline_phase[i].set_xdata([engine.get_frequency()])
-    #             i += 1
+        for axline in self.axline_phase:
+            axline.remove()
+        del self.axline_phase
+        self.axline_phase = []
+
+        for cascade_engine in self.engine.input_engines:
+            for engine in cascade_engine.input_engines:
+                self.add_axvline(engine.get_frequency())

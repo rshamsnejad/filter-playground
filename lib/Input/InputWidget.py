@@ -65,10 +65,8 @@ class InputWidget(QWidget):
                 else:
                     widget = self.add_cascade_widget(i + 1)
 
-                # for filter in widget.cascade_filter_widget.input_filters:
-                #     self.output_widget.sum_output_widget.bode_graph.add_axvline()
-
                 self.output_widget.sum_output_widget.engine.add_engine(widget.cascade_filter_widget.engine)
+                self.output_widget.sum_output_widget.bode_graph.update_axvlines()
 
         elif new_amount < current_amount:
             for i in range(new_amount, current_amount):
@@ -79,8 +77,7 @@ class InputWidget(QWidget):
 
                 self.output_widget.sum_output_widget.engine.remove_last_engine()
 
-                # for filter in widget.cascade_filter_widget.input_filters:
-                #     self.output_widget.sum_output_widget.bode_graph.remove_last_axvline()
+                self.output_widget.sum_output_widget.bode_graph.update_axvlines()
 
         self.output_widget.sum_output_widget.compute_and_update()
 
