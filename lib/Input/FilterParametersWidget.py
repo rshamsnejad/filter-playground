@@ -4,7 +4,9 @@ from PyQt6.QtWidgets import (
     QLabel,
     QSpinBox,
     QDoubleSpinBox,
-    QCheckBox
+    QCheckBox,
+    QSpacerItem,
+    QSizePolicy
 )
 from PyQt6.QtCore import QLocale
 
@@ -114,3 +116,8 @@ class FilterParametersWidget(QGroupBox):
 
         self.layout().addWidget(label_flip_phase, 6, 0, 1, 1)
         self.layout().addWidget(self.field_flip_phase, 6, 1, 1, 1)
+
+        self.layout().addItem(
+            QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding),
+            7, 1, 1, 1
+        )

@@ -56,3 +56,4 @@ class FilterTypeWidget(QGroupBox):
         self.combo_box.addItems(self.types)
 
         self.layout().addWidget(self.combo_box)
+        self.layout().addStretch()

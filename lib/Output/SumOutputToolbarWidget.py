@@ -26,10 +26,6 @@ class SumOutputToolbarWidget(QWidget):
 
         self.layout().addWidget(self.label, 0, 0)
         self.layout().addWidget(self.spinbox, 0, 1)
-        self.layout().addItem(
-            QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum),
-            0, 2, 1, 1
-        )
 
         self.layout().addItem(
             QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding),
