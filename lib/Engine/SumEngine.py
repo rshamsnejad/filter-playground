@@ -51,7 +51,7 @@ class SumEngine(GraphEngine):
         Create a string to display as graph title.
         """
 
-        return "Linear sum of the inputs"
+        return "Linear sum of the input cascades"
 
     def add_engine(self, engine: GraphEngine) -> None:
         """
