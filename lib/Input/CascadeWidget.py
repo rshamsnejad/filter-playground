@@ -53,6 +53,10 @@ class CascadeWidget(QTabWidget):
         )
         self.addTab(self.cascade_filter_widget, "Cascade")
 
+        self.cascade_filter_widget.cascade_toolbar.field_flip_phase.stateChanged.connect(
+            self.output_widget.sum_output_widget.compute_and_update
+        )
+
         currentTab = 1
         for filter_widget in self.input_filter_widgets:
             self.addTab(filter_widget, f"{currentTab}")
@@ -62,6 +66,7 @@ class CascadeWidget(QTabWidget):
             filter_widget.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
             filter_widget.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
             filter_widget.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_flip_phase.stateChanged.connect(self.cascade_filter_widget.compute_and_update)
             filter_widget.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
             filter_widget.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
 
@@ -70,6 +75,7 @@ class CascadeWidget(QTabWidget):
             filter_widget.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
             filter_widget.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
             filter_widget.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+            filter_widget.filter_toolbar.filter_parameters.field_flip_phase.stateChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
             filter_widget.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
             filter_widget.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
 
@@ -123,6 +129,7 @@ class CascadeWidget(QTabWidget):
                     input_filter_widget.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
                     input_filter_widget.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
                     input_filter_widget.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_flip_phase.stateChanged.connect(self.cascade_filter_widget.compute_and_update)
                     input_filter_widget.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
                     input_filter_widget.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.cascade_filter_widget.compute_and_update)
 
@@ -131,6 +138,7 @@ class CascadeWidget(QTabWidget):
                     input_filter_widget.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
                     input_filter_widget.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
                     input_filter_widget.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
+                    input_filter_widget.filter_toolbar.filter_parameters.field_flip_phase.stateChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
                     input_filter_widget.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
                     input_filter_widget.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.output_widget.sum_output_widget.compute_and_update)
 

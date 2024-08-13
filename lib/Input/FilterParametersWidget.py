@@ -1,11 +1,10 @@
-from locale import locale_alias
-from re import LOCALE
 from PyQt6.QtWidgets import (
     QGroupBox,
     QGridLayout,
     QLabel,
     QSpinBox,
-    QDoubleSpinBox
+    QDoubleSpinBox,
+    QCheckBox
 )
 from PyQt6.QtCore import QLocale
 
@@ -108,3 +107,10 @@ class FilterParametersWidget(QGroupBox):
 
         self.layout().addWidget(label_stopband_attenuation, 5, 0, 1, 1)
         self.layout().addWidget(self.field_stopband_attenuation, 5, 1, 1, 1)
+
+        label_flip_phase = QLabel("Flip phase:")
+        self.field_flip_phase = QCheckBox()
+        self.field_flip_phase.setChecked(False)
+
+        self.layout().addWidget(label_flip_phase, 6, 0, 1, 1)
+        self.layout().addWidget(self.field_flip_phase, 6, 1, 1, 1)

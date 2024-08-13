@@ -1,4 +1,5 @@
 import logging
+
 from lib.Graph.ThreeTabWidget import ThreeTabWidget
 from lib.Engine.BiquadEngine import BiquadEngine
 
@@ -37,6 +38,7 @@ class InputFilterWidget(ThreeTabWidget):
         self.filter_toolbar.filter_parameters.field_frequency.valueChanged.connect(self.handle_frequency)
         self.filter_toolbar.filter_parameters.field_gain.valueChanged.connect(self.handle_gain)
         self.filter_toolbar.filter_parameters.field_Q.valueChanged.connect(self.handle_Q)
+        self.filter_toolbar.filter_parameters.field_flip_phase.stateChanged.connect(self.handle_flip_phase)
         self.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.handle_passband_ripple)
         self.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.handle_stopband_attenuation)
 

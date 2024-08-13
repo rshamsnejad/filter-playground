@@ -36,3 +36,12 @@ class ThreeTabWidget(QTabWidget):
         self.engine.compute()
         self.bode_graph.update_graph()
         self.polezero_graph.update_graph()
+
+    def handle_flip_phase(self, flip_phase: bool) -> None:
+        """
+        Qt slot to update the filter phase flip according
+        to the checkbox in the toolbar
+        """
+
+        self.engine.set_flip_phase(flip_phase)
+        self.compute_and_update()

@@ -11,6 +11,7 @@ class GraphEngine(QObject):
     """
 
     def __init__(self,
+        flip_phase: bool = False,
         *args, **kwargs
     ) -> None:
         super().__init__(*args, **kwargs)
@@ -28,6 +29,7 @@ class GraphEngine(QObject):
 
         self.fs = 48000
         self.frequency_points = 5000
+        self.set_flip_phase(flip_phase)
 
     def compute_specific(self) -> None:
         """
@@ -180,3 +182,11 @@ class GraphEngine(QObject):
         group_delay_ms = group_delay * 1000
 
         self.filter['group_delay_ms'] = group_delay_ms
+
+    def set_flip_phase(self, flip_phase: bool) -> None:
+
+        self.flip_phase = flip_phase
+
+    def get_flip_phase(self) -> None:
+
+        return self.flip_phase

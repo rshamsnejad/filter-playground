@@ -369,6 +369,12 @@ class BiquadEngine(GraphEngine):
             case _:
                 raise ValueError("Unknown filter type")
 
+
+        if self.get_flip_phase():
+            self.sos[0][0] *= -1
+            self.sos[0][1] *= -1
+            self.sos[0][2] *= -1
+
         frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.fs)
 
         mag_lin = abs(magnitude) * 10**(gain_offset / 10)
