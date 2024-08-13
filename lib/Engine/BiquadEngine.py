@@ -12,7 +12,6 @@ class BiquadEngine(GraphEngine):
         filtertype:             str = "highpass",
         order:                  int = 2,
         frequency:              int = 1000,
-        gain:                   float = 0,
         Q:                      float = 0.71,
         passband_ripple:        float = 3,
         stopband_attenuation:   float = 60,
@@ -37,7 +36,6 @@ class BiquadEngine(GraphEngine):
         self.set_order(order)
         self.set_frequency(frequency)
         self.set_filtertype(filtertype)
-        self.set_gain(gain)
         self.set_Q(Q)
         self.set_passband_ripple(passband_ripple)
         self.set_stopband_attenuation(stopband_attenuation)
@@ -126,22 +124,6 @@ class BiquadEngine(GraphEngine):
         """
 
         return self.frequency
-
-    def set_gain(self, gain: float) -> None:
-        """
-        Args:
-            gain (float): The filter gain
-        """
-
-        self.gain = gain
-
-    def get_gain(self) -> float:
-        """
-        Returns:
-            float: The current filter gain
-        """
-
-        return self.gain
 
     def set_Q(self, Q: float) -> None:
         """
@@ -369,16 +351,8 @@ class BiquadEngine(GraphEngine):
             case _:
                 raise ValueError("Unknown filter type")
 
-        gain_offset_lin = 10 ** (gain_offset_db / 20)
-
-        self.sos[0][0] *= gain_offset_lin
-        self.sos[0][1] *= gain_offset_lin
-        self.sos[0][2] *= gain_offset_lin
-
-        if self.get_flip_phase():
-            self.sos[0][0] *= -1
-            self.sos[0][1] *= -1
-            self.sos[0][2] *= -1
+        self.process_gain(gain_offset_db)
+        self.process_flip_phase()
 
         frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.fs)
 

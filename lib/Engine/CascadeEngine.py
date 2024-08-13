@@ -32,10 +32,8 @@ class CascadeEngine(GraphEngine):
         for engine in self.input_engines[1:]:
             self.sos.extend(engine.sos)
 
-        if self.get_flip_phase():
-            self.sos[0][0] *= -1
-            self.sos[0][1] *= -1
-            self.sos[0][2] *= -1
+        self.process_gain(self.get_gain())
+        self.process_flip_phase()
 
         frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.fs)
 

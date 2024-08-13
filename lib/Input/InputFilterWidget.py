@@ -85,19 +85,6 @@ class InputFilterWidget(ThreeTabWidget):
 
         self.compute_and_update()
 
-    def handle_gain(self, gain: float) -> None:
-        """
-        Qt slot to update the filter gain according to
-        the spinbox in the toolbar
-        """
-
-        try:
-            self.engine.set_gain(gain or 0)
-        except ValueError as e:
-            logging.warning(e)
-
-        self.compute_and_update()
-
     def handle_Q(self, Q: float) -> None:
         """
         Qt slot to update the filter Q according to

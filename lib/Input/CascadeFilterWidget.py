@@ -24,4 +24,5 @@ class CascadeFilterWidget(ThreeTabWidget):
         self.bode_graph.set_engine(self.engine)
         self.polezero_graph.set_engine(self.engine)
 
+        self.cascade_toolbar.field_gain.valueChanged.connect(self.handle_gain)
         self.cascade_toolbar.field_flip_phase.stateChanged.connect(self.handle_flip_phase)

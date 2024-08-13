@@ -11,6 +11,7 @@ class GraphEngine(QObject):
     """
 
     def __init__(self,
+        gain:       float = 0,
         flip_phase: bool = False,
         *args, **kwargs
     ) -> None:
@@ -29,6 +30,7 @@ class GraphEngine(QObject):
 
         self.fs = 48000
         self.frequency_points = 5000
+        self.set_gain(gain)
         self.set_flip_phase(flip_phase)
 
     def compute_specific(self) -> None:
@@ -190,3 +192,34 @@ class GraphEngine(QObject):
     def get_flip_phase(self) -> None:
 
         return self.flip_phase
+
+    def set_gain(self, gain: float) -> None:
+        """
+        Args:
+            gain (float): The filter gain
+        """
+
+        self.gain = gain
+
+    def get_gain(self) -> float:
+        """
+        Returns:
+            float: The current filter gain
+        """
+
+        return self.gain
+
+    def process_flip_phase(self) -> None:
+
+        if self.get_flip_phase():
+            self.sos[0][0] *= -1
+            self.sos[0][1] *= -1
+            self.sos[0][2] *= -1
+
+    def process_gain(self, gain_offset_db: float) -> None:
+
+        gain_offset_lin = 10 ** (gain_offset_db / 20)
+
+        self.sos[0][0] *= gain_offset_lin
+        self.sos[0][1] *= gain_offset_lin
+        self.sos[0][2] *= gain_offset_lin
