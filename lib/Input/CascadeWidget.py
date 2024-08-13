@@ -53,6 +53,9 @@ class CascadeWidget(QTabWidget):
         )
         self.addTab(self.cascade_filter_widget, "Cascade")
 
+        # Show Bode plot on load
+        self.cascade_filter_widget.setCurrentIndex(1)
+
         self.cascade_filter_widget.cascade_toolbar.field_flip_phase.stateChanged.connect(
             self.output_widget.sum_output_widget.compute_and_update
         )
