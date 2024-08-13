@@ -51,7 +51,7 @@ class CascadeWidget(QTabWidget):
             "Parameters",
             OutputBodeGraphWidget(),
         )
-        self.addTab(self.cascade_filter_widget, "Cascade")
+        self.addTab(self.cascade_filter_widget, f"Cascade {chr(ord('A') + self.id)}")
 
         # Show Bode plot on load
         self.cascade_filter_widget.setCurrentIndex(1)

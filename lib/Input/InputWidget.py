@@ -23,7 +23,7 @@ class InputWidget(QWidget):
         self.cascade_widgets = []
 
         for i in range(2):
-            self.add_cascade_widget(i + 1)
+            self.add_cascade_widget(i)
 
         self.hidden_cascades = 0
 
