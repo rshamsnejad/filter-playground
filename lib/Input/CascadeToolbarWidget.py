@@ -4,7 +4,8 @@ from PyQt6.QtWidgets import (
     QSpinBox,
     QLabel,
     QCheckBox,
-    # QSpacerItem
+    QSpacerItem,
+    QSizePolicy
 )
 from typing import Callable
 
@@ -27,17 +28,27 @@ class CascadeToolbarWidget(QWidget):
         self.spinbox.setValue(2)
         self.spinbox.setFixedWidth(40)
 
-        self.layout().addWidget(self.label, 0, 0, 1, 1)
-        self.layout().addWidget(self.spinbox, 0, 1, 1, 1)
-        # self.layout().addItem(QSpacerItem(1, 1), 0, 2, 1, 1)
+        self.layout().addWidget(self.label, 0, 0)
+        self.layout().addWidget(self.spinbox, 0, 1)
+        self.layout().addItem(
+            QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum),
+            0, 2, 1, 1
+        )
 
         label_flip_phase = QLabel("Flip phase:")
         self.field_flip_phase = QCheckBox()
         self.field_flip_phase.setChecked(False)
 
-        self.layout().addWidget(label_flip_phase, 1, 0, 1, 1)
-        self.layout().addWidget(self.field_flip_phase, 1, 1, 1, 1)
-        # self.layout().addItem(QSpacerItem(1, 1), 1, 2, 1, 1)
+        self.layout().addWidget(label_flip_phase, 1, 0)
+        self.layout().addWidget(self.field_flip_phase, 1, 1)
+        self.layout().addItem(
+            QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum),
+            1, 2, 1, 1
+        )
 
+        self.layout().addItem(
+            QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding),
+            2, 1, 1, 1
+        )
 
         self.spinbox.valueChanged.connect(update_callback)

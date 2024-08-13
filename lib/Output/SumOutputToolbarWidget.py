@@ -1,6 +1,8 @@
 from PyQt6.QtWidgets import (
     QWidget,
-    QHBoxLayout,
+    QGridLayout,
+    QSpacerItem,
+    QSizePolicy,
     QSpinBox,
     QLabel
 )
@@ -12,7 +14,7 @@ class SumOutputToolbarWidget(QWidget):
 
         super().__init__(*args, **kwargs)
 
-        self.setLayout(QHBoxLayout())
+        self.setLayout(QGridLayout())
 
         self.label = QLabel("Amount of input cascades:")
 
@@ -22,9 +24,17 @@ class SumOutputToolbarWidget(QWidget):
         self.spinbox.setValue(2)
         self.spinbox.setFixedWidth(40)
 
-        self.layout().addWidget(self.label)
-        self.layout().addWidget(self.spinbox)
-        self.layout().addStretch()
+        self.layout().addWidget(self.label, 0, 0)
+        self.layout().addWidget(self.spinbox, 0, 1)
+        self.layout().addItem(
+            QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum),
+            0, 2, 1, 1
+        )
+
+        self.layout().addItem(
+            QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding),
+            1, 1, 1, 1
+        )
 
     def set_update_callback(self, update_callback: Callable) -> None:
 
