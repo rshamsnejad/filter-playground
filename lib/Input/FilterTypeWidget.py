@@ -36,7 +36,7 @@ class FilterTypeWidget(QGroupBox):
             id (int): The number of the filter to display
             types (list[str], optional):
                 The list to display in the drop-down list.
-                Defaults to [ "Highpass", "Lowpass", "Allpass", "Peak", "Highshelf", "Lowshelf" ].
+                Defaults to the common filters.
         """
 
         if id <= 0:

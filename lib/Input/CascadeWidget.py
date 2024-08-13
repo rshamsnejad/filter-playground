@@ -13,7 +13,7 @@ from lib.Output.OutputWidget import OutputWidget
 
 class CascadeWidget(QTabWidget):
     """
-    Qt widget for the input filters
+    Qt widget for the the cascade of input filters
     """
 
     def __init__(self,
@@ -25,6 +25,7 @@ class CascadeWidget(QTabWidget):
         """
         Args:
             output_widget (OutputWidget): The output widget of the main window
+            initial_amount (int): The amount to display on init. Defaults to 2
         """
 
         super().__init__(*args, **kwargs)
@@ -88,25 +89,35 @@ class CascadeWidget(QTabWidget):
             currentTab += 1
 
     def add_input_filter_widget(self, id: int) -> InputFilterWidget:
+        """
+        Adds a new input filter to the cascade.
 
-            self.input_filter_widgets.append(
-                InputFilterWidget(
-                    id,
-                    BiquadEngine(),
-                    FilterToolbarWidget(id),
-                    "Parameters",
-                    InputBodeGraphWidget()
-                )
+        Args:
+            id (int): The display ID of the filter
+
+        Returns:
+            InputFilterWidget: The newly created input filter widget
+        """
+
+        self.input_filter_widgets.append(
+            InputFilterWidget(
+                id,
+                BiquadEngine(),
+                FilterToolbarWidget(id),
+                "Parameters",
+                InputBodeGraphWidget()
             )
+        )
 
-            return self.input_filter_widgets[-1]
+        return self.input_filter_widgets[-1]
 
 
     def update_input_filter_amount(self) -> None:
         """
         Qt slot, allows to dynamically update the amount of filter cells
-        according to the spinbox in the main window
+        according to the spinbox in the toolbar.
         """
+
         spinbox = self.sender()
 
         # -1 for the cascade tab

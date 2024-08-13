@@ -9,7 +9,8 @@ from lib.Graph.BodeGraphWidget import BodeGraphWidget
 
 class ThreeTabWidget(QTabWidget):
     """
-    Qt widget containing an input cell's toolbar and graph
+    Base class for displaying 3 tabs for parameters,
+    Bode plot and pole-zero map.
     """
 
     def __init__(self,
@@ -20,7 +21,9 @@ class ThreeTabWidget(QTabWidget):
     ) -> None:
         """
         Args:
-            id (int): The number of the filter to display
+            first_tab_widget (QWidget): The Qt widget to diplay in the first tab
+            first_tab_label (str): Label of the first tab
+            bode_graph_widget (BodeGraphWidget): The Bode graph widget to display in the second tab
         """
 
         super().__init__(*args, **kwargs)
@@ -34,6 +37,10 @@ class ThreeTabWidget(QTabWidget):
         self.addTab(self.polezero_graph, "Pole-zero map")
 
     def compute_and_update(self) -> None:
+        """
+        Convenience method to wrap computing the filter
+        and updating the two graphs in one go
+        """
 
         self.engine.compute()
         self.bode_graph.update_graph()

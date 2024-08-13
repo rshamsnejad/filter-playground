@@ -14,11 +14,18 @@ from PyQt6.QtCore import QLocale
 from typing import Callable
 
 class CascadeToolbarWidget(QWidget):
+    """
+    Toolbar to display as first tab in a CascadeWidget.
+    """
 
     def __init__(self,
         update_callback: Callable,
         *args, **kwargs
     ) -> None:
+        """
+        Args:
+            update_callback (Callable): The callback to use when changing the input amount
+        """
 
         super().__init__(*args, **kwargs)
 

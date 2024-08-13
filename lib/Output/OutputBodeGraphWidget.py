@@ -16,7 +16,7 @@ class OutputBodeGraphWidget(BodeGraphWidget):
         otherwise the input widget and the output widget are inter-dependent
 
         Args:
-            engine (GraphEngine): The engine to use to compute the graph
+            engine (CascadeEngine): The engine to use to compute the graph
         """
 
         self.engine = engine

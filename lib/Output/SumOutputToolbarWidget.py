@@ -9,6 +9,9 @@ from PyQt6.QtWidgets import (
 from typing import Callable
 
 class SumOutputToolbarWidget(QWidget):
+    """
+    Qt widget to display as the first tab of the output section
+    """
 
     def __init__(self, *args, **kwargs) -> None:
 
@@ -33,5 +36,11 @@ class SumOutputToolbarWidget(QWidget):
         )
 
     def set_update_callback(self, update_callback: Callable) -> None:
+        """
+        Defines the callback to use when updating the input cascade amount.
+
+        Args:
+            update_callback (Callable): The callback to be used
+        """
 
         self.spinbox.valueChanged.connect(update_callback)

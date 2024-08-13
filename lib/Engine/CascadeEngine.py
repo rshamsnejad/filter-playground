@@ -4,7 +4,7 @@ from scipy.signal import sosfreqz
 
 class CascadeEngine(GraphEngine):
     """
-    Child class to compute the output convolution
+    Child class to compute the cascade of several filters
     """
 
     def __init__(self, *args, **kwargs) -> None:
@@ -24,7 +24,7 @@ class CascadeEngine(GraphEngine):
 
     def compute_specific(self) -> None:
         """
-        Compute the convolution of all the input cells
+        Compute the cascade of all the input cells
         """
 
         self.sos = list(self.input_engines[0].sos.copy())
@@ -56,7 +56,7 @@ class CascadeEngine(GraphEngine):
         Create a string to display as graph title.
         """
 
-        return "Cascading of the inputs"
+        return "Cascade of the inputs"
 
     def add_engine(self, engine: GraphEngine) -> None:
         """

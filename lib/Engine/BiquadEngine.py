@@ -20,15 +20,24 @@ class BiquadEngine(GraphEngine):
         """
         Args:
             filtertype (str, optional):
-                String representing the filter type. Defaults to "highpass".
+                String representing the filter type.
+                Defaults to "highpass".
             order (int, optional):
-                Filter order. Defaults to 2.
+                Filter order.
+                Defaults to 2.
             frequency (int, optional):
                 Filter's charateristic frequency. Defaults to 1000.
-            gain (float, optional):
-                Filter's gain. Defaults to 0.
             Q (float, optional):
-                Filter's quality factor. Defaults to 0.71.
+                Filter's quality factor.
+                Defaults to 0.71.
+            passband_ripple (float, optional):
+                Maximum passband ripple under 0 dB.
+                For Chebyshev I and Elliptic filters only.
+                Defaults to 3.
+            stopband_attenuation (float, optional):
+                Minimum stopband attenuation.
+                For Chebyshev II and Elliptic filters only.
+                Defaults to 60.
         """
 
         super().__init__(*args, **kwargs)

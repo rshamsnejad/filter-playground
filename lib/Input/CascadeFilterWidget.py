@@ -4,18 +4,25 @@ from lib.Graph.ThreeTabWidget import ThreeTabWidget
 
 class CascadeFilterWidget(ThreeTabWidget):
     """
-    Qt widget for the input filters
+    Qt widget for displaying the cascade of several input filters.
     """
 
     def __init__(self,
-        input_filters: InputFilterWidget,
+        input_filter_widgets: list[InputFilterWidget],
         engine: CascadeEngine,
         *args, **kwargs
     ) -> None:
+        """
+        Args:
+            input_filter_widgets (list[InputFilterWidget]):
+                The list of all the filter widgets to display in numbered tabs.
+            engine (CascadeEngine):
+                The engine to use for computation.
+        """
 
         super().__init__(*args, **kwargs)
 
-        self.input_filters = input_filters
+        self.input_filters = input_filter_widgets
         self.engine = engine
         self.cascade_toolbar = self.first_tab_widget
 

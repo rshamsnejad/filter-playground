@@ -69,7 +69,8 @@ class SumEngine(GraphEngine):
 
     def generate_zpk(self) -> None:
         """
-        Does nothing until I figure out how to do it
+        Does nothing on purpose because the SumEngine doesn't deal
+        with transfer functions but rather with data directly
         """
 
         self.z = []

@@ -6,10 +6,7 @@ from numpy import real, imag
 
 class PolezeroGraphWidget(GraphWidget):
     """
-    Base class for displaying a matplotlib graph with toolbar.
-
-    Must be inherited by a child class implementing the
-    virtual method(s)
+    Base class for displaying a matplotlib pole-zero map with toolbar.
     """
 
     def __init__(self, *args, **kwargs) -> None:

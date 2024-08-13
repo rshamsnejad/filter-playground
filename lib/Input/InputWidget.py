@@ -7,11 +7,19 @@ from lib.Input.CascadeWidget import CascadeWidget
 from lib.Output.OutputWidget import OutputWidget
 
 class InputWidget(QWidget):
+    """
+    Qt widget for the left section of the main window
+    that contains the inputs
+    """
 
     def __init__(self,
         output_widget: OutputWidget,
         *args, **kwargs
         ) -> None:
+        """
+        Args:
+            output_widget (OutputWidget): The output widget of the main window
+        """
 
         super().__init__(*args, **kwargs)
 
@@ -28,14 +36,23 @@ class InputWidget(QWidget):
         self.hidden_cascades = 0
 
     def add_cascade_widget(self, id: int) -> CascadeWidget:
+        """
+        Adds a new input cascade widget
 
-            self.cascade_widgets.append(
-                CascadeWidget(id, self.output_widget, 2)
-            )
+        Args:
+            id (int): The display ID of the cascade
 
-            self.layout().addWidget(self.cascade_widgets[-1])
+        Returns:
+            CascadeWidget: The newly added cascade widget
+        """
 
-            return self.cascade_widgets[-1]
+        self.cascade_widgets.append(
+            CascadeWidget(id, self.output_widget, 2)
+        )
+
+        self.layout().addWidget(self.cascade_widgets[-1])
+
+        return self.cascade_widgets[-1]
 
     def update_input_cascade_amount(self) -> None:
         """

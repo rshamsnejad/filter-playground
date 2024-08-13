@@ -7,7 +7,7 @@ import numpy as np
 
 class BodeGraphWidget(GraphWidget):
     """
-    Base class for displaying a matplotlib graph with toolbar.
+    Base class for displaying a matplotlib Bode plot with toolbar.
 
     Must be inherited by a child class implementing the
     virtual method(s)
@@ -24,7 +24,9 @@ class BodeGraphWidget(GraphWidget):
     def set_engine(self, engine: GraphEngine) -> None:
         """
         Set the computing engine. Has to be done outside of constructor
-        otherwise the input widget and the output widget are inter-dependent
+        otherwise the input widget and the output widget are inter-dependent.
+
+        To be implemented by child classes
 
         Args:
             engine (GraphEngine): The engine to use to compute the graph

@@ -8,6 +8,7 @@ class MainWindow(QMainWindow):
     """
 
     def __init__(self, *args, **kwargs) -> None:
+
         super().__init__(*args, **kwargs)
 
         self.setWindowTitle("Filter Playground")

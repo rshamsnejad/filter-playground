@@ -30,6 +30,8 @@ class FilterParametersWidget(QGroupBox):
             frequency (int): The default filter frequency
             gain (float): The default filter gain
             Q (float): The default filter quality factor
+            passband_ripple (float): The default passband ripple
+            stopband_attenuation (float): The default stopband attenuation
         """
 
         super().__init__(*args, **kwargs)

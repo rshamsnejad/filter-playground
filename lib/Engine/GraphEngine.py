@@ -15,6 +15,12 @@ class GraphEngine(QObject):
         flip_phase: bool = False,
         *args, **kwargs
     ) -> None:
+        """
+        Args:
+            gain (float, optional): Overall gain to apply. Defaults to 0.
+            flip_phase (bool, optional): Flip phase status. Defaults to False.
+        """
+
         super().__init__(*args, **kwargs)
 
         self.filter = {
@@ -127,7 +133,7 @@ class GraphEngine(QObject):
     def get_group_delay_ms(self) -> list[float]:
         """
         Returns:
-            list[float]: The Y axis group delay values
+            list[float]: The Y axis group delay values in ms
         """
 
         return self.filter['group_delay_ms']
@@ -186,10 +192,18 @@ class GraphEngine(QObject):
         self.filter['group_delay_ms'] = group_delay_ms
 
     def set_flip_phase(self, flip_phase: bool) -> None:
+        """
+        Args:
+            flip_phase (bool): The flip phase status
+        """
 
         self.flip_phase = flip_phase
 
-    def get_flip_phase(self) -> None:
+    def get_flip_phase(self) -> bool:
+        """
+        Returns:
+            bool: The current fli phase status
+        """
 
         return self.flip_phase
 
@@ -210,6 +224,9 @@ class GraphEngine(QObject):
         return self.gain
 
     def process_flip_phase(self) -> None:
+        """
+        Applies the phase flip to the current transfer function
+        """
 
         if self.get_flip_phase():
             self.sos[0][0] *= -1
@@ -217,6 +234,12 @@ class GraphEngine(QObject):
             self.sos[0][2] *= -1
 
     def process_gain(self, gain_offset_db: float) -> None:
+        """
+        Applies a gain to the current transfer function
+
+        Args:
+            gain_offset_db (float): The gain to apply in dB
+        """
 
         gain_offset_lin = 10 ** (gain_offset_db / 20)
 

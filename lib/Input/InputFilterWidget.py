@@ -18,6 +18,7 @@ class InputFilterWidget(ThreeTabWidget):
         """
         Args:
             id (int): The number of the filter to display
+            engine (BiquadEngine): The engine to use for computation
         """
 
         super().__init__(*args, **kwargs)

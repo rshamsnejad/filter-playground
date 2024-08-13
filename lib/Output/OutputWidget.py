@@ -10,7 +10,8 @@ from lib.Output.SumOutputToolbarWidget import SumOutputToolbarWidget
 
 class OutputWidget(QWidget):
     """
-    Qt widget for the output graph
+    Qt widget for the right section of the main window
+    that contains the output sum
     """
 
     def __init__(self, *args, **kwargs) -> None:
