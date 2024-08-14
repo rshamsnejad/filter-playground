@@ -11,6 +11,7 @@ class GraphEngine(QObject):
     """
 
     def __init__(self,
+        id:         int = 0,
         gain:       float = 0,
         flip_phase: bool = False,
         *args, **kwargs
@@ -36,6 +37,7 @@ class GraphEngine(QObject):
 
         self.fs = 48000
         self.frequency_points = 5000
+        self.id = id
         self.set_gain(gain)
         self.set_flip_phase(flip_phase)
 

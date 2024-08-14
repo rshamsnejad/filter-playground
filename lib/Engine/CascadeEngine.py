@@ -56,7 +56,7 @@ class CascadeEngine(GraphEngine):
         Create a string to display as graph title.
         """
 
-        return "Cascade of the inputs"
+        return f"Cascade {chr(ord('A') + self.id)}"
 
     def add_engine(self, engine: GraphEngine) -> None:
         """

@@ -47,7 +47,7 @@ class CascadeWidget(QTabWidget):
 
         self.cascade_filter_widget = CascadeFilterWidget(
             self.input_filter_widgets,
-            CascadeEngine(),
+            CascadeEngine(id = self.id),
             CascadeToolbarWidget(self.update_input_filter_amount),
             "Parameters",
             OutputBodeGraphWidget(),
