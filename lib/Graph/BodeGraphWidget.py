@@ -51,8 +51,6 @@ class BodeGraphWidget(GraphWidget):
                 Range to display on the Y axis of the phase plot in degrees. Defaults to [-200, 200].
         """
 
-        self.figure.set_tight_layout(True)
-
         # Magnitude
         self.magnitude_graph, = self.axs[0].semilogx([], [])
         self.axs[0].set_xlim(freq_range)

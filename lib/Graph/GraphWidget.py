@@ -25,6 +25,7 @@ class GraphWidget(QWidget):
         self.canvas.setMinimumHeight(250)
 
         self.figure = self.canvas.figure
+        self.figure.set_tight_layout(True)
 
         self.layout().addWidget(NavigationToolbar(self.canvas))
         self.layout().addWidget(self.canvas)
