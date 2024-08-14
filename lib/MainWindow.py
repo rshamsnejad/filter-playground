@@ -17,7 +17,7 @@ class MainWindow(QMainWindow):
         # Detecting the current color scheme for matplotlib theming
         if QGuiApplication.styleHints().colorScheme() == Qt.ColorScheme.Light:
             self.color_scheme = "light"
-            mpls.use("classic")
+            mpls.use("default")
         else:
             self.color_scheme = "dark"
             mpls.use("./lib/custom_dark.mplstyle")
