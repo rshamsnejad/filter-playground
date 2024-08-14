@@ -1,6 +1,9 @@
 from PyQt6.QtWidgets import QMainWindow
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QIcon, QGuiApplication
+from PyQt6.QtCore import Qt
 from lib.MainWidget import MainWidget
+
+import matplotlib.style as mpls
 
 class MainWindow(QMainWindow):
     """
@@ -10,6 +13,13 @@ class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs) -> None:
 
         super().__init__(*args, **kwargs)
+
+        # Detecting the current color scheme for matplotlib theming
+        if QGuiApplication.styleHints().colorScheme() == Qt.ColorScheme.Light:
+            self.color_scheme = "light"
+        else:
+            self.color_scheme = "dark"
+            mpls.use("./lib/custom_dark.mplstyle")
 
         self.setWindowTitle("Filter Playground")
         self.setWindowIcon(QIcon('images/frequency.png'))
