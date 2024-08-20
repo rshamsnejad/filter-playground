@@ -15,7 +15,7 @@
             "name": "Python Debugger: Main file",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/filter_gui.pyw",
+            "program": "${workspaceFolder}/main.pyw",
             "console": "integratedTerminal"
         }
     ]
