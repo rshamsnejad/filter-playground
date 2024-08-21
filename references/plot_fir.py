@@ -39,10 +39,10 @@ f0 = 1000
 fs = 48000
 nyq = fs / 2
 ft = f0 * 3 / 10
-atten = 60
+atten = 30
 filtertype = "highpass"
 
-N = 500
+N, _ = signal.kaiserord(atten, ft/nyq)
 
 if filtertype == "highpass" and N % 2 == 0:
     N += 1
