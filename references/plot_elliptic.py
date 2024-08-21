@@ -51,7 +51,7 @@ plot_mag_range      = [-40, 10]
 plot_phase_range    = [-200, 200]
 
 fig, axs = plt.subplots(2, 1, sharex=True)
-fig.suptitle(f"Butterworth highpass filter, order {N}, $f_0 = {f0}$ Hz")
+fig.suptitle(f"Elliptic highpass filter, order {N}, $f_0 = {f0}$ Hz")
 
 # Magnitude
 axs[0].semilogx(frequencies, mag_db)
