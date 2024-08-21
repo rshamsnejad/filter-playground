@@ -35,7 +35,7 @@ class CascadeEngine(GraphEngine):
         self.process_gain(self.get_gain())
         self.process_flip_phase()
 
-        frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.fs)
+        frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.get_sample_frequency())
 
         mag_lin = abs(magnitude)
         mag_db = 20 * np.log10(abs(magnitude))

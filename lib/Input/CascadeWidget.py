@@ -182,3 +182,23 @@ class CascadeWidget(QTabWidget):
         self.cascade_filter_widget.compute_and_update()
         self.output_widget.sum_output_widget.compute_and_update()
 
+    def compute_and_update(self) -> None:
+        """
+        Convenience method to wrap computing all the
+        filters and updating their graphs in one go
+        """
+
+        for widget in self.input_filter_widgets:
+            widget.compute_and_update()
+
+        self.cascade_filter_widget.compute_and_update()
+
+    def handle_sample_frequency(self, sample_frequency: str) -> None:
+        """
+        Convenience Qt slot to trigger all the input engines's same slots
+        """
+
+        for widget in self.input_filter_widgets:
+            widget.handle_sample_frequency(sample_frequency)
+
+        self.cascade_filter_widget.handle_sample_frequency(sample_frequency)

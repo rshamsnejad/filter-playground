@@ -35,7 +35,7 @@ class GraphEngine(QObject):
             "group_delay_ms": []
         }
 
-        self.fs = 48000
+        self.set_sample_frequency(48000)
         self.frequency_points = 5000
         self.id = id
         self.set_gain(gain)
@@ -192,6 +192,26 @@ class GraphEngine(QObject):
         group_delay_ms = group_delay * 1000
 
         self.filter['group_delay_ms'] = group_delay_ms
+
+    def set_sample_frequency(self, sample_frequency: float) -> None:
+        """
+        Args:
+            sample_frequency (float): The sample frequency in Hertz
+        """
+
+        if sample_frequency <= 0:
+            self.fs = 48000
+            raise ValueError("Sample frequency must be a positive value")
+        else:
+            self.fs = sample_frequency
+
+    def get_sample_frequency(self) -> float:
+        """
+        Returns:
+            float: The current sample frequency in Hertz
+        """
+
+        return self.fs
 
     def set_flip_phase(self, flip_phase: bool) -> None:
         """

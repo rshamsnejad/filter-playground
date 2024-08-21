@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow, QToolBar, QComboBox, QLabel
 from PyQt6.QtGui import QIcon, QGuiApplication
 from PyQt6.QtCore import Qt
 from lib.MainWidget import MainWidget
@@ -25,7 +25,27 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Filter Playground")
         self.setWindowIcon(QIcon('images/frequency.png'))
 
+        self.fs_label = QLabel("Sample frequency: ")
+
+        self.fs_combobox = QComboBox()
+        self.fs_combobox.addItems([
+            "44100",  "48000",
+            "88200",  "96000",
+            "176400", "192000"
+        ])
+        self.fs_combobox.setEditable(True)
+        self.fs_combobox.setCurrentText("48000")
+
+        self.toolbar = QToolBar()
+        self.toolbar.addWidget(self.fs_label)
+        self.toolbar.addWidget(self.fs_combobox)
+        self.toolbar.setMovable(False)
+
+        self.addToolBar(self.toolbar)
+
         self.main_widget = MainWidget()
         self.setCentralWidget(self.main_widget)
+
+        self.fs_combobox.currentTextChanged.connect(self.main_widget.handle_sample_frequency)
 
         self.show()

@@ -40,3 +40,19 @@ class MainWidget(QWidget):
         self.layout().addWidget(self.scroll_area)
         self.layout().addWidget(self.output_widget)
 
+    def compute_and_update(self) -> None:
+        """
+        Convenience method to wrap computing all the
+        data and updating all the graph in one go
+        """
+
+        self.input_widget.compute_and_update()
+        self.output_widget.compute_and_update()
+
+    def handle_sample_frequency(self, sample_frequency: str) -> None:
+        """
+        Convenience Qt slot to trigger all the engines's same slots
+        """
+
+        self.input_widget.handle_sample_frequency(sample_frequency)
+        self.output_widget.handle_sample_frequency(sample_frequency)

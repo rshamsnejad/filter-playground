@@ -120,7 +120,7 @@ class BiquadEngine(GraphEngine):
             ValueError: In case of value out of bounds
         """
 
-        if frequency <= 0 or frequency >= self.fs / 2:
+        if frequency <= 0 or frequency >= self.get_sample_frequency() / 2:
             self.frequency = 1000
             raise ValueError("Frequency must be a positive value under fs/2")
         else:
@@ -210,7 +210,7 @@ class BiquadEngine(GraphEngine):
             * https://thewolfsound.com/allpass-filter/
         """
 
-        self.w0 = 2 * pi * self.get_frequency() / self.fs
+        self.w0 = 2 * pi * self.get_frequency() / self.get_sample_frequency()
         self.alpha = sin(self.w0) / (2 * self.get_Q())
         self.A = 10**(self.get_gain() / 40)
 
@@ -228,7 +228,7 @@ class BiquadEngine(GraphEngine):
                 self.sos = tf2sos(b, a)
 
             case "allpass":
-                coeff1 = (tan(pi * self.get_frequency()/self.fs) - 1) / (tan(pi * self.get_frequency()/self.fs) + 1)
+                coeff1 = (tan(pi * self.get_frequency()/self.get_sample_frequency()) - 1) / (tan(pi * self.get_frequency()/self.get_sample_frequency()) + 1)
                 b_order1 = [coeff1, 1, 0]
                 a_order1 = [1, coeff1, 0]
                 sos_order1 = list(tf2sos(b_order1, a_order1))
@@ -309,7 +309,7 @@ class BiquadEngine(GraphEngine):
                     btype=self.get_filtertype().lower().replace("butterworth ", ""),
                     analog=False,
                     output='sos',
-                    fs=self.fs
+                    fs=self.get_sample_frequency()
                 )
 
             case "bessel highpass" | "bessel lowpass":
@@ -320,7 +320,7 @@ class BiquadEngine(GraphEngine):
                     analog=False,
                     output='sos',
                     norm='mag',
-                    fs=self.fs
+                    fs=self.get_sample_frequency()
                 )
 
             case "chebyshev i highpass" | "chebyshev i lowpass":
@@ -331,7 +331,7 @@ class BiquadEngine(GraphEngine):
                     btype=self.get_filtertype().lower().replace("chebyshev i ", ""),
                     analog=False,
                     output='sos',
-                    fs=self.fs
+                    fs=self.get_sample_frequency()
                 )
 
             case "chebyshev ii highpass" | "chebyshev ii lowpass":
@@ -342,7 +342,7 @@ class BiquadEngine(GraphEngine):
                     btype=self.get_filtertype().lower().replace("chebyshev ii ", ""),
                     analog=False,
                     output='sos',
-                    fs=self.fs
+                    fs=self.get_sample_frequency()
                 )
 
             case "elliptic highpass" | "elliptic lowpass":
@@ -354,7 +354,7 @@ class BiquadEngine(GraphEngine):
                     btype=self.get_filtertype().lower().replace("elliptic ", ""),
                     analog=False,
                     output='sos',
-                    fs=self.fs
+                    fs=self.get_sample_frequency()
                 )
 
             case _:
@@ -363,7 +363,7 @@ class BiquadEngine(GraphEngine):
         self.process_gain(gain_offset_db)
         self.process_flip_phase()
 
-        frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.fs)
+        frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.get_sample_frequency())
 
         mag_lin = abs(magnitude)
         mag_db = 20 * log10(abs(magnitude))

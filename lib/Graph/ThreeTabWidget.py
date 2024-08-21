@@ -46,6 +46,19 @@ class ThreeTabWidget(QTabWidget):
         self.bode_graph.update_graph()
         self.polezero_graph.update_graph()
 
+    def handle_sample_frequency(self, sample_frequency: str) -> None:
+        """
+        Qt slot to update the sample frequency according to
+        the drop-down list in the main window toolbar
+        """
+
+        try:
+            self.engine.set_sample_frequency(float(sample_frequency or 48000))
+        except ValueError as e:
+            logging.warning(e)
+
+        self.compute_and_update()
+
     def handle_flip_phase(self, flip_phase: bool) -> None:
         """
         Qt slot to update the filter phase flip according

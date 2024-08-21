@@ -18,8 +18,8 @@ class BodeGraphWidget(GraphWidget):
         super().__init__(*args, **kwargs)
 
         self.axs = self.figure.subplots(2, 1, sharex=True)
-        self.axvspan = None
-        self.axvspan_text = None
+        self.axvspans = [None, None]
+        self.axvspan_texts = [None, None]
 
         self.init_graph()
 
@@ -124,27 +124,33 @@ class BodeGraphWidget(GraphWidget):
         self.update_axvlines()
 
         # Grey out the area above Nyquist frequency
-        if self.axvspan:
-            self.axvspan.remove()
-            del self.axvspan
-        if self.axvspan_text:
-            self.axvspan_text.remove()
-            del self.axvspan_text
+        for axvspan in self.axvspans:
+            if axvspan:
+                axvspan.remove()
+        del self.axvspans
+        self.axvspans = []
+
+        for axvspan_text in self.axvspan_texts:
+            if axvspan_text:
+                axvspan_text.remove()
+        del self.axvspan_texts
+        self.axvspan_texts = []
 
         for ax in self.axs:
-            self.axvspan = ax.axvspan(self.engine.fs / 2, 1e12, color='gray')
-            self.axvspan_text = ax.text(
-                (self.engine.fs / 2) * 1.1,
-                0,
-                "Harry Nyquist\nis watching you",
-                fontsize=10,
-                fontweight='black',
-                color='ivory',
-                horizontalalignment='left',
-                verticalalignment='center',
-                clip_on=True
+            self.axvspans.append(ax.axvspan(self.engine.get_sample_frequency() / 2, 1e12, color='gray'))
+            self.axvspan_texts.append(
+                ax.text(
+                    (self.engine.get_sample_frequency() / 2) * 1.1,
+                    0,
+                    "Harry Nyquist\nis watching you",
+                    fontsize=10,
+                    fontweight='black',
+                    color='ivory',
+                    horizontalalignment='left',
+                    verticalalignment='center',
+                    clip_on=True
+                )
             )
-
 
         self.canvas.draw()
 
