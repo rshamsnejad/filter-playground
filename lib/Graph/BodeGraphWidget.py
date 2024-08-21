@@ -18,6 +18,8 @@ class BodeGraphWidget(GraphWidget):
         super().__init__(*args, **kwargs)
 
         self.axs = self.figure.subplots(2, 1, sharex=True)
+        self.axvspan = None
+        self.axvspan_text = None
 
         self.init_graph()
 
@@ -74,6 +76,7 @@ class BodeGraphWidget(GraphWidget):
         self.axs[1].tick_params(axis='y', colors=phase_color)
         self.axs[1].yaxis.label.set_color(phase_color)
 
+        # Group delay
         gd_color = 'salmon'
         self.gd_ax = self.axs[1].twinx()
         self.gd_ax.set_ylabel("Group delay [ms]")
@@ -119,6 +122,29 @@ class BodeGraphWidget(GraphWidget):
         self.gd_ax.set_ylim(0, ylim_max)
 
         self.update_axvlines()
+
+        # Grey out the area above Nyquist frequency
+        if self.axvspan:
+            self.axvspan.remove()
+            del self.axvspan
+        if self.axvspan_text:
+            self.axvspan_text.remove()
+            del self.axvspan_text
+
+        for ax in self.axs:
+            self.axvspan = ax.axvspan(self.engine.fs / 2, 1e12, color='gray')
+            self.axvspan_text = ax.text(
+                (self.engine.fs / 2) * 1.1,
+                0,
+                "Harry Nyquist\nis watching you",
+                fontsize=10,
+                fontweight='black',
+                color='ivory',
+                horizontalalignment='left',
+                verticalalignment='center',
+                clip_on=True
+            )
+
 
         self.canvas.draw()
 

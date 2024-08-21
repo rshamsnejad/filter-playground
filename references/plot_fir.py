@@ -56,7 +56,9 @@ taps = signal.firls(
 
 sos = signal.tf2sos(taps, [1])
 
-frequencies, magnitude = signal.sosfreqz(sos, worN=np.logspace(0, 5, 1000), fs=fs)
+frequency_points = np.logspace(0, 5, 1000)
+
+frequencies, magnitude = signal.sosfreqz(sos, worN=frequency_points, fs=fs)
 
 mag_db = 20 * np.log10(abs(magnitude))
 phase_deg = np.angle(magnitude, deg=True)
@@ -78,6 +80,19 @@ axs[0].set_ylim(plot_mag_range)
 axs[0].margins(0, 0.1)
 axs[0].grid(which='both', axis='both')
 axs[0].axvline(f0, color='red')
+axs[0].axvspan(fs / 2, frequency_points[-1], color='gray')
+axs[0].text(
+    (fs / 2) * 1.1,
+    0,
+    "Harry Nyquist\nis watching you",
+    fontsize=12,
+    fontweight='black',
+    color='ivory',
+    rotation='vertical',
+    horizontalalignment='left',
+    verticalalignment='center',
+    clip_on=True
+)
 
 # Phase
 axs[1].semilogx(frequencies, phase_deg)
@@ -89,5 +104,18 @@ axs[1].set_ylim(plot_phase_range)
 axs[1].margins(0, 0.1)
 axs[1].grid(which='both', axis='both')
 axs[1].axvline(f0, color='red')
+axs[1].axvspan(fs / 2, frequency_points[-1], color='gray')
+axs[1].text(
+    (fs / 2) * 1.1,
+    0,
+    "Harry Nyquist\nis watching you",
+    fontsize=12,
+    fontweight='black',
+    color='ivory',
+    rotation='vertical',
+    horizontalalignment='center',
+    verticalalignment='center',
+    clip_on=True
+)
 
 plt.show()
