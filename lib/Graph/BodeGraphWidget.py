@@ -116,7 +116,7 @@ class BodeGraphWidget(GraphWidget):
 
         # Drop first group delay point for determining the maximum
         # as it is garbage and can be way too high
-        gd_max =  np.max(self.engine.get_group_delay_ms()[1:])
+        gd_max =  np.max(np.ma.masked_invalid(self.engine.get_group_delay_ms()[1:]))
         ylim_max = gd_max + (gd_max / 10)
 
         self.gd_ax.set_ylim(0, ylim_max)
