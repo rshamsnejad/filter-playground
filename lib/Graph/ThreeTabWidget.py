@@ -2,7 +2,8 @@ import logging
 
 from PyQt6.QtWidgets import (
     QTabWidget,
-    QWidget
+    QWidget,
+    QMessageBox
 )
 from lib.Graph.PolezeroGraphWidget import PolezeroGraphWidget
 from lib.Graph.BodeGraphWidget import BodeGraphWidget
@@ -35,6 +36,11 @@ class ThreeTabWidget(QTabWidget):
         self.addTab(self.first_tab_widget, first_tab_label)
         self.addTab(self.bode_graph, "Bode plot")
         self.addTab(self.polezero_graph, "Pole-zero map")
+
+        self.popup = QMessageBox()
+        self.popup.setWindowTitle("Invalid data")
+        self.popup.setIcon(QMessageBox.Icon.Warning)
+
 
     def compute_and_update(self) -> None:
         """
