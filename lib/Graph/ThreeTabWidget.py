@@ -52,10 +52,7 @@ class ThreeTabWidget(QTabWidget):
         the drop-down list in the main window toolbar
         """
 
-        try:
-            self.engine.set_sample_frequency(float(sample_frequency or 48000))
-        except ValueError as e:
-            logging.warning(e)
+        self.engine.set_sample_frequency(float(sample_frequency or 48000))
 
         self.compute_and_update()
 
@@ -78,5 +75,7 @@ class ThreeTabWidget(QTabWidget):
             self.engine.set_gain(gain or 0)
         except ValueError as e:
             logging.warning(e)
+            self.popup.setText(str(e))
+            self.popup.exec()
 
         self.compute_and_update()

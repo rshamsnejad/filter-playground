@@ -1,7 +1,10 @@
+import logging
+
 from PyQt6.QtWidgets import (
     QWidget,
     QHBoxLayout,
-    QScrollArea
+    QScrollArea,
+    QMessageBox
 )
 
 from lib.Output.OutputWidget import OutputWidget
@@ -40,6 +43,9 @@ class MainWidget(QWidget):
         self.layout().addWidget(self.scroll_area)
         self.layout().addWidget(self.output_widget)
 
+        self.popup = QMessageBox()
+        self.popup.setWindowTitle("Invalid data")
+
     def compute_and_update(self) -> None:
         """
         Convenience method to wrap computing all the
@@ -54,5 +60,10 @@ class MainWidget(QWidget):
         Convenience Qt slot to trigger all the engines's same slots
         """
 
-        self.input_widget.handle_sample_frequency(sample_frequency)
-        self.output_widget.handle_sample_frequency(sample_frequency)
+        try:
+            self.input_widget.handle_sample_frequency(sample_frequency)
+            self.output_widget.handle_sample_frequency(sample_frequency)
+        except ValueError as e:
+            logging.warning(e)
+            self.popup.setText(str(e))
+            self.popup.exec()
