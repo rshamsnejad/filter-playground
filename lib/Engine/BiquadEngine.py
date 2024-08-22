@@ -1,4 +1,3 @@
-from tracemalloc import stop
 from lib.Engine.GraphEngine import GraphEngine
 from scipy.signal import butter, bessel, cheby1, cheby2, ellip, sosfreqz, tf2sos, kaiserord, firls
 from numpy import log10, angle, pi, sin, cos, sqrt, tan
@@ -47,9 +46,9 @@ class BiquadEngine(GraphEngine):
 
         super().__init__(*args, **kwargs)
 
+        self.set_filtertype(filtertype)
         self.set_order(order)
         self.set_frequency(frequency)
-        self.set_filtertype(filtertype)
         self.set_Q(Q)
         self.set_passband_ripple(passband_ripple)
         self.set_stopband_attenuation(stopband_attenuation)
@@ -131,6 +130,12 @@ class BiquadEngine(GraphEngine):
         if frequency <= 0 or frequency >= self.get_sample_frequency() / 2:
             self.frequency = 1000
             raise ValueError("Frequency must be a positive value under fs/2")
+        elif self.get_filtertype().lower() == 'fir highpass' and frequency <= self.get_transband_width():
+            self.frequency = self.get_transband_width() + 100
+            raise ValueError("Stopband must be larger than the transition band")
+        elif self.get_filtertype().lower() == 'fir lowpass' and frequency + self.get_transband_width() >= self.get_sample_frequency() / 2:
+            self.frequency = self.get_sample_frequency() - self.get_transband_width() - 100
+            raise ValueError("Stopband must be larger than the transition band")
         else:
             self.frequency = frequency
 
@@ -219,7 +224,13 @@ class BiquadEngine(GraphEngine):
 
         if transband_width < 0 or transband_width >= self.get_sample_frequency() / 2:
             self.transband_width = self.get_frequency() * 2 / 10
-            raise ValueError("Stopband attenuation must be a positive value under fs/2")
+            raise ValueError("Transition band width must be a positive value under fs/2")
+        elif self.get_filtertype().lower() == 'fir highpass' and transband_width >= self.get_frequency():
+            self.transband_width = self.get_frequency() * 2 / 10
+            raise ValueError("Transition band must be smaller than the stop band")
+        elif self.get_filtertype().lower() == 'fir lowpass' and self.get_frequency() + transband_width >= self.get_sample_frequency() / 2 :
+            self.transband_width = self.get_frequency() * 2 / 10
+            raise ValueError("Transition band must be smaller than the stop band")
         else:
             self.transband_width = transband_width
 
