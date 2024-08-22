@@ -27,7 +27,9 @@ class FilterTypeWidget(QGroupBox):
             "Chebyshev II Highpass",
             "Chebyshev II Lowpass",
             "Elliptic Highpass",
-            "Elliptic Lowpass"
+            "Elliptic Lowpass",
+            "FIR Highpass",
+            "FIR Lowpass"
         ],
         *args, **kwargs
     ) -> None:

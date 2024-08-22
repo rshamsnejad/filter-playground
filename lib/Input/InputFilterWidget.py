@@ -42,6 +42,7 @@ class InputFilterWidget(ThreeTabWidget):
         self.filter_toolbar.filter_parameters.field_flip_phase.stateChanged.connect(self.handle_flip_phase)
         self.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.handle_passband_ripple)
         self.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.handle_stopband_attenuation)
+        self.filter_toolbar.filter_parameters.field_transband_width.valueChanged.connect(self.handle_transband_width)
 
         self.disable_unused_fields()
 
@@ -125,6 +126,19 @@ class InputFilterWidget(ThreeTabWidget):
 
         self.compute_and_update()
 
+    def handle_transband_width(self, transband_width: int) -> None:
+        """
+        Qt slot to update the transition band width
+        according to the spinbox in the toolbar
+        """
+
+        try:
+            self.engine.set_transband_width(transband_width or 300)
+        except ValueError as e:
+            logging.warning(e)
+
+        self.compute_and_update()
+
     def disable_unused_fields(self) -> None:
         """
         Disables the spinboxes that are not needed depending
@@ -142,6 +156,7 @@ class InputFilterWidget(ThreeTabWidget):
                 self.filter_toolbar.filter_parameters.field_passband_ripple.setDisabled(True)
                 self.filter_toolbar.filter_parameters.field_stopband_attenuation.setValue(60)
                 self.filter_toolbar.filter_parameters.field_stopband_attenuation.setDisabled(True)
+                self.filter_toolbar.filter_parameters.field_transband_width.setDisabled(True)
 
             case "allpass":
                 self.filter_toolbar.filter_parameters.field_order.setDisabled(False)
@@ -153,6 +168,7 @@ class InputFilterWidget(ThreeTabWidget):
                 self.filter_toolbar.filter_parameters.field_passband_ripple.setDisabled(True)
                 self.filter_toolbar.filter_parameters.field_stopband_attenuation.setValue(60)
                 self.filter_toolbar.filter_parameters.field_stopband_attenuation.setDisabled(True)
+                self.filter_toolbar.filter_parameters.field_transband_width.setDisabled(True)
 
             case "peak" | "highshelf" | "lowshelf":
                 self.filter_toolbar.filter_parameters.field_order.setValue(2)
@@ -164,6 +180,7 @@ class InputFilterWidget(ThreeTabWidget):
                 self.filter_toolbar.filter_parameters.field_passband_ripple.setDisabled(True)
                 self.filter_toolbar.filter_parameters.field_stopband_attenuation.setValue(60)
                 self.filter_toolbar.filter_parameters.field_stopband_attenuation.setDisabled(True)
+                self.filter_toolbar.filter_parameters.field_transband_width.setDisabled(True)
 
             case "bessel highpass" | "bessel lowpass" \
                 | "butterworth highpass" | "butterworth lowpass":
@@ -176,6 +193,7 @@ class InputFilterWidget(ThreeTabWidget):
                 self.filter_toolbar.filter_parameters.field_passband_ripple.setDisabled(True)
                 self.filter_toolbar.filter_parameters.field_stopband_attenuation.setValue(60)
                 self.filter_toolbar.filter_parameters.field_stopband_attenuation.setDisabled(True)
+                self.filter_toolbar.filter_parameters.field_transband_width.setDisabled(True)
 
             case "chebyshev i highpass" | "chebyshev i lowpass":
                 self.filter_toolbar.filter_parameters.field_order.setDisabled(False)
@@ -186,6 +204,7 @@ class InputFilterWidget(ThreeTabWidget):
                 self.filter_toolbar.filter_parameters.field_passband_ripple.setDisabled(False)
                 self.filter_toolbar.filter_parameters.field_stopband_attenuation.setValue(60)
                 self.filter_toolbar.filter_parameters.field_stopband_attenuation.setDisabled(True)
+                self.filter_toolbar.filter_parameters.field_transband_width.setDisabled(True)
 
             case "chebyshev ii highpass" | "chebyshev ii lowpass":
                 self.filter_toolbar.filter_parameters.field_order.setDisabled(False)
@@ -196,6 +215,7 @@ class InputFilterWidget(ThreeTabWidget):
                 self.filter_toolbar.filter_parameters.field_passband_ripple.setValue(3)
                 self.filter_toolbar.filter_parameters.field_passband_ripple.setDisabled(True)
                 self.filter_toolbar.filter_parameters.field_stopband_attenuation.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_transband_width.setDisabled(True)
 
             case "elliptic highpass" | "elliptic lowpass":
                 self.filter_toolbar.filter_parameters.field_order.setDisabled(False)
@@ -205,6 +225,19 @@ class InputFilterWidget(ThreeTabWidget):
                 self.filter_toolbar.filter_parameters.field_Q.setDisabled(True)
                 self.filter_toolbar.filter_parameters.field_passband_ripple.setDisabled(False)
                 self.filter_toolbar.filter_parameters.field_stopband_attenuation.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_transband_width.setDisabled(True)
+
+            case "fir highpass" | "fir lowpass":
+                self.filter_toolbar.filter_parameters.field_order.setValue(2)
+                self.filter_toolbar.filter_parameters.field_order.setDisabled(True)
+                self.filter_toolbar.filter_parameters.field_frequency.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_gain.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_Q.setValue(0.71)
+                self.filter_toolbar.filter_parameters.field_Q.setDisabled(True)
+                self.filter_toolbar.filter_parameters.field_passband_ripple.setValue(3)
+                self.filter_toolbar.filter_parameters.field_passband_ripple.setDisabled(True)
+                self.filter_toolbar.filter_parameters.field_stopband_attenuation.setDisabled(False)
+                self.filter_toolbar.filter_parameters.field_transband_width.setDisabled(False)
 
             case _:
                 raise ValueError("Unknown filter type")

@@ -22,6 +22,7 @@ class FilterParametersWidget(QGroupBox):
         Q: float,
         passband_ripple: float,
         stopband_attenuation: float,
+        transband_width: int,
         *args, **kwargs
     ) -> None:
         """
@@ -32,6 +33,7 @@ class FilterParametersWidget(QGroupBox):
             Q (float): The default filter quality factor
             passband_ripple (float): The default passband ripple
             stopband_attenuation (float): The default stopband attenuation
+            transband_width (int): The default transition band width
         """
 
         super().__init__(*args, **kwargs)
@@ -88,7 +90,7 @@ class FilterParametersWidget(QGroupBox):
         self.layout().addWidget(label_Q, 3, 0, 1, 1)
         self.layout().addWidget(self.field_Q, 3, 1, 1, 1)
 
-        label_passband_ripple = QLabel("Max. passband ripple:")
+        label_passband_ripple = QLabel("Max. passband ripple (dB):")
         self.field_passband_ripple = QDoubleSpinBox()
         self.field_passband_ripple.setLocale(locale)
         self.field_passband_ripple.setMinimum(0)
@@ -97,10 +99,10 @@ class FilterParametersWidget(QGroupBox):
         self.field_passband_ripple.setFixedWidth(spinbox_width)
         self.field_passband_ripple.setAccelerated(True)
 
-        self.layout().addWidget(label_passband_ripple, 4, 0, 1, 1)
-        self.layout().addWidget(self.field_passband_ripple, 4, 1, 1, 1)
+        self.layout().addWidget(label_passband_ripple, 0, 2, 1, 1)
+        self.layout().addWidget(self.field_passband_ripple, 0, 3, 1, 1)
 
-        label_stopband_attenuation = QLabel("Min. stopband attenuation:")
+        label_stopband_attenuation = QLabel("Min. stopband attenuation (dB):")
         self.field_stopband_attenuation = QDoubleSpinBox()
         self.field_stopband_attenuation.setLocale(locale)
         self.field_stopband_attenuation.setMinimum(0)
@@ -109,17 +111,28 @@ class FilterParametersWidget(QGroupBox):
         self.field_stopband_attenuation.setFixedWidth(spinbox_width)
         self.field_stopband_attenuation.setAccelerated(True)
 
-        self.layout().addWidget(label_stopband_attenuation, 5, 0, 1, 1)
-        self.layout().addWidget(self.field_stopband_attenuation, 5, 1, 1, 1)
+        self.layout().addWidget(label_stopband_attenuation, 1, 2, 1, 1)
+        self.layout().addWidget(self.field_stopband_attenuation, 1, 3, 1, 1)
+
+        label_transband_width = QLabel("Transition band width (Hz):")
+        self.field_transband_width = QSpinBox()
+        self.field_transband_width.setMinimum(1)
+        self.field_transband_width.setMaximum(1000000)
+        self.field_transband_width.setValue(transband_width)
+        self.field_transband_width.setFixedWidth(spinbox_width)
+        self.field_transband_width.setAccelerated(True)
+
+        self.layout().addWidget(label_transband_width, 2, 2, 1, 1)
+        self.layout().addWidget(self.field_transband_width, 2, 3, 1, 1)
 
         label_flip_phase = QLabel("Flip phase:")
         self.field_flip_phase = QCheckBox()
         self.field_flip_phase.setChecked(False)
 
-        self.layout().addWidget(label_flip_phase, 6, 0, 1, 1)
-        self.layout().addWidget(self.field_flip_phase, 6, 1, 1, 1)
+        self.layout().addWidget(label_flip_phase, 3, 2, 1, 1)
+        self.layout().addWidget(self.field_flip_phase, 3, 3, 1, 1)
 
         self.layout().addItem(
             QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding),
-            7, 1, 1, 1
+            4, 3, 1, 1
         )

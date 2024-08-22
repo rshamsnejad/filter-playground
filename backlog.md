@@ -1,3 +1,3 @@
 # Filter playground backlog
 
-* Add FIR
+* Add a "compute" button

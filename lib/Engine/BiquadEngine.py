@@ -1,6 +1,6 @@
 from tracemalloc import stop
 from lib.Engine.GraphEngine import GraphEngine
-from scipy.signal import butter, bessel, cheby1, cheby2, ellip, sosfreqz, tf2sos
+from scipy.signal import butter, bessel, cheby1, cheby2, ellip, sosfreqz, tf2sos, kaiserord, firls
 from numpy import log10, angle, pi, sin, cos, sqrt, tan
 
 class BiquadEngine(GraphEngine):
@@ -15,6 +15,7 @@ class BiquadEngine(GraphEngine):
         Q:                      float = 0.71,
         passband_ripple:        float = 3,
         stopband_attenuation:   float = 60,
+        transband_width:        int = 300,
         *args, **kwargs
     ) -> None:
         """
@@ -36,8 +37,12 @@ class BiquadEngine(GraphEngine):
                 Defaults to 3.
             stopband_attenuation (float, optional):
                 Minimum stopband attenuation.
-                For Chebyshev II and Elliptic filters only.
+                For Chebyshev II, Elliptic and FIR filters only.
                 Defaults to 60.
+            transband_width (float, optional):
+                Transition band width in Hertz.
+                For FIR filters only.
+                Defaults to 300 Hz.
         """
 
         super().__init__(*args, **kwargs)
@@ -48,6 +53,7 @@ class BiquadEngine(GraphEngine):
         self.set_Q(Q)
         self.set_passband_ripple(passband_ripple)
         self.set_stopband_attenuation(stopband_attenuation)
+        self.set_transband_width(transband_width)
 
     def set_filtertype(self, filtertype: str) -> None:
         """
@@ -74,7 +80,9 @@ class BiquadEngine(GraphEngine):
             "chebyshev ii highpass",
             "chebyshev ii lowpass",
             "elliptic highpass",
-            "elliptic lowpass"
+            "elliptic lowpass",
+            "fir highpass",
+            "fir lowpass"
         ]:
             self.filtertype = "highpass"
             raise ValueError("Incorrect filter type")
@@ -181,7 +189,7 @@ class BiquadEngine(GraphEngine):
 
     def set_stopband_attenuation(self, stopband_attenuation: float) -> None:
         """
-        For Chebyshev II and Elliptic filters only
+        For Chebyshev II, Elliptic and FIR filters only
 
         Args:
             stopband_attenuation (float): The minimum stopband attenuation in dB
@@ -200,6 +208,28 @@ class BiquadEngine(GraphEngine):
         """
 
         return self.stopband_attenuation
+
+    def set_transband_width(self, transband_width: int) -> None:
+        """
+        For FIR filters only
+
+        Args:
+            transband_width (int): The width of the transition band in Hertz
+        """
+
+        if transband_width < 0 or transband_width >= self.get_sample_frequency() / 2:
+            self.transband_width = self.get_frequency() * 2 / 10
+            raise ValueError("Stopband attenuation must be a positive value under fs/2")
+        else:
+            self.transband_width = transband_width
+
+    def get_transband_width(self) -> int:
+        """
+        Returns:
+            int: The current transition band width in Hertz
+        """
+
+        return self.transband_width
 
     def compute_specific(self) -> None:
         """
@@ -357,6 +387,38 @@ class BiquadEngine(GraphEngine):
                     fs=self.get_sample_frequency()
                 )
 
+            case "fir highpass" | "fir lowpass":
+                N, _ = kaiserord(
+                    self.get_stopband_attenuation(),
+                    self.get_transband_width() / (self.get_sample_frequency() / 2)
+                )
+
+                if self.get_filtertype().lower() == "fir highpass":
+                    if N % 2 == 0:
+                        N += 1
+
+                    bands = [
+                        0, self.get_frequency() - self.get_transband_width(),
+                        self.get_frequency(), self.get_sample_frequency() / 2
+                    ]
+                    gains = [0, 0, 1, 1]
+
+                else:
+                    if N % 2 == 0:
+                        N += 1
+
+                    bands = [
+                        0, self.get_frequency(),
+                        self.get_frequency() + self.get_transband_width(), self.get_sample_frequency() / 2
+                    ]
+                    gains = [1, 1, 0, 0]
+
+                self.numtaps = N
+
+                taps = firls(self.numtaps, bands, gains, fs=self.get_sample_frequency())
+
+                self.sos = tf2sos(taps, [1])
+
             case _:
                 raise ValueError("Unknown filter type")
 
@@ -409,6 +471,9 @@ class BiquadEngine(GraphEngine):
                 | "chebyshev ii highpass" | "chebyshev ii lowpass" \
                 | "elliptic highpass" | "elliptic lowpass":
                 type_string = f"{self.get_filtertype()} filter"
+
+            case "fir highpass" | "fir lowpass":
+                type_string = f"{self.get_filtertype()}, {self.numtaps} taps"
 
             case _:
                 raise ValueError("Unknown filter type")
