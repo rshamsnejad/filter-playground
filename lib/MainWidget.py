@@ -45,6 +45,7 @@ class MainWidget(QWidget):
 
         self.popup = QMessageBox()
         self.popup.setWindowTitle("Invalid data")
+        self.popup.setIcon(QMessageBox.Icon.Warning)
 
     def compute_and_update(self) -> None:
         """
