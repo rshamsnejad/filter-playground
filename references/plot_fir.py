@@ -35,24 +35,27 @@ def remove_phase_discontinuities(phase: list) -> list:
 
     return phase_nan
 
-f0 = 1000
+f0 = 10000
 fs = 48000
 nyq = fs / 2
 ft = f0 * 3 / 10
 atten = 30
-filtertype = "highpass"
+filtertype = "lowpass"
 
 N, _ = signal.kaiserord(atten, ft/nyq)
 
-if filtertype == "highpass" and N % 2 == 0:
+if N % 2 == 0:
     N += 1
 
-taps = signal.firls(
-    N,
-    [0, f0 - ft, f0, nyq],
-    [0, 0, 1, 1],
-    fs=fs
-)
+if filtertype == "highpass":
+    bands = [0, f0 - ft, f0, nyq]
+    gains = [0, 0, 1, 1]
+else:
+    bands = [0, f0, f0 + ft, nyq]
+    gains = [1, 1, 0, 0]
+
+
+taps = signal.firls(N, bands, gains, fs=fs)
 
 sos = signal.tf2sos(taps, [1])
 
@@ -73,6 +76,7 @@ fig.suptitle(f"FIR {filtertype} filter, {len(taps)} taps, $f_0 = {f0}$ Hz, $f_t 
 
 # Magnitude
 axs[0].semilogx(frequencies, mag_db)
+# axs[0].plot(frequencies, mag_db)
 axs[0].set_xscale('log')
 axs[0].set_xlim(plot_freq_range)
 axs[0].set_ylabel('Gain [dB]')
@@ -96,6 +100,7 @@ axs[0].text(
 
 # Phase
 axs[1].semilogx(frequencies, phase_deg)
+# axs[1].plot(frequencies, phase_deg)
 axs[1].set_xlabel('Frequency [Hz]')
 axs[1].set_xscale('log')
 axs[1].set_xlim(plot_freq_range)
