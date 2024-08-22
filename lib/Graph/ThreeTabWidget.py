@@ -38,9 +38,20 @@ class ThreeTabWidget(QTabWidget):
         self.addTab(self.polezero_graph, "Pole-zero map")
 
         self.popup = QMessageBox()
+
+    def popup_invalid_data(self, message: str) -> None:
+        """
+        Displays a popup for ValueError exceptions
+
+        Args:
+            message (str): The message to display inside the popup window
+        """
+
         self.popup.setWindowTitle("Invalid data")
         self.popup.setIcon(QMessageBox.Icon.Warning)
+        self.popup.setText(message)
 
+        self.popup.exec()
 
     def compute_and_update(self) -> None:
         """
@@ -81,7 +92,6 @@ class ThreeTabWidget(QTabWidget):
             self.engine.set_gain(gain or 0)
         except ValueError as e:
             logging.warning(e)
-            self.popup.setText(str(e))
-            self.popup.exec()
+            self.popup_invalid_data(str(e))
 
         self.compute_and_update()

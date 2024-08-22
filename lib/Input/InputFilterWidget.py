@@ -56,8 +56,7 @@ class InputFilterWidget(ThreeTabWidget):
             self.engine.set_filtertype(filter_type or 'highpass')
         except ValueError as e:
             logging.warning(e)
-            self.popup.setText(str(e))
-            self.popup.exec()
+            self.popup_invalid_data(str(e))
 
         self.disable_unused_fields()
 
@@ -73,8 +72,7 @@ class InputFilterWidget(ThreeTabWidget):
             self.engine.set_order(order or 1)
         except ValueError as e:
             logging.warning(e)
-            self.popup.setText(str(e))
-            self.popup.exec()
+            self.popup_invalid_data(str(e))
 
         self.compute_and_update()
 
@@ -88,8 +86,7 @@ class InputFilterWidget(ThreeTabWidget):
             self.engine.set_frequency(frequency or 1000)
         except ValueError as e:
             logging.warning(e)
-            self.popup.setText(str(e))
-            self.popup.exec()
+            self.popup_invalid_data(str(e))
 
         self.compute_and_update()
 
@@ -103,8 +100,7 @@ class InputFilterWidget(ThreeTabWidget):
             self.engine.set_Q(Q or 0.71)
         except ValueError as e:
             logging.warning(e)
-            self.popup.setText(str(e))
-            self.popup.exec()
+            self.popup_invalid_data(str(e))
 
         self.compute_and_update()
 
@@ -118,8 +114,7 @@ class InputFilterWidget(ThreeTabWidget):
             self.engine.set_passband_ripple(passband_ripple or 3)
         except ValueError as e:
             logging.warning(e)
-            self.popup.setText(str(e))
-            self.popup.exec()
+            self.popup_invalid_data(str(e))
 
         self.compute_and_update()
 
@@ -133,8 +128,7 @@ class InputFilterWidget(ThreeTabWidget):
             self.engine.set_stopband_attenuation(stopband_attenuation or 60)
         except ValueError as e:
             logging.warning(e)
-            self.popup.setText(str(e))
-            self.popup.exec()
+            self.popup_invalid_data(str(e))
 
         self.compute_and_update()
 
@@ -148,8 +142,7 @@ class InputFilterWidget(ThreeTabWidget):
             self.engine.set_transband_width(transband_width or 300)
         except ValueError as e:
             logging.warning(e)
-            self.popup.setText(str(e))
-            self.popup.exec()
+            self.popup_invalid_data(str(e))
 
         self.compute_and_update()
 
