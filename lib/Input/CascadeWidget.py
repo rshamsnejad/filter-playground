@@ -183,7 +183,7 @@ class CascadeWidget(QTabWidget):
                 self.cascade_filter_widget.engine.remove_last_engine()
                 self.cascade_filter_widget.bode_graph.remove_last_axvline()
 
-        self.cascade_filter_widget.compute_and_update(False)
+        self.cascade_filter_widget.compute_and_update()
         self.output_widget.sum_output_widget.compute_and_update()
 
     def compute_and_update(self) -> None:
