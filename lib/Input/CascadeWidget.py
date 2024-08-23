@@ -183,19 +183,19 @@ class CascadeWidget(QTabWidget):
                 self.cascade_filter_widget.engine.remove_last_engine()
                 self.cascade_filter_widget.bode_graph.remove_last_axvline()
 
-        self.cascade_filter_widget.compute_and_update()
+        self.cascade_filter_widget.compute_and_update(False)
         self.output_widget.sum_output_widget.compute_and_update()
 
-    def compute_and_update(self) -> None:
+    def compute_and_update(self, enable_popup: bool = True) -> None:
         """
         Convenience method to wrap computing all the
         filters and updating their graphs in one go
         """
 
         for widget in self.input_filter_widgets:
-            widget.compute_and_update()
+            widget.compute_and_update(enable_popup)
 
-        self.cascade_filter_widget.compute_and_update()
+        self.cascade_filter_widget.compute_and_update(enable_popup)
 
     def handle_sample_frequency(self, sample_frequency: str) -> None:
         """

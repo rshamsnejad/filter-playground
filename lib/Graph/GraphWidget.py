@@ -41,11 +41,6 @@ class GraphWidget(QWidget):
 
         self.set_engine_specific(engine)
 
-        # self.engine.moveToThread(self.worker_thread)
-        # self.worker_thread.started.connect(self.engine.compute)
-
-        # self.compute_and_update()
-
     def set_engine_specific(self, engine: GraphEngine) -> None:
 
         raise NotImplementedError
@@ -66,12 +61,3 @@ class GraphWidget(QWidget):
         """
 
         self.figure.suptitle(self.engine.generate_title())
-
-    def compute_and_update(self) -> None:
-        """
-        Convenience method to wrap computing the filter
-        and updating the graph in one go
-        """
-
-        self.engine.compute()
-        self.update_graph()

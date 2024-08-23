@@ -1,6 +1,7 @@
 from lib.Engine.GraphEngine import GraphEngine
 from scipy.signal import butter, bessel, cheby1, cheby2, ellip, sosfreqz, tf2sos, kaiserord, firls
 from numpy import log10, angle, pi, sin, cos, sqrt, tan
+from PyQt6.QtCore import QThread, pyqtSignal
 
 class BiquadEngine(GraphEngine):
     """
@@ -55,6 +56,15 @@ class BiquadEngine(GraphEngine):
         self.set_transband_width(transband_width)
 
         self.compute()
+
+    finished = pyqtSignal()
+
+    def compute_thread(self) -> None:
+
+        self.compute()
+
+        self.finished.emit()
+        QThread.currentThread().quit()
 
     def set_filtertype(self, filtertype: str) -> None:
         """

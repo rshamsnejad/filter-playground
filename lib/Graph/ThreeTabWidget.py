@@ -50,6 +50,7 @@ class ThreeTabWidget(QTabWidget):
         """
 
         self.engine = engine
+
         self.bode_graph.set_engine(self.engine)
         self.polezero_graph.set_engine(self.engine)
 
@@ -67,13 +68,14 @@ class ThreeTabWidget(QTabWidget):
 
         self.popup.exec()
 
-    def compute_and_update(self) -> None:
+    def compute_and_update(self, enable_popup: bool = True) -> None:
         """
         Convenience method to wrap computing the filter
         and updating the two graphs in one go
         """
 
         self.engine.compute()
+
         self.bode_graph.update_graph()
         self.polezero_graph.update_graph()
 

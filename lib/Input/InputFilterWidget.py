@@ -3,7 +3,9 @@ import logging
 from lib.Graph.ThreeTabWidget import ThreeTabWidget
 from lib.Engine.BiquadEngine import BiquadEngine
 
-from PyQt6.QtWidgets import QSizePolicy
+from PyQt6.QtWidgets import QSizePolicy, QMessageBox, QApplication
+
+from PyQt6.QtCore import QThread
 
 class InputFilterWidget(ThreeTabWidget):
     """
@@ -22,6 +24,13 @@ class InputFilterWidget(ThreeTabWidget):
         """
 
         super().__init__(*args, **kwargs)
+
+        self.worker_thread = QThread()
+        self.worker_popup = QMessageBox()
+        self.worker_popup.setStandardButtons(QMessageBox.StandardButton.Cancel)
+        self.worker_popup.setIcon(QMessageBox.Icon.Information)
+        self.worker_popup.setWindowTitle("Please wait")
+        self.worker_popup.setText("Computing filter...")
 
         self.id = id
         self.set_engine(engine)
@@ -42,6 +51,39 @@ class InputFilterWidget(ThreeTabWidget):
         self.filter_toolbar.filter_parameters.field_transband_width.valueChanged.connect(self.handle_transband_width)
 
         self.disable_unused_fields()
+
+    def set_engine(self, engine: BiquadEngine) -> None:
+        """
+        Set the computing engine. Has to be done outside of constructor
+        otherwise the input widget and the output widget are inter-dependent.
+
+        Args:
+            engine (GraphEngine): The engine to use to compute the graph
+        """
+
+        super().set_engine(engine)
+
+        self.engine.moveToThread(self.worker_thread)
+        self.worker_thread.started.connect(self.engine.compute_thread)
+
+    def compute_and_update(self, enable_popup: bool = True) -> None:
+        """
+        Convenience method to wrap computing the filter
+        and updating the two graphs in one go
+        """
+
+        self.worker_thread.start()
+
+        if enable_popup:
+            self.worker_popup.open()
+            QApplication.instance().processEvents()
+
+        self.worker_thread.wait()
+
+        self.worker_popup.close()
+
+        self.bode_graph.update_graph()
+        self.polezero_graph.update_graph()
 
     def handle_type(self, filter_type: str) -> None:
         """

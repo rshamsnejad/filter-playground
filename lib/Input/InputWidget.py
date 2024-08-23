@@ -98,14 +98,14 @@ class InputWidget(QWidget):
 
         self.output_widget.sum_output_widget.compute_and_update()
 
-    def compute_and_update(self) -> None:
+    def compute_and_update(self, enable_popup: bool = True) -> None:
         """
         Convenience method to wrap computing all the
         cascades and filters and updating their graphs in one go
         """
 
         for widget in self.cascade_widgets:
-            widget.compute_and_update()
+            widget.compute_and_update(enable_popup)
 
     def handle_sample_frequency(self, sample_frequency: str) -> None:
         """

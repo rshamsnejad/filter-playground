@@ -47,14 +47,14 @@ class MainWidget(QWidget):
         self.popup.setWindowTitle("Invalid data")
         self.popup.setIcon(QMessageBox.Icon.Warning)
 
-    def compute_and_update(self) -> None:
+    def compute_and_update(self, enable_popup: bool = True) -> None:
         """
         Convenience method to wrap computing all the
         data and updating all the graph in one go
         """
 
-        self.input_widget.compute_and_update()
-        self.output_widget.compute_and_update()
+        self.input_widget.compute_and_update(enable_popup)
+        self.output_widget.compute_and_update(enable_popup)
 
     def handle_sample_frequency(self, sample_frequency: str) -> None:
         """
