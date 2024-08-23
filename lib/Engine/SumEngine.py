@@ -21,6 +21,8 @@ class SumEngine(GraphEngine):
 
         self.input_engines = input_engines
 
+        self.compute()
+
     def compute_specific(self) -> None:
         """
         Compute the sum of all the input cells

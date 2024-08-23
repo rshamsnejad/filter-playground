@@ -44,7 +44,7 @@ class GraphWidget(QWidget):
         # self.engine.moveToThread(self.worker_thread)
         # self.worker_thread.started.connect(self.engine.compute)
 
-        self.compute_and_update()
+        # self.compute_and_update()
 
     def set_engine_specific(self, engine: GraphEngine) -> None:
 

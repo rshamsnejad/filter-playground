@@ -54,6 +54,8 @@ class BiquadEngine(GraphEngine):
         self.set_stopband_attenuation(stopband_attenuation)
         self.set_transband_width(transband_width)
 
+        self.compute()
+
     def set_filtertype(self, filtertype: str) -> None:
         """
         Args:

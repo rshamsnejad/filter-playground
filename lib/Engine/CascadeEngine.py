@@ -22,6 +22,8 @@ class CascadeEngine(GraphEngine):
 
         self.input_engines = input_engines
 
+        self.compute()
+
     def compute_specific(self) -> None:
         """
         Compute the cascade of all the input cells

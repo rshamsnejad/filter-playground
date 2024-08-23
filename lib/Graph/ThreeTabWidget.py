@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (
     QWidget,
     QMessageBox
 )
+from lib.Engine.GraphEngine import GraphEngine
 from lib.Graph.PolezeroGraphWidget import PolezeroGraphWidget
 from lib.Graph.BodeGraphWidget import BodeGraphWidget
 
@@ -38,6 +39,19 @@ class ThreeTabWidget(QTabWidget):
         self.addTab(self.polezero_graph, "Pole-zero map")
 
         self.popup = QMessageBox()
+
+    def set_engine(self, engine: GraphEngine) -> None:
+        """
+        Set the computing engine. Has to be done outside of constructor
+        otherwise the input widget and the output widget are inter-dependent.
+
+        Args:
+            engine (GraphEngine): The engine to use to compute the graph
+        """
+
+        self.engine = engine
+        self.bode_graph.set_engine(self.engine)
+        self.polezero_graph.set_engine(self.engine)
 
     def popup_invalid_data(self, message: str) -> None:
         """

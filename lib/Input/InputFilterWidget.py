@@ -24,15 +24,12 @@ class InputFilterWidget(ThreeTabWidget):
         super().__init__(*args, **kwargs)
 
         self.id = id
-        self.engine = engine
+        self.set_engine(engine)
 
         self.filter_toolbar = self.first_tab_widget
         policy = QSizePolicy()
         policy.setVerticalPolicy(QSizePolicy.Policy.Minimum)
         self.filter_toolbar.setSizePolicy(policy)
-
-        self.bode_graph.set_engine(self.engine)
-        self.polezero_graph.set_engine(self.engine)
 
         self.filter_toolbar.filter_type.combo_box.currentTextChanged.connect(self.handle_type)
         self.filter_toolbar.filter_parameters.field_order.valueChanged.connect(self.handle_order)
