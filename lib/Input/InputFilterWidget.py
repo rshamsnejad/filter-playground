@@ -31,6 +31,7 @@ class InputFilterWidget(ThreeTabWidget):
         self.worker_popup.setIcon(QMessageBox.Icon.Information)
         self.worker_popup.setWindowTitle("Please wait")
         self.worker_popup.setText("Computing the filter takes some time...")
+        self.worker_popup.buttonClicked.connect(self.handle_worker_thread_cancelled)
 
         self.id = id
         self.set_engine(engine)
@@ -65,6 +66,16 @@ class InputFilterWidget(ThreeTabWidget):
 
         self.engine.moveToThread(self.worker_thread)
         self.worker_thread.started.connect(self.engine.compute_thread)
+        self.engine.finished.connect(self.handle_worker_thread_finished)
+
+    def handle_worker_thread_finished(self) -> None:
+
+        self.worker_popup.done(0)
+
+    def handle_worker_thread_cancelled(self, button_role: QMessageBox.ButtonRole) -> None:
+
+        if button_role == QMessageBox.ButtonRole.RejectRole:
+            self.worker_thread.terminate()
 
     def compute_and_update(self) -> None:
         """
@@ -77,11 +88,7 @@ class InputFilterWidget(ThreeTabWidget):
         result = self.worker_thread.wait(3 * 1000)
 
         if not result:
-            self.worker_popup.open()
-            QApplication.instance().processEvents()
-            self.worker_thread.wait()
-
-        self.worker_popup.close()
+            self.worker_popup.exec()
 
         self.bode_graph.update_graph()
         self.polezero_graph.update_graph()
