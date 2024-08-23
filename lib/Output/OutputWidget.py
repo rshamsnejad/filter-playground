@@ -24,7 +24,7 @@ class OutputWidget(QWidget):
 
         self.layout().addWidget(self.sum_output_widget)
 
-    def compute_and_update(self, enable_popup: bool = True) -> None:
+    def compute_and_update(self) -> None:
         """
         Convenience method to wrap computing the output
         and updating its graph in one go

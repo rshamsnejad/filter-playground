@@ -30,7 +30,7 @@ class InputFilterWidget(ThreeTabWidget):
         self.worker_popup.setStandardButtons(QMessageBox.StandardButton.Cancel)
         self.worker_popup.setIcon(QMessageBox.Icon.Information)
         self.worker_popup.setWindowTitle("Please wait")
-        self.worker_popup.setText("Computing filter...")
+        self.worker_popup.setText("Computing the filter takes some time...")
 
         self.id = id
         self.set_engine(engine)
@@ -66,7 +66,7 @@ class InputFilterWidget(ThreeTabWidget):
         self.engine.moveToThread(self.worker_thread)
         self.worker_thread.started.connect(self.engine.compute_thread)
 
-    def compute_and_update(self, enable_popup: bool = True) -> None:
+    def compute_and_update(self) -> None:
         """
         Convenience method to wrap computing the filter
         and updating the two graphs in one go
@@ -74,11 +74,12 @@ class InputFilterWidget(ThreeTabWidget):
 
         self.worker_thread.start()
 
-        if enable_popup:
+        result = self.worker_thread.wait(3 * 1000)
+
+        if not result:
             self.worker_popup.open()
             QApplication.instance().processEvents()
-
-        self.worker_thread.wait()
+            self.worker_thread.wait()
 
         self.worker_popup.close()
 

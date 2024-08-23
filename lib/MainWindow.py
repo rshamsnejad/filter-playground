@@ -48,6 +48,6 @@ class MainWindow(QMainWindow):
 
         self.fs_combobox.currentTextChanged.connect(self.main_widget.handle_sample_frequency)
 
-        self.main_widget.compute_and_update(enable_popup=False)
+        self.main_widget.compute_and_update()
 
         self.show()

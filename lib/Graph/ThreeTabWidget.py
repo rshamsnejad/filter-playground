@@ -68,7 +68,7 @@ class ThreeTabWidget(QTabWidget):
 
         self.popup.exec()
 
-    def compute_and_update(self, enable_popup: bool = True) -> None:
+    def compute_and_update(self) -> None:
         """
         Convenience method to wrap computing the filter
         and updating the two graphs in one go
