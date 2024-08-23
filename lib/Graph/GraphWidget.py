@@ -39,6 +39,15 @@ class GraphWidget(QWidget):
             engine (GraphEngine): The engine to use to compute the graph
         """
 
+        self.set_engine_specific(engine)
+
+        # self.engine.moveToThread(self.worker_thread)
+        # self.worker_thread.started.connect(self.engine.compute)
+
+        self.compute_and_update()
+
+    def set_engine_specific(self, engine: GraphEngine) -> None:
+
         raise NotImplementedError
 
     def update_graph(self) -> None:

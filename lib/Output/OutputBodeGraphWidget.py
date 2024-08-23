@@ -10,7 +10,7 @@ class OutputBodeGraphWidget(BodeGraphWidget):
 
         super().__init__(*args, **kwargs)
 
-    def set_engine(self, engine: CascadeEngine) -> None:
+    def set_engine_specific(self, engine: CascadeEngine) -> None:
         """
         Set the computing engine. Has to be done outside of constructor
         otherwise the input widget and the output widget are inter-dependent
@@ -23,8 +23,6 @@ class OutputBodeGraphWidget(BodeGraphWidget):
 
         for i in range(len(self.engine.input_engines) - 1):
             self.add_axvline()
-
-        self.compute_and_update()
 
     def update_axvlines(self) -> None:
         """

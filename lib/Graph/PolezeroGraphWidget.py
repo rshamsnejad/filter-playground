@@ -17,7 +17,7 @@ class PolezeroGraphWidget(GraphWidget):
 
         self.init_graph()
 
-    def set_engine(self, engine: GraphEngine) -> None:
+    def set_engine_specific(self, engine: GraphEngine) -> None:
         """
         Set the computing engine. Has to be done outside of constructor
         otherwise the input widget and the output widget are inter-dependent
@@ -27,7 +27,6 @@ class PolezeroGraphWidget(GraphWidget):
         """
 
         self.engine = engine
-        self.compute_and_update()
 
     def init_graph(self,
     ) -> None:

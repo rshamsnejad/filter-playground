@@ -12,7 +12,7 @@ class InputBodeGraphWidget(BodeGraphWidget):
 
         self.engine = None
 
-    def set_engine(self, engine: BiquadEngine) -> None:
+    def set_engine_specific(self, engine: BiquadEngine) -> None:
         """
         Set the computing engine. Has to be done outside of constructor
         otherwise the input widget and the output widget are inter-dependent
@@ -22,8 +22,6 @@ class InputBodeGraphWidget(BodeGraphWidget):
         """
 
         self.engine = engine
-
-        self.compute_and_update()
 
     def update_axvlines(self) -> None:
         """

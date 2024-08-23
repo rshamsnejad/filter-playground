@@ -10,7 +10,7 @@ class SumOutputBodeGraphWidget(OutputBodeGraphWidget):
 
         super().__init__(*args, **kwargs)
 
-    def set_engine(self, engine: SumEngine) -> None:
+    def set_engine_specific(self, engine: SumEngine) -> None:
         """
         Set the computing engine. Has to be done outside of constructor
         otherwise the input widget and the output widget are inter-dependent
@@ -24,8 +24,6 @@ class SumOutputBodeGraphWidget(OutputBodeGraphWidget):
         for cascade_engine in self.engine.input_engines:
             for engine in cascade_engine.input_engines:
                 self.add_axvline()
-
-        self.compute_and_update()
 
     def update_axvlines(self) -> None:
         """
