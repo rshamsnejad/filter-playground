@@ -1,17 +1,16 @@
 import logging
 
 from PyQt6.QtWidgets import (
-    QWidget,
-    QHBoxLayout,
     QScrollArea,
-    QMessageBox
+    QMessageBox,
+    QSplitter
 )
 
 from lib.Output.OutputWidget import OutputWidget
 from lib.Engine.SumEngine import SumEngine
 from lib.Input.InputWidget import InputWidget
 
-class MainWidget(QWidget):
+class MainWidget(QSplitter):
     """
     Main Qt widget to display in the window
     """
@@ -19,8 +18,6 @@ class MainWidget(QWidget):
     def __init__(self, *args, **kwargs) -> None:
 
         super().__init__(*args, **kwargs)
-
-        self.setLayout(QHBoxLayout())
 
         self.output_widget = OutputWidget()
         # Hide unused pole-zero map tab
@@ -36,12 +33,16 @@ class MainWidget(QWidget):
         engine.set_input_engines(input_engines)
         self.output_widget.sum_output_widget.set_engine(engine)
 
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setWidget(self.input_widget)
-        self.scroll_area.setWidgetResizable(True)
+        self.input_scroll_area = QScrollArea()
+        self.input_scroll_area.setWidget(self.input_widget)
+        self.input_scroll_area.setWidgetResizable(True)
 
-        self.layout().addWidget(self.scroll_area)
-        self.layout().addWidget(self.output_widget)
+        self.output_scroll_area = QScrollArea()
+        self.output_scroll_area.setWidget(self.output_widget)
+        self.output_scroll_area.setWidgetResizable(True)
+
+        self.addWidget(self.input_scroll_area)
+        self.addWidget(self.output_scroll_area)
 
         self.popup = QMessageBox()
         self.popup.setWindowTitle("Invalid data")
