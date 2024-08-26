@@ -7,7 +7,8 @@ from PyQt6.QtWidgets import (
     QSpacerItem,
     QSizePolicy,
     QDoubleSpinBox,
-    QGroupBox
+    QGroupBox,
+    QPushButton
 )
 
 from PyQt6.QtCore import QLocale
@@ -68,6 +69,10 @@ class CascadeToolbarWidget(QWidget):
 
         self.parameters_groupbox.layout().addWidget(label_flip_phase, 1, 0)
         self.parameters_groupbox.layout().addWidget(self.field_flip_phase, 1, 1)
+
+        self.compute_button = QPushButton("🧠 Compute")
+
+        self.parameters_groupbox.layout().addWidget(self.compute_button, 2, 0, 1, 2)
 
         self.layout().addItem(
             QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding),

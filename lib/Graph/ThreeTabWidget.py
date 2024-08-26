@@ -96,7 +96,6 @@ class ThreeTabWidget(QTabWidget):
         """
 
         self.engine.set_flip_phase(flip_phase)
-        self.compute_and_update()
 
     def handle_gain(self, gain: float) -> None:
         """
@@ -109,5 +108,3 @@ class ThreeTabWidget(QTabWidget):
         except ValueError as e:
             logging.warning(e)
             self.popup_invalid_data(str(e))
-
-        self.compute_and_update()
