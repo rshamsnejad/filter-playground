@@ -43,6 +43,7 @@ class MainWidget(QSplitter):
 
         self.addWidget(self.input_scroll_area)
         self.addWidget(self.output_scroll_area)
+        self.setOpaqueResize(False)
 
         self.popup = QMessageBox()
         self.popup.setWindowTitle("Invalid data")
