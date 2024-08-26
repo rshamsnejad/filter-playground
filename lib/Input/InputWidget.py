@@ -54,6 +54,8 @@ class InputWidget(QSplitter):
 
         self.addWidget(self.cascade_widgets[-1])
 
+        self.cascade_widgets[-1].compute_and_update()
+
         return self.cascade_widgets[-1]
 
     def update_input_cascade_amount(self) -> None:
