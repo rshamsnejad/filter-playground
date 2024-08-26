@@ -1,12 +1,12 @@
 from PyQt6.QtWidgets import (
-    QWidget,
-    QVBoxLayout
+    QSplitter
 )
+from PyQt6.QtCore import Qt
 
 from lib.Input.CascadeWidget import CascadeWidget
 from lib.Output.OutputWidget import OutputWidget
 
-class InputWidget(QWidget):
+class InputWidget(QSplitter):
     """
     Qt widget for the left section of the main window
     that contains the inputs
@@ -15,7 +15,7 @@ class InputWidget(QWidget):
     def __init__(self,
         output_widget: OutputWidget,
         *args, **kwargs
-        ) -> None:
+    ) -> None:
         """
         Args:
             output_widget (OutputWidget): The output widget of the main window
@@ -23,10 +23,12 @@ class InputWidget(QWidget):
 
         super().__init__(*args, **kwargs)
 
+        self.setOrientation(Qt.Orientation.Vertical)
+        self.setOpaqueResize(False)
+        self.setChildrenCollapsible(False)
+
         self.output_widget = output_widget
         self.output_widget.sum_output_widget.sum_toolbar.set_update_callback(self.update_input_cascade_amount)
-
-        self.setLayout(QVBoxLayout())
 
         self.cascade_widgets = []
 
@@ -50,7 +52,7 @@ class InputWidget(QWidget):
             CascadeWidget(id, self.output_widget, 2)
         )
 
-        self.layout().addWidget(self.cascade_widgets[-1])
+        self.addWidget(self.cascade_widgets[-1])
 
         return self.cascade_widgets[-1]
 
@@ -62,7 +64,7 @@ class InputWidget(QWidget):
 
         spinbox = self.sender()
 
-        current_amount = self.layout().count() - self.hidden_cascades
+        current_amount = self.count() - self.hidden_cascades
         new_amount = spinbox.value()
 
         if new_amount == current_amount:
@@ -70,11 +72,10 @@ class InputWidget(QWidget):
 
         if new_amount > current_amount:
             for i in range(current_amount, new_amount):
-                item = self.layout().itemAt(i)
+                widget = self.widget(i)
 
                 # If a cascade was previously added and hidden, simply show it again
-                if(item):
-                    widget = item.widget()
+                if(widget):
                     widget.show()
                     self.hidden_cascades -= 1
 
@@ -87,7 +88,7 @@ class InputWidget(QWidget):
 
         elif new_amount < current_amount:
             for i in range(new_amount, current_amount):
-                widget = self.layout().itemAt(i).widget()
+                widget = self.widget(i)
                 widget.hide()
 
                 self.hidden_cascades += 1
