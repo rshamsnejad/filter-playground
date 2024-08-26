@@ -25,7 +25,6 @@ class InputWidget(QSplitter):
 
         self.setOrientation(Qt.Orientation.Vertical)
         self.setOpaqueResize(False)
-        self.setChildrenCollapsible(False)
 
         self.output_widget = output_widget
         self.output_widget.sum_output_widget.sum_toolbar.set_update_callback(self.update_input_cascade_amount)
