@@ -1,3 +1,3 @@
 # Filter playground backlog
 
-* Add a "compute" button
+* Make center separation movable
