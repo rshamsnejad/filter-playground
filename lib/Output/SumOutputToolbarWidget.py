@@ -21,14 +21,14 @@ class SumOutputToolbarWidget(QWidget):
 
         self.label = QLabel("Amount of input cascades:")
 
-        self.spinbox = QSpinBox()
-        self.spinbox.setMinimum(1)
-        self.spinbox.setMaximum(10)
-        self.spinbox.setValue(2)
-        self.spinbox.setFixedWidth(40)
+        self.cascade_amount_spinbox = QSpinBox()
+        self.cascade_amount_spinbox.setMinimum(1)
+        self.cascade_amount_spinbox.setMaximum(10)
+        self.cascade_amount_spinbox.setValue(2)
+        self.cascade_amount_spinbox.setFixedWidth(40)
 
         self.layout().addWidget(self.label, 0, 0)
-        self.layout().addWidget(self.spinbox, 0, 1)
+        self.layout().addWidget(self.cascade_amount_spinbox, 0, 1)
 
         self.layout().addItem(
             QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding),
@@ -43,4 +43,4 @@ class SumOutputToolbarWidget(QWidget):
             update_callback (Callable): The callback to be used
         """
 
-        self.spinbox.valueChanged.connect(update_callback)
+        self.cascade_amount_spinbox.valueChanged.connect(update_callback)
