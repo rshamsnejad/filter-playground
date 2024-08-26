@@ -51,6 +51,8 @@ class InputFilterWidget(ThreeTabWidget):
         self.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.handle_stopband_attenuation)
         self.filter_toolbar.filter_parameters.field_transband_width.valueChanged.connect(self.handle_transband_width)
 
+        self.filter_toolbar.filter_type.compute_button.clicked.connect(self.compute_and_update)
+
         self.disable_unused_fields()
 
     def set_engine(self, engine: BiquadEngine) -> None:
@@ -107,8 +109,6 @@ class InputFilterWidget(ThreeTabWidget):
 
         self.disable_unused_fields()
 
-        self.compute_and_update()
-
     def handle_order(self, order: int) -> None:
         """
         Qt slot to update the filter order according to
@@ -120,8 +120,6 @@ class InputFilterWidget(ThreeTabWidget):
         except ValueError as e:
             logging.warning(e)
             self.popup_invalid_data(str(e))
-
-        self.compute_and_update()
 
     def handle_frequency(self, frequency: int) -> None:
         """
@@ -135,8 +133,6 @@ class InputFilterWidget(ThreeTabWidget):
             logging.warning(e)
             self.popup_invalid_data(str(e))
 
-        self.compute_and_update()
-
     def handle_Q(self, Q: float) -> None:
         """
         Qt slot to update the filter Q according to
@@ -148,8 +144,6 @@ class InputFilterWidget(ThreeTabWidget):
         except ValueError as e:
             logging.warning(e)
             self.popup_invalid_data(str(e))
-
-        self.compute_and_update()
 
     def handle_passband_ripple(self, passband_ripple: float) -> None:
         """
@@ -163,8 +157,6 @@ class InputFilterWidget(ThreeTabWidget):
             logging.warning(e)
             self.popup_invalid_data(str(e))
 
-        self.compute_and_update()
-
     def handle_stopband_attenuation(self, stopband_attenuation: float) -> None:
         """
         Qt slot to update the minimum stopband attenuation
@@ -177,8 +169,6 @@ class InputFilterWidget(ThreeTabWidget):
             logging.warning(e)
             self.popup_invalid_data(str(e))
 
-        self.compute_and_update()
-
     def handle_transband_width(self, transband_width: int) -> None:
         """
         Qt slot to update the transition band width
@@ -190,8 +180,6 @@ class InputFilterWidget(ThreeTabWidget):
         except ValueError as e:
             logging.warning(e)
             self.popup_invalid_data(str(e))
-
-        self.compute_and_update()
 
     def disable_unused_fields(self) -> None:
         """

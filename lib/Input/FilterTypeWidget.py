@@ -1,7 +1,8 @@
 from PyQt6.QtWidgets import (
     QGroupBox,
     QVBoxLayout,
-    QComboBox
+    QComboBox,
+    QPushButton
 )
 
 class FilterTypeWidget(QGroupBox):
@@ -57,5 +58,8 @@ class FilterTypeWidget(QGroupBox):
         self.combo_box = QComboBox()
         self.combo_box.addItems(self.types)
 
+        self.compute_button = QPushButton("🧠 Compute")
+
         self.layout().addWidget(self.combo_box)
+        self.layout().addWidget(self.compute_button)
         self.layout().addStretch()
