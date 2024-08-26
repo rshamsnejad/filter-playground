@@ -80,7 +80,7 @@ class InputWidget(QWidget):
 
                 # Otherwise create a new one
                 else:
-                    widget = self.add_cascade_widget(i + 1)
+                    widget = self.add_cascade_widget(i)
 
                 self.output_widget.sum_output_widget.engine.add_engine(widget.cascade_filter_widget.engine)
                 self.output_widget.sum_output_widget.bode_graph.update_axvlines()
