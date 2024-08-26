@@ -23,6 +23,7 @@ class GraphWidget(QWidget):
 
         self.canvas = FigureCanvasQTAgg(Figure())
         self.canvas.setMinimumHeight(250)
+        self.canvas.setMinimumWidth(600)
 
         self.figure = self.canvas.figure
         self.figure.set_tight_layout(True)
