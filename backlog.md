@@ -1,3 +1,4 @@
 # Filter playground backlog
 
-* Make center separation movable
+* Add substraction on output
+* V3: Consider a modular approach
