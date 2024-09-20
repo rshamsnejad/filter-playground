@@ -29,5 +29,5 @@ class InputBodeGraphWidget(BodeGraphWidget):
         the computed filter.
         """
 
-        self.axline_mag[0].set_xdata([self.engine.get_frequency()])
-        self.axline_phase[0].set_xdata([self.engine.get_frequency()])
+        self.axline_top[0].set_xdata([self.engine.get_frequency()])
+        self.axline_bottom[0].set_xdata([self.engine.get_frequency()])

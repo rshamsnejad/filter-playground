@@ -31,15 +31,15 @@ class SumOutputBodeGraphWidget(OutputBodeGraphWidget):
         the computed filter.
         """
 
-        for axline in self.axline_mag:
+        for axline in self.axline_top:
             axline.remove()
-        del self.axline_mag
-        self.axline_mag = []
+        del self.axline_top
+        self.axline_top = []
 
-        for axline in self.axline_phase:
+        for axline in self.axline_bottom:
             axline.remove()
-        del self.axline_phase
-        self.axline_phase = []
+        del self.axline_bottom
+        self.axline_bottom = []
 
         for cascade_engine in self.engine.input_engines:
             for engine in cascade_engine.input_engines:

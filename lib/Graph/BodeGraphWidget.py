@@ -1,7 +1,6 @@
 from matplotlib.ticker import ScalarFormatter
 
 from lib.Graph.GraphWidget import GraphWidget
-from lib.Engine.GraphEngine import GraphEngine
 
 import numpy as np
 
@@ -24,9 +23,9 @@ class BodeGraphWidget(GraphWidget):
         self.init_graph()
 
     def init_graph(self,
-            freq_range:     list[float] = [20, 20e3],
-            mag_range:      list[float] = [-30, 30],
-            phase_range:    list[float] = [-200, 200]
+            frequency_range:    list[float] = [20, 20e3],
+            magnitude_range:    list[float] = [-30, 30],
+            phase_range:        list[float] = [-200, 200]
     ) -> None:
         """
         Prepares an empty graph to host filter data later on.
@@ -42,37 +41,50 @@ class BodeGraphWidget(GraphWidget):
 
         # Magnitude
         self.magnitude_graph, = self.axs[0].semilogx([], [])
-        self.axs[0].set_xlim(freq_range)
+        self.axs[0].set_xlim(frequency_range)
         self.axs[0].set_ylabel('Gain [dB]')
-        self.axs[0].set_ylim(mag_range)
+        self.axs[0].set_ylim(magnitude_range)
         self.axs[0].grid(which='both', axis='both')
 
-        self.axline_mag = [
+        magnitude_color = 'C0'
+        self.axs[0].tick_params(axis='y', colors=magnitude_color)
+        self.axs[0].yaxis.label.set_color(magnitude_color)
+
+        # Phase
+        phase_color = 'salmon'
+        self.phase_ax = self.axs[0].twinx()
+        self.phase_ax.set_ylabel("Phase [°]")
+        self.phase_ax.set_ylim(phase_range)
+        self.phase_graph, = self.phase_ax.semilogx([], [], color=phase_color)
+        self.phase_ax.tick_params(axis='y', colors=phase_color)
+        self.phase_ax.yaxis.label.set_color(phase_color)
+
+        self.axline_top = [
             self.axs[0].axvline(0, linestyle='--', color='red')
         ]
 
-        # Phase
-        self.phase_graph, = self.axs[1].semilogx([], [])
-        self.axs[1].set_xlabel('Frequency [Hz]')
-        self.axs[1].set_xlim(freq_range)
-        self.axs[1].set_ylabel('Phase [°]')
-        self.axs[1].set_ylim(phase_range)
-        self.axs[1].grid(which='both', axis='both')
-
-        phase_color = 'C0'
-        self.axs[1].tick_params(axis='y', colors=phase_color)
-        self.axs[1].yaxis.label.set_color(phase_color)
+        # Phase delay
+        phase_delay_color = 'xkcd:coral pink'
+        self.phase_delay_graph, = self.axs[1].semilogx([], [], color=phase_delay_color)
+        self.phase_delay_ax = self.axs[1]
+        self.phase_delay_ax.set_xlabel('Frequency [Hz]')
+        self.phase_delay_ax.set_xlim(frequency_range)
+        self.phase_delay_ax.set_ylabel('Phase delay [ms]')
+        self.phase_delay_ax.set_ylim([0, 10])
+        self.phase_delay_ax.grid(which='both', axis='both')
+        self.phase_delay_ax.tick_params(axis='y', colors=phase_delay_color)
+        self.phase_delay_ax.yaxis.label.set_color(phase_delay_color)
 
         # Group delay
-        gd_color = 'salmon'
-        self.gd_ax = self.axs[1].twinx()
-        self.gd_ax.set_ylabel("Group delay [ms]")
-        self.gd_ax.set_ylim([0, 10])
-        self.gd_graph, = self.gd_ax.semilogx([], [], color=gd_color)
-        self.gd_ax.tick_params(axis='y', colors=gd_color)
-        self.gd_ax.yaxis.label.set_color(gd_color)
+        group_delay_color = 'mediumpurple'
+        self.group_delay_ax = self.axs[1].twinx()
+        self.group_delay_ax.set_ylabel("Group delay [ms]")
+        self.group_delay_ax.set_ylim([0, 10])
+        self.group_delay_graph, = self.group_delay_ax.semilogx([], [], color=group_delay_color)
+        self.group_delay_ax.tick_params(axis='y', colors=group_delay_color)
+        self.group_delay_ax.yaxis.label.set_color(group_delay_color)
 
-        self.axline_phase = [
+        self.axline_bottom = [
             self.axs[1].axvline(0, linestyle='--', color='red')
         ]
 
@@ -96,17 +108,26 @@ class BodeGraphWidget(GraphWidget):
             self.engine.get_frequencies(),
             self.engine.get_phase_deg_nan()
         )
-        self.gd_graph.set_data(
+        self.phase_delay_graph.set_data(
+            self.engine.get_frequencies(),
+            self.engine.get_phase_delay_ms()
+        )
+        self.group_delay_graph.set_data(
             self.engine.get_frequencies()[:-1],
             self.engine.get_group_delay_ms()
         )
 
+        phase_delay_max =  np.max(np.ma.masked_invalid(self.engine.get_phase_delay_ms()[1:]))
+        ylim_phase_delay_max = phase_delay_max + (phase_delay_max / 10)
+
+        self.phase_delay_ax.set_ylim(0, ylim_phase_delay_max)
+
         # Drop first group delay point for determining the maximum
         # as it is garbage and can be way too high
-        gd_max =  np.max(np.ma.masked_invalid(self.engine.get_group_delay_ms()[1:]))
-        ylim_max = gd_max + (gd_max / 10)
+        group_delay_max =  np.max(np.ma.masked_invalid(self.engine.get_group_delay_ms()[1:]))
+        ylim_group_delay_max = group_delay_max + (group_delay_max / 10)
 
-        self.gd_ax.set_ylim(0, ylim_max)
+        self.group_delay_ax.set_ylim(0, ylim_group_delay_max)
 
         self.update_axvlines()
 

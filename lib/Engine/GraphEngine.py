@@ -32,6 +32,7 @@ class GraphEngine(QObject):
             "phase_rad": [],
             "phase_deg": [],
             "phase_deg_nan": [],
+            "phase_delay_ms": [],
             "group_delay_ms": []
         }
 
@@ -61,6 +62,7 @@ class GraphEngine(QObject):
         self.remove_phase_discontinuities()
 
         self.generate_zpk()
+        self.compute_phase_delay()
         self.compute_group_delay()
 
     def generate_title(self) -> str:
@@ -132,6 +134,14 @@ class GraphEngine(QObject):
 
         return self.filter['phase_deg_nan']
 
+    def get_phase_delay_ms(self) -> list[float]:
+        """
+        Returns:
+            list[float]: The Y axis phase delay values in ms
+        """
+
+        return self.filter['phase_delay_ms']
+
     def get_group_delay_ms(self) -> list[float]:
         """
         Returns:
@@ -182,6 +192,13 @@ class GraphEngine(QObject):
         """
 
         self.z, self.p, self.k = sos2zpk(self.sos)
+
+    def compute_phase_delay(self) -> None:
+
+        phase_delay = -np.unwrap(self.get_phase_rad()) / (2 * np.pi * self.get_frequencies())
+        phase_delay_ms = phase_delay * 1000
+
+        self.filter['phase_delay_ms'] = phase_delay_ms
 
     def compute_group_delay(self) -> None:
 
