@@ -1,6 +1,6 @@
 # Filter playground backlog
 
 * Add substraction on output
-* Add phase delay
-    * Group Magnitude/Phase and Phase Delay/Group Delay ?
+* Fix Phase Delay not displaying on single biquad HP
+* Add delay on Cascade and filters
 * V3: Consider a modular approach
