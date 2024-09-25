@@ -50,6 +50,7 @@ class InputFilterWidget(ThreeTabWidget):
         self.filter_toolbar.filter_parameters.field_passband_ripple.valueChanged.connect(self.handle_passband_ripple)
         self.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.handle_stopband_attenuation)
         self.filter_toolbar.filter_parameters.field_transband_width.valueChanged.connect(self.handle_transband_width)
+        self.filter_toolbar.filter_parameters.field_delay_samples.valueChanged.connect(self.handle_delay)
 
         self.filter_toolbar.filter_type.compute_button.clicked.connect(self.compute_and_update)
 

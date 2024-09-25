@@ -447,6 +447,7 @@ class BiquadEngine(GraphEngine):
 
         self.process_gain(gain_offset_db)
         self.process_flip_phase()
+        self.process_delay(self.get_delay())
 
         frequencies, magnitude = sosfreqz(self.sos, worN=self.frequency_points, fs=self.get_sample_frequency())
 

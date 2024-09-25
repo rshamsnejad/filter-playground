@@ -33,4 +33,5 @@ class CascadeFilterWidget(ThreeTabWidget):
 
         self.cascade_toolbar.field_gain.valueChanged.connect(self.handle_gain)
         self.cascade_toolbar.field_flip_phase.stateChanged.connect(self.handle_flip_phase)
+        self.cascade_toolbar.field_delay_samples.valueChanged.connect(self.handle_delay)
         self.cascade_toolbar.compute_button.clicked.connect(self.compute_and_update)

@@ -14,6 +14,7 @@ class GraphEngine(QObject):
         id:         int = 0,
         gain:       float = 0,
         flip_phase: bool = False,
+        delay:      int = 0,
         *args, **kwargs
     ) -> None:
         """
@@ -41,6 +42,7 @@ class GraphEngine(QObject):
         self.id = id
         self.set_gain(gain)
         self.set_flip_phase(flip_phase)
+        self.set_delay(delay)
 
     def compute_specific(self) -> None:
         """
@@ -241,7 +243,7 @@ class GraphEngine(QObject):
     def get_flip_phase(self) -> bool:
         """
         Returns:
-            bool: The current fli phase status
+            bool: The current flip phase status
         """
 
         return self.flip_phase
@@ -249,7 +251,7 @@ class GraphEngine(QObject):
     def set_gain(self, gain: float) -> None:
         """
         Args:
-            gain (float): The filter gain
+            gain (float): The filter gain in dB
         """
 
         self.gain = gain
@@ -257,10 +259,26 @@ class GraphEngine(QObject):
     def get_gain(self) -> float:
         """
         Returns:
-            float: The current filter gain
+            float: The current filter gain in dB
         """
 
         return self.gain
+
+    def set_delay(self, delay: int) -> None:
+        """
+        Args:
+            delay (int): The delay in samples
+        """
+
+        self.delay = delay
+
+    def get_delay(self) -> int:
+        """
+        Returns:
+            int: The current delay in samples
+        """
+
+        return self.delay
 
     def process_flip_phase(self) -> None:
         """
@@ -285,3 +303,24 @@ class GraphEngine(QObject):
         self.sos[0][0] *= gain_offset_lin
         self.sos[0][1] *= gain_offset_lin
         self.sos[0][2] *= gain_offset_lin
+    def process_delay(self, delay_samples: int) -> None:
+        """
+        Applies a delay to the current transfer function
+
+        Args:
+            delay_samples (int): The delay to apply in samples
+        """
+
+        sos_delay_1sample = [[0, 1, 0, 1, 0, 0]]
+
+        if delay_samples == 0:
+            return
+
+        else:
+            delay_sos = list(sos_delay_1sample)
+
+            for i in range(delay_samples - 1):
+                delay_sos.extend(sos_delay_1sample)
+
+            self.sos = list(self.sos)
+            self.sos.extend(delay_sos)

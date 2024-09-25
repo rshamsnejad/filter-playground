@@ -132,7 +132,17 @@ class FilterParametersWidget(QGroupBox):
         self.layout().addWidget(label_flip_phase, 3, 2, 1, 1)
         self.layout().addWidget(self.field_flip_phase, 3, 3, 1, 1)
 
+        label_delay_samples = QLabel("Delay (samples):")
+        self.field_delay_samples = QSpinBox()
+        self.field_delay_samples.setMinimum(0)
+        self.field_delay_samples.setValue(0)
+        self.field_delay_samples.setFixedWidth(spinbox_width)
+        self.field_delay_samples.setAccelerated(True)
+
+        self.layout().addWidget(label_delay_samples, 4, 0, 1, 1)
+        self.layout().addWidget(self.field_delay_samples, 4, 1, 1, 1)
+
         self.layout().addItem(
             QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding),
-            4, 3, 1, 1
+            5, 3, 1, 1
         )

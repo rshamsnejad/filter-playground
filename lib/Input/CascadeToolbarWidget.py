@@ -70,9 +70,19 @@ class CascadeToolbarWidget(QWidget):
         self.parameters_groupbox.layout().addWidget(label_flip_phase, 1, 0)
         self.parameters_groupbox.layout().addWidget(self.field_flip_phase, 1, 1)
 
+        label_delay_samples = QLabel("Delay (samples):")
+        self.field_delay_samples = QSpinBox()
+        self.field_delay_samples.setMinimum(0)
+        self.field_delay_samples.setValue(0)
+        self.field_delay_samples.setFixedWidth(spinbox_width)
+        self.field_delay_samples.setAccelerated(True)
+
+        self.parameters_groupbox.layout().addWidget(label_delay_samples, 2, 0)
+        self.parameters_groupbox.layout().addWidget(self.field_delay_samples, 2, 1)
+
         self.compute_button = QPushButton("🧠 Compute")
 
-        self.parameters_groupbox.layout().addWidget(self.compute_button, 2, 0, 1, 2)
+        self.parameters_groupbox.layout().addWidget(self.compute_button, 3, 0, 1, 2)
 
         self.layout().addItem(
             QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding),

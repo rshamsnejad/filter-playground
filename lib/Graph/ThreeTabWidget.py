@@ -108,3 +108,15 @@ class ThreeTabWidget(QTabWidget):
         except ValueError as e:
             logging.warning(e)
             self.popup_invalid_data(str(e))
+
+    def handle_delay(self, delay: int) -> None:
+        """
+        Qt slot to update the filter delay according
+        to the spinbox in the toolbar
+        """
+
+        try:
+            self.engine.set_delay(delay or 0)
+        except ValueError as e:
+            logging.warning(e)
+            self.popup_invalid_data(str(e))
