@@ -51,6 +51,7 @@ class InputFilterWidget(ThreeTabWidget):
         self.filter_toolbar.filter_parameters.field_stopband_attenuation.valueChanged.connect(self.handle_stopband_attenuation)
         self.filter_toolbar.filter_parameters.field_transband_width.valueChanged.connect(self.handle_transband_width)
         self.filter_toolbar.filter_parameters.field_delay_samples.valueChanged.connect(self.handle_delay_samples)
+        self.filter_toolbar.filter_parameters.field_delay_msec.valueChanged.connect(self.handle_delay_msec)
 
         self.filter_toolbar.filter_type.compute_button.clicked.connect(self.compute_and_update)
 
@@ -284,3 +285,11 @@ class InputFilterWidget(ThreeTabWidget):
 
             case _:
                 raise ValueError("Unknown filter type")
+
+    def update_delay_samples_spinbox(self, delay_samples: int) -> None:
+
+        self.filter_toolbar.filter_parameters.field_delay_samples.setValue(delay_samples)
+
+    def update_delay_msec_spinbox(self, delay_msec: float) -> None:
+
+        self.filter_toolbar.filter_parameters.field_delay_msec.setValue(delay_msec)

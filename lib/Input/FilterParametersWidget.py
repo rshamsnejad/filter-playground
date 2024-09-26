@@ -142,6 +142,19 @@ class FilterParametersWidget(QGroupBox):
         self.layout().addWidget(label_delay_samples, 4, 0, 1, 1)
         self.layout().addWidget(self.field_delay_samples, 4, 1, 1, 1)
 
+        label_delay_msec = QLabel("Delay (ms):")
+        self.field_delay_msec = QDoubleSpinBox()
+        self.field_delay_msec.setLocale(locale)
+        self.field_delay_msec.setMinimum(0)
+        self.field_delay_msec.setMaximum(2147483647)
+        self.field_delay_msec.setDecimals(4)
+        self.field_delay_msec.setValue(0)
+        self.field_delay_msec.setFixedWidth(spinbox_width)
+        self.field_delay_msec.setAccelerated(True)
+
+        self.layout().addWidget(label_delay_msec, 4, 2, 1, 1)
+        self.layout().addWidget(self.field_delay_msec, 4, 3, 1, 1)
+
         self.layout().addItem(
             QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding),
             5, 3, 1, 1
