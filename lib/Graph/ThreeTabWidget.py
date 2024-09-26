@@ -109,14 +109,36 @@ class ThreeTabWidget(QTabWidget):
             logging.warning(e)
             self.popup_invalid_data(str(e))
 
-    def handle_delay(self, delay: int) -> None:
+    def handle_delay_samples(self, delay_samples: int) -> None:
         """
         Qt slot to update the filter delay according
         to the spinbox in the toolbar
         """
 
         try:
-            self.engine.set_delay(delay or 0)
+            self.engine.set_delay(delay_samples or 0)
         except ValueError as e:
             logging.warning(e)
             self.popup_invalid_data(str(e))
+
+        delay_msec = self.engine.convert_samples_to_msec(delay_samples)
+
+        self.update_delay_msec_spinbox(delay_msec)
+
+    def update_delay_msec_spinbox(self, delay_samples: int) -> None:
+
+        raise NotImplementedError
+
+    def update_delay_samples_spinbox(self, delay_samples: int) -> None:
+
+        raise NotImplementedError
+
+    def handle_delay_msec(self, delay_msec: float) -> None:
+        """
+        Qt slot to update the filter delay in samples
+        according to the spinbox in milliseconds in the toolbar
+        """
+
+        delay_samples = self.engine.convert_msec_to_samples(delay_msec or 0)
+
+        self.update_delay_samples_spinbox(delay_samples)

@@ -117,7 +117,7 @@ class FilterParametersWidget(QGroupBox):
         label_transband_width = QLabel("Transition band width (Hz):")
         self.field_transband_width = QSpinBox()
         self.field_transband_width.setMinimum(1)
-        self.field_transband_width.setMaximum(1000000)
+        self.field_transband_width.setMaximum(1000)
         self.field_transband_width.setValue(transband_width)
         self.field_transband_width.setFixedWidth(spinbox_width)
         self.field_transband_width.setAccelerated(True)

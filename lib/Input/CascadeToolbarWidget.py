@@ -73,6 +73,7 @@ class CascadeToolbarWidget(QWidget):
         label_delay_samples = QLabel("Delay (samples):")
         self.field_delay_samples = QSpinBox()
         self.field_delay_samples.setMinimum(0)
+        self.field_delay_samples.setMaximum(2147483647)
         self.field_delay_samples.setValue(0)
         self.field_delay_samples.setFixedWidth(spinbox_width)
         self.field_delay_samples.setAccelerated(True)
@@ -80,9 +81,22 @@ class CascadeToolbarWidget(QWidget):
         self.parameters_groupbox.layout().addWidget(label_delay_samples, 2, 0)
         self.parameters_groupbox.layout().addWidget(self.field_delay_samples, 2, 1)
 
+        label_delay_msec = QLabel("Delay (ms):")
+        self.field_delay_msec = QDoubleSpinBox()
+        self.field_delay_msec.setLocale(locale)
+        self.field_delay_msec.setMinimum(0)
+        self.field_delay_msec.setMaximum(2147483647)
+        self.field_delay_msec.setDecimals(4)
+        self.field_delay_msec.setValue(0)
+        self.field_delay_msec.setFixedWidth(spinbox_width)
+        self.field_delay_msec.setAccelerated(True)
+
+        self.parameters_groupbox.layout().addWidget(label_delay_msec, 3, 0)
+        self.parameters_groupbox.layout().addWidget(self.field_delay_msec, 3, 1)
+
         self.compute_button = QPushButton("🧠 Compute")
 
-        self.parameters_groupbox.layout().addWidget(self.compute_button, 3, 0, 1, 2)
+        self.parameters_groupbox.layout().addWidget(self.compute_button, 4, 0, 1, 2)
 
         self.layout().addItem(
             QSpacerItem(1, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding),

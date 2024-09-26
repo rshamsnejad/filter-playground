@@ -33,5 +33,14 @@ class CascadeFilterWidget(ThreeTabWidget):
 
         self.cascade_toolbar.field_gain.valueChanged.connect(self.handle_gain)
         self.cascade_toolbar.field_flip_phase.stateChanged.connect(self.handle_flip_phase)
-        self.cascade_toolbar.field_delay_samples.valueChanged.connect(self.handle_delay)
+        self.cascade_toolbar.field_delay_samples.valueChanged.connect(self.handle_delay_samples)
+        self.cascade_toolbar.field_delay_msec.valueChanged.connect(self.handle_delay_msec)
         self.cascade_toolbar.compute_button.clicked.connect(self.compute_and_update)
+
+    def update_delay_samples_spinbox(self, delay_samples: int) -> None:
+
+        self.cascade_toolbar.field_delay_samples.setValue(delay_samples)
+
+    def update_delay_msec_spinbox(self, delay_msec: float) -> None:
+
+        self.cascade_toolbar.field_delay_msec.setValue(delay_msec)

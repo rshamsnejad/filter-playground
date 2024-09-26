@@ -303,6 +303,35 @@ class GraphEngine(QObject):
         self.sos[0][0] *= gain_offset_lin
         self.sos[0][1] *= gain_offset_lin
         self.sos[0][2] *= gain_offset_lin
+
+    def convert_msec_to_samples(self, msec: float) -> int:
+        """
+        Converts a time delay in milliseconds into samples
+        according to the current sample frequency
+
+        Args:
+            msec (int): The delay in milliseconds to convert
+
+        Returns:
+            int: The result in samples
+        """
+
+        return round(msec * self.get_sample_frequency() / 1000)
+
+    def convert_samples_to_msec(self, samples: int) -> float:
+        """
+        Converts a time delay in samples into milliseconds
+        according to the current sample frequency
+
+        Args:
+            msec (int): The delay in samples to convert
+
+        Returns:
+            int: The result in milliseconds
+        """
+
+        return samples * 1000 / self.get_sample_frequency()
+
     def process_delay(self, delay_samples: int) -> None:
         """
         Applies a delay to the current transfer function
