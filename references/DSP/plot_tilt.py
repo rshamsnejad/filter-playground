@@ -49,11 +49,40 @@ def remove_phase_discontinuities(phase: list) -> list:
 # https://www.wolframalpha.com/input?i2d=true&i=Divide%5BX*%5C%2840%29R+%2B+Divide%5B1%2Cs*C%5D+-+Subscript%5BR%2Cf%5D%5C%2841%29+-+%5C%2840%29R+%2B+Divide%5B1%2Cs+*+C%5D%5C%2841%29*%5C%2840%29Subscript%5BP%2C1%5D%2BSubscript%5BR%2Cf%5D%5C%2841%29%2CX*%5C%2840%29R+%2B+Divide%5B1%2Cs*C%5D+-+Subscript%5BR%2Cf%5D%5C%2841%29+%2B+Subscript%5BR%2Cf%5D+*+%5C%2840%29R+%2B+Divide%5B1%2Cs*C%5D+%2B+Subscript%5BP%2C1%5D%5C%2841%29%5D
 #################################################################################################################
 
-R = 7.14e3
-C = 12.24e-9
-Rf = 16.66e3
+##### USER PARAMETERS
+# Fp = Pivot frequency in Hz
+Fp = 1e3
+# ML_dB = Max boost in the low frequencies in dB
+ML_dB = 12
+# MH_dB = Max boost in the high frequencies in dB
+MH_dB = 6
+
+
+
+
+##### Circuit parameters
+# ML = Max boost (linear) in the low frequencies
+ML = 10**(ML_dB / 20)
+# MH = Max boost (linear) in the high frequencies
+MH = 10**(MH_dB / 20)
+# P1 = Potentiometer resistance in ohms
 P1 = 50e3
+# X = Potentiometer wiper resistance in ohms (ranges from 0 to P1)
 X = 0
+# Rf = Feedback resistor in ohms
+Rf = P1 / (ML - 1)
+# R = RC network resistor in ohms
+R = P1 / (MH * ML - 1)
+# C = RC network capacitor in Farads
+C = (
+        (
+            ( (ML - 1) * np.sqrt(ML + 1) * ( (MH * ML - 1) ** (3 / 2) ) )
+            *
+            np.sqrt( (MH - 1) / ( (ML - 1) * (MH * ML - 1) ) )
+        )
+        /
+        ( 2 * np.pi * ML * P1 * Fp * (MH - 1) * np.sqrt(MH + 1) )
+)
 
 b0 = X - P1 - Rf
 b1 = C * ( R * (X - P1) - Rf * (X + R) )
