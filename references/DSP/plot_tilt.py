@@ -56,8 +56,8 @@ Fp = 1e3
 ML_dB = 12
 # MH_dB = Max boost in the high frequencies in dB
 MH_dB = 6
-
-
+# tilt = Tilt factor, ranges from -1 (LF boost) through 0 (flat) to 1 (HF boost)
+tilt = 1
 
 
 ##### Circuit parameters
@@ -68,12 +68,14 @@ MH = 10**(MH_dB / 20)
 # P1 = Potentiometer resistance in ohms
 P1 = 50e3
 # X = Potentiometer wiper resistance in ohms (ranges from 0 to P1)
-X = 0
+X = tilt * (P1 / 2) + (P1 / 2)
 # Rf = Feedback resistor in ohms
 Rf = P1 / (ML - 1)
 # R = RC network resistor in ohms
 R = P1 / (MH * ML - 1)
 # C = RC network capacitor in Farads
+# NOTE : Compared to the article, the 2*np.pi factor was removed in the denominator to fix
+# the pivot frequency. Probably a math error from the author.
 C = (
         (
             ( (ML - 1) * np.sqrt(ML + 1) * ( (MH * ML - 1) ** (3 / 2) ) )
@@ -81,7 +83,7 @@ C = (
             np.sqrt( (MH - 1) / ( (ML - 1) * (MH * ML - 1) ) )
         )
         /
-        ( 2 * np.pi * ML * P1 * Fp * (MH - 1) * np.sqrt(MH + 1) )
+        ( ML * P1 * Fp * (MH - 1) * np.sqrt(MH + 1) )
 )
 
 b0 = X - P1 - Rf
