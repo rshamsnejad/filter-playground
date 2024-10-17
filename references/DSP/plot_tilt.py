@@ -39,15 +39,6 @@ def remove_phase_discontinuities(phase: list) -> list:
 
 #################################################################################################################
 # Reference: https://www.edn.com/implement-an-audio-frequency-tilt-equalizer-filter/
-#
-# Wolfram Alpha input :
-#   Divide[X*\(40)R + Divide[1,s*C] - Subscript[R,f]\(41) - \(40)R + Divide[1,s * C]\(41)*\(40)Subscript[P,1]+Subscript[R,f]\(41),X*\(40)R + Divide[1,s*C] - Subscript[R,f]\(41) + Subscript[R,f] * \(40)R + Divide[1,s*C] + Subscript[P,1]\(41)]
-#
-# Wolfram Alpha expanded output :
-#   -(C s (R (R_f + P_1 - X) + X R_f) + R_f + P_1 - X)/(C s (R_f (P_1 - X) + R (R_f + X)) + R_f + X)
-#
-# https://www.wolframalpha.com/input?i2d=true&i=Divide%5BX*%5C%2840%29R+%2B+Divide%5B1%2Cs*C%5D+-+Subscript%5BR%2Cf%5D%5C%2841%29+-+%5C%2840%29R+%2B+Divide%5B1%2Cs+*+C%5D%5C%2841%29*%5C%2840%29Subscript%5BP%2C1%5D%2BSubscript%5BR%2Cf%5D%5C%2841%29%2CX*%5C%2840%29R+%2B+Divide%5B1%2Cs*C%5D+-+Subscript%5BR%2Cf%5D%5C%2841%29+%2B+Subscript%5BR%2Cf%5D+*+%5C%2840%29R+%2B+Divide%5B1%2Cs*C%5D+%2B+Subscript%5BP%2C1%5D%5C%2841%29%5D
-#################################################################################################################
 
 ##### USER PARAMETERS
 # Fp = Pivot frequency in Hz
@@ -86,8 +77,22 @@ C = (
         ( ML * P1 * Fp * (MH - 1) * np.sqrt(MH + 1) )
 )
 
-b0 = X - P1 - Rf
-b1 = C * ( R * (X - P1) - Rf * (X + R) )
+
+# Transfer function from the article derived to get the ai bi coefficients
+#
+# Wolfram Alpha input :
+#   Divide[X*\(40)R + Divide[1,s*C] - Subscript[R,f]\(41) - \(40)R + Divide[1,s * C]\(41)*\(40)Subscript[P,1]+Subscript[R,f]\(41),X*\(40)R + Divide[1,s*C] - Subscript[R,f]\(41) + Subscript[R,f] * \(40)R + Divide[1,s*C] + Subscript[P,1]\(41)]
+#
+# Wolfram Alpha expanded output from which the ai bi coefficients were extracted :
+#   -(C s (R (R_f + P_1 - X) + X R_f) + R_f + P_1 - X)/(C s (R_f (P_1 - X) + R (R_f + X)) + R_f + X)
+#
+# https://www.wolframalpha.com/input?i2d=true&i=Divide%5BX*%5C%2840%29R+%2B+Divide%5B1%2Cs*C%5D+-+Subscript%5BR%2Cf%5D%5C%2841%29+-+%5C%2840%29R+%2B+Divide%5B1%2Cs+*+C%5D%5C%2841%29*%5C%2840%29Subscript%5BP%2C1%5D%2BSubscript%5BR%2Cf%5D%5C%2841%29%2CX*%5C%2840%29R+%2B+Divide%5B1%2Cs*C%5D+-+Subscript%5BR%2Cf%5D%5C%2841%29+%2B+Subscript%5BR%2Cf%5D+*+%5C%2840%29R+%2B+Divide%5B1%2Cs*C%5D+%2B+Subscript%5BP%2C1%5D%5C%2841%29%5D
+
+
+# The electronic circuit is based on an inverter opamp, so an additional -1 factor
+# is applied to the numerator to flip the polarity back to the original
+b0 = - (X - P1 - Rf)
+b1 = - ( C * ( R * (X - P1) - Rf * (X + R) ) )
 b2 = 0
 
 b = [b2, b1, b0]
@@ -97,6 +102,8 @@ a1 = C * ( R * (X + Rf) + Rf * (P1 - X) )
 a2 = 0
 
 a = [a2, a1, a0]
+
+#################################################################################################################
 
 frequency_points = np.logspace(0, 5, 1000)
 frequencies, magnitude = signal.freqs(b, a, worN=frequency_points)
