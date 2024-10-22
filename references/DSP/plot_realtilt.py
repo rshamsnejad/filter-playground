@@ -53,7 +53,7 @@ pivot_frequency = 500
 
 # a = [a2, a1, a0]
 
-alpha = 0.8
+alpha = 0
 
 p_1   = np.array(range(1, 10, 9))
 z_1   = p_1        + alpha
@@ -78,7 +78,8 @@ print(f"len(b) = {len(b)}")
 #################################################################################################################
 
 frequency_points = np.logspace(0, 5, 1000)
-frequencies, magnitude = signal.freqs(b, a, worN=frequency_points)
+# frequencies, magnitude = signal.freqs(b, a, worN=frequency_points)
+frequencies, magnitude = signal.freqs_zpk(z, p, k, worN=frequency_points)
 
 mag_db = 20 * np.log10(abs(magnitude))
 phase_deg = np.angle(magnitude, deg=True)
@@ -87,9 +88,9 @@ phase_deg_nan = remove_phase_discontinuities(phase_deg)
 group_delay = -np.diff(np.unwrap(np.angle(magnitude))) / np.diff(2 * np.pi * frequencies)
 group_delay_ms = group_delay * 1000
 
-# plot_freq_range     = [20, 20e3]
-plot_freq_range     = [0, 100e3]
-plot_mag_range      = [-10, 10]
+plot_freq_range     = [20, 20e3]
+# plot_freq_range     = [0, 100e3]
+plot_mag_range      = [-1, 1]
 plot_phase_range    = [-200, 200]
 
 fig, axs = plt.subplots(2, 1, sharex=False)
@@ -106,7 +107,7 @@ axs[0].semilogx(frequencies, mag_db)
 # axs[0].set_xscale('log')
 axs[0].set_xlim(plot_freq_range)
 axs[0].set_ylabel('Gain [dB]')
-# axs[0].set_ylim(plot_mag_range)
+axs[0].set_ylim(plot_mag_range)
 # axs[0].margins(0, 0.1)
 axs[0].grid(which='both', axis='both')
 # axs[0].axvline(pivot_frequency, color='red', linestyle='--')
