@@ -38,7 +38,7 @@ def remove_phase_discontinuities(phase: list) -> list:
     return phase_nan
 
 
-alpha = -0.5
+alpha = 0.5
 
 pole_multiplier = 2
 pole_spacing = np.log(pole_multiplier)
