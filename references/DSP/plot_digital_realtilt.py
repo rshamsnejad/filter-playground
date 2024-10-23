@@ -1,6 +1,7 @@
 from re import I
 from tokenize import group
 import matplotlib.pyplot as plt
+from matplotlib.transforms import Transform
 from scipy import signal
 import numpy as np
 
@@ -53,30 +54,53 @@ pivot_frequency = 500
 
 # a = [a2, a1, a0]
 
-fs = 192000
+fs = 48000
+# fs = 1920000
 ts = 1/fs
-alpha = 0
+alpha = 0.5
 
-poles = np.logspace(0, 5, 10)
+pole_multiplier = 2
+pole_spacing = np.log(pole_multiplier)
+zero_spacing = -alpha * pole_spacing
 
-p_c = [pole for pole in poles if pole < fs/2]
-p_d = p_c.copy()
+poles = [1]
 
-for i in range(1, len(p_d)):
-    p_d[i] = p_c[0] * ( np.tan(np.pi * p_d[i] * ts) ) / ( np.tan(np.pi * p_c[0] * ts) )
+i = 1
+while True:
+    pole = poles[0] * pole_multiplier ** i
+    if pole >= fs / 2:
+        break
+    else:
+        poles.append(pole)
+        i += 1
 
-z = []
-for i in range(len(p_d) - 1):
-    z.append(np.sqrt(p_d[i] * p_d[i+1]))
+zeros = np.array(poles) * pole_multiplier ** (-alpha)
 
-k = 1
-p = p_d
+gain = 1
+
+# poles = np.logspace(0, np.floor(np.log10(fs/2)), 10)
+
+# p_c = [pole for pole in poles if pole < fs/2]
+# p_d = p_c.copy()
+
+# for i in range(1, len(p_d)):
+#     p_d[i] = p_c[0] * ( np.tan(np.pi * p_d[i] * ts) ) / ( np.tan(np.pi * p_c[0] * ts) )
+
+# z = []
+# for i in range(len(p_d) - 1):
+#     z.append(
+#         # np.sqrt(p_d[i] * p_d[i+1])
+#         np.exp( np.log(p_d[i]) + alpha * (np.log(p_d[i+1]) - np.log(p_d[i])) )
+#     )
+
+# k = 1
+# p = p_d
 
 #################################################################################################################
 
 frequency_points = np.logspace(0, 5, 1000)
 # frequencies, magnitude = signal.freqs(b, a, worN=frequency_points)
-frequencies, magnitude = signal.freqz_zpk(z, p, k, worN=frequency_points, fs=fs)
+frequencies, magnitude = signal.freqz_zpk(zeros, poles, gain, worN=frequency_points, fs=fs)
 
 mag_db = 20 * np.log10(abs(magnitude))
 phase_deg = np.angle(magnitude, deg=True)
@@ -85,19 +109,13 @@ phase_deg_nan = remove_phase_discontinuities(phase_deg)
 group_delay = -np.diff(np.unwrap(np.angle(magnitude))) / np.diff(2 * np.pi * frequencies)
 group_delay_ms = group_delay * 1000
 
-plot_freq_range     = [20, 20e3]
-# plot_freq_range     = [0, 100e3]
+# plot_freq_range     = [20, 20e3]
+plot_freq_range     = [0, 100e3]
 plot_mag_range      = [-1, 1]
 plot_phase_range    = [-200, 200]
 
 fig, axs = plt.subplots(2, 1, sharex=False)
-fig.suptitle(f"Tilt filter, order {len(p)}")
-
-slope = 20
-
-# y = mag_db
-# y = abs(magnitude)
-mag_log = slope * np.log10(frequencies / pivot_frequency)
+fig.suptitle(f"Tilt filter, order {len(poles)}")
 
 # Magnitude
 axs[0].semilogx(frequencies, mag_db)
@@ -108,6 +126,13 @@ axs[0].set_ylabel('Gain [dB]')
 # axs[0].margins(0, 0.1)
 axs[0].grid(which='both', axis='both')
 # axs[0].axvline(pivot_frequency, color='red', linestyle='--')
+
+import matplotlib.transforms as transforms
+# Blended transformation to get X in data coordinates and Y in axes coordinates
+trans = transforms.blended_transform_factory(axs[0].transData, axs[0].transAxes)
+
+axs[0].plot(zeros, [0]*len(zeros), '.c', transform=trans, clip_on=False)
+axs[0].plot(poles, [0]*len(poles), 'xr', transform=trans, clip_on=False)
 
 # Phase
 phase_plot = axs[1].semilogx(frequencies, phase_deg_nan)
